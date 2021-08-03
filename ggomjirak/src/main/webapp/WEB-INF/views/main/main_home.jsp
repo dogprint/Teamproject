@@ -18,8 +18,10 @@
 		<div class="row"  style="position: relative; top: -400px;">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
+			
+							
 				<div class="carousel slide" id="carousel-313760">
-					<ol class="carousel-indicators">
+					<ol class="carousel-indicators" style="bottom: 6rem;">
 					<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.count}">
 						<li data-slide-to="${v}" data-target="#carousel-313760"
 							<c:if test="${v == pagingDto.page}">
@@ -42,12 +44,15 @@
 							</c:otherwise>
 						</c:choose>
 						>
+							<a href="/main/mainEventContent?e_no=${event.e_no}">
 							<img class="d-block w-100" alt="Event Banner"
-								src="/event/displayImage?filePath=${rootPath}${event.e_img}" height="500"/>
-							<div class="carousel-caption text-right">
+								src="/eventImg/displayImage?filePath=${event.e_img}" height="500"/></a>
+							<div class="carousel-caption">
+							<div style="display: flex;" >
 								<h4><a href="/main/mainEventContent?e_no=${event.e_no}">${event.e_title}</a></h4>
-								<p>${event.start_date} ~ ${event.end_date}</p>
-								<a href="/main/mainEventContent?e_no=${event.e_no}" class="btn btn-success green_background">이벤트 보기</a>
+								<p style="margin-left: auto;">${event.start_date} ~ ${event.end_date}</p>
+							</div>
+								
 							</div>
 						</div>
 					</c:forEach>
@@ -55,8 +60,8 @@
 						
 					</div>
 					<a class="carousel-control-prev" href="#carousel-313760"
-						data-slide="prev"><span class="carousel-control-prev-icon"></span>
-						<span class="sr-only">Previous</span></a> <a
+						data-slide="prev" style="height: 500px"><span class="carousel-control-prev-icon"></span>
+						<span class="sr-only">Previous</span></a> <a  style="height: 500px"
 						class="carousel-control-next" href="#carousel-313760"
 						data-slide="next"><span class="carousel-control-next-icon"></span>
 						<span class="sr-only">Next</span></a>
@@ -185,7 +190,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member1.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member1.user_id}">${member1.user_nick}</a></h6>
                             <h5>${member1.name}</h5>
                         </div>
                     </div>
@@ -204,7 +209,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member2.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member2.user_id}">${member2.user_nick}</a></h6>
                             <h5>${member2.name}</h5>
                         </div>
                     </div>
@@ -223,7 +228,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member3.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member3.user_id}">${member3.user_nick}</a></h6>
                             <h5>${member3.name}</h5>
                         </div>
                     </div>
@@ -242,7 +247,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member4.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member4.user_id}">${member4.user_nick}</a></h6>
                             <h5>${member4.name}</h5>
                         </div>
                     </div>

@@ -33,20 +33,11 @@ public class HobbyServiceImpl implements HobbyService {
 	
 	@Inject 
 	private MaterialDao materialDao;
-	
 	// 취미글 등록
 	@Transactional
 	@Override
-	public boolean insertHobbyArticle(HobbyVo hobbyVo) {
-		
-		int result = 0;
-		
+	public void insertHobbyArticle(HobbyVo hobbyVo) {
 		int hobby_no = hobbyDao.insertHobby(hobbyVo);
-		
-		result = hobby_no;
-		if(result == 0) {
-			return false;
-		}
 		// * 준비물 작업 
 		List<HobbyMaterialVo> hobbyMaterials = hobbyVo.getHobbyMaterials();
 		// material 테이블 insert 작업
@@ -62,29 +53,21 @@ public class HobbyServiceImpl implements HobbyService {
 			// hobby_no 세팅
 			hobbyMaterialVo.setHobby_no(hobby_no);
 		}
-		result = hobbyDao.insertHobbyMaterial(hobbyMaterials);
-		if(result == 0) {
-			return false;
-		}
+		hobbyDao.insertHobbyMaterial(hobbyMaterials);
+		
 		// * 만들기 작업
 		List<MakeStepVo> makeSteps = hobbyVo.getMakeSteps();
 		for (MakeStepVo makeStepVo : makeSteps) {
 			makeStepVo.setHobby_no(hobby_no);
 		}
-		result = hobbyDao.insertMakeStepVo(makeSteps);
-		if(result == 0) {
-			return false;
-		}
+		hobbyDao.insertMakeStepVo(makeSteps);
+		
 		// * 완성사진 작업
 		List<CompleteImgVo> completeImgs = hobbyVo.getCompleteImgs();
 		for(CompleteImgVo completeImgVo : completeImgs) {
 			completeImgVo.setHobby_no(hobby_no);
 		}
-		result = hobbyDao.insertCompleteImg(completeImgs);
-		if(result == 0) {
-			return false;
-		}
-		return true;
+		hobbyDao.insertCompleteImg(completeImgs);
 	}
 	
 	@Override // isUpdate 수정폼에 뿌릴데이터인지아닌지 여부 true이면 수정용(사용자가 입력한 원본그대로 줘야함)
@@ -143,7 +126,7 @@ public class HobbyServiceImpl implements HobbyService {
 	}
 	
 	
-	// 수정 작업에 필요한것들
+	// 삭제 작업
 	@Override
 	public String selectCompleteImgName(CompleteImgVo completeImgVo) {
 		return hobbyDao.selectCompleteImgName(completeImgVo);
@@ -157,15 +140,10 @@ public class HobbyServiceImpl implements HobbyService {
 	
 	@Transactional
 	@Override
-	public boolean updateHobbyArticle(HobbyVo hobbyVo) {
+	public void updateHobbyArticle(HobbyVo hobbyVo) {
 		
 		//* hobby update
-		int result = 0;
-		result = hobbyDao.updateHobby(hobbyVo);
-		
-		if(result == 0) {
-			return false;
-		}
+		hobbyDao.updateHobby(hobbyVo);
 		
 		int hobby_no = hobbyVo.getHobby_no();
 		// *준비물
@@ -186,10 +164,7 @@ public class HobbyServiceImpl implements HobbyService {
 		System.out.println(deletedMaterials);
 		// 기존거 삭제된거 삭제작업(업데이트)
 		if (deletedMaterials.size() > 0) {
-			result = hobbyDao.deleteHobbyMaterial(deletedMaterials);
-		}
-		if(result == 0) {
-			return false;
+			hobbyDao.deleteHobbyMaterial(deletedMaterials);
 		}
 		
 		// material 테이블 insert 작업 (새로운 준비물 있으면 넣고 아니면 안넣는 작업)
@@ -204,10 +179,7 @@ public class HobbyServiceImpl implements HobbyService {
 			//material_no 세팅
 			hobbyMaterialVo.setMaterial_no(material_no);
 		}
-		result = hobbyDao.updateHobbyMaterial(existMaterials);
-		if(result == 0) {
-			return false;
-		}
+		hobbyDao.updateHobbyMaterial(existMaterials);
 
 		// * 만들기 작업
 		List<MakeStepVo> makeSteps = hobbyVo.getMakeSteps();
@@ -227,33 +199,19 @@ public class HobbyServiceImpl implements HobbyService {
 		System.out.println(deletedMakeSteps);
 		// 기존거 삭제된거 삭제작업(업데이트)
 		if (deletedMakeSteps.size() > 0) {
-			result = hobbyDao.deleteMakeStep(deletedMakeSteps);
+			hobbyDao.deleteMakeStep(deletedMakeSteps);
 		}
-		if(result == 0) {
-			return false;
-		}
+		
 		// exist update작업
-		result = hobbyDao.updateMakeStep(existMakeSteps);
-		if(result == 0) {
-			return false;
-		}
+		hobbyDao.updateMakeStep(existMakeSteps);
 		
 		// * 완성사진 작업
 		List<CompleteImgVo> completeImgs = hobbyVo.getCompleteImgs();
 		for(CompleteImgVo completeImgVo : completeImgs) {
 			completeImgVo.setHobby_no(hobby_no);
 		}
-		result = hobbyDao.updateCompleteImg(completeImgs);
-		if(result == 0) {
-			return false;
-		}
+		hobbyDao.updateCompleteImg(completeImgs);
 		
-		return true;
-	}
-
-	@Override
-	public int deleteHobbyArticle(int hobby_no) {
-		return hobbyDao.deleteHobby(hobby_no);
 	}
 
 }

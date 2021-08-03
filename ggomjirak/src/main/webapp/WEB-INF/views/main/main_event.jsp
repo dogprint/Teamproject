@@ -27,8 +27,19 @@
 					<div class="featured__item">
 						<div>
 							<a href="/main/mainEventContent?e_no=${event.e_no}">
-								<img src="/resources/img/eximage.png" class="rounded mx-auto d-block" alt="..."
-								width="700px" height="200px">
+								<img 
+									<c:choose>
+										<c:when test="${event.e_img != null}">
+											src="/eventImg/displayImage?filePath=${event.e_img}" 
+											alt="Event Image"
+										</c:when>
+										<c:otherwise>
+											src="../resources/img/eximage.png" 
+											alt="None Image"
+										</c:otherwise>
+									</c:choose>
+								class="rounded mx-auto d-block"
+								width="700px" height="300px">
 							</a>
 						</div>
 						<div class="featured__item__text">

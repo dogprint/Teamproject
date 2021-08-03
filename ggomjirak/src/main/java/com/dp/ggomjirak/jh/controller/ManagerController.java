@@ -20,6 +20,8 @@ import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.WorkroomVo;
 
+import net.sf.json.JSONArray;
+
 @Controller
 @RequestMapping("manager")
 public class ManagerController {
@@ -40,12 +42,14 @@ public class ManagerController {
 		int memberCount = managerService.getMemberCount();
 		int askCount = askService.getCountQnAMain();
 		int eventCount = eventService.getCountBanner(pagingDto);
+		List<Integer> gradeList = managerService.getAllUserGrade();
 		
 		System.out.println(eventCount);
 		model.addAttribute("popularMemberList", popularMemberList);
 		model.addAttribute("memberCount", memberCount);
 		model.addAttribute("askCount", askCount);
 		model.addAttribute("eventCount", eventCount);
+		model.addAttribute("gradeList", JSONArray.fromObject(gradeList));
 		return "manager/manager_home";
 	}
 	
@@ -80,7 +84,7 @@ public class ManagerController {
 	}
 	// 회원 상세페이지
 	@RequestMapping(value="/managerMemberContent", method=RequestMethod.GET)
-	public String managerMemberContent(String user_id, Model model) throws Exception {
+	public String managerMemberContent(String user_id, Model model, PagingDto pagingDto) throws Exception {
 		MemberVo memberVo = managerService.selectMemberById(user_id);
 		CateStrVo cateVo = managerService.selectCateStr(user_id);
 		String grade = managerService.selectGradeById(user_id);
@@ -91,6 +95,7 @@ public class ManagerController {
 		model.addAttribute("grade", grade);
 		model.addAttribute("activVo", activVo);
 		model.addAttribute("intro", intro);
+		model.addAttribute("pagingDto", pagingDto);
 		return "manager/member/manager_member_content";
 	}
 	// 회원 상세 정보 수정

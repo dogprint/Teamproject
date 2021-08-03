@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.dp.ggomjirak.jh.service.EventService;
 import com.dp.ggomjirak.jh.service.MainService;
 import com.dp.ggomjirak.jh.service.ManagerService;
-import com.dp.ggomjirak.jh.util.MyFileUploadUtil;
 import com.dp.ggomjirak.vo.CateStrVo;
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.EventVo;
@@ -36,12 +35,11 @@ public class MainController {
 	@Inject
 	private EventService eventService;
 	
-	String rootPath = MyFileUploadUtil.YJ_ACADEMY_FOLDER;
 
 	@RequestMapping(value="/mainHome", method=RequestMethod.GET)
 	public String mainHome(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
-		//MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-		//String user_id = memberVo.getUser_id();
+//		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+//		String user_id = memberVo.getUser_id();
 		String user_id = "hong";
 		List<CateVo> category = mainService.selectCate();
 
@@ -74,7 +72,7 @@ public class MainController {
 		model.addAttribute("popularMember3", popularMember3);
 		model.addAttribute("popularMember4", popularMember4);
 		model.addAttribute("cateStrVo", cateStrVo);
-		model.addAttribute("rootPath", rootPath);
+		model.addAttribute("user_id", user_id);
 		return "main/main_home";
 	}
 	
@@ -161,7 +159,6 @@ public class MainController {
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		EventVo eventVo = eventService.selectByEno(e_no);
 		model.addAttribute("eventVo", eventVo);
-		model.addAttribute("rootPath", rootPath);
 		return "main/main_event_content";
 	}
 	

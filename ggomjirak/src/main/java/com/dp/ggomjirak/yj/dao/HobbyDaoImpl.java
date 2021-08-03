@@ -29,36 +29,49 @@ public class HobbyDaoImpl implements HobbyDao {
 	}
 
 	@Override
+	public HobbyVo selectHobby2(HobbyVo hobbyVo) {
+		return sqlSession.selectOne(NAMESPACE + "selectHobby2", hobbyVo);
+	}
+	
+	@Override
 	public HobbyVo selectHobby(int hobby_no) {
 		return sqlSession.selectOne(NAMESPACE + "selectHobby", hobby_no);
 	}
 
 	@Override
-	public int insertMakeStepVo(List<MakeStepVo> makeSteps) {
-		return sqlSession.insert(NAMESPACE + "insertMakeStep", makeSteps);
+	public void insertMakeStepVo(List<MakeStepVo> makeSteps) {
+		sqlSession.insert(NAMESPACE + "insertMakeStep", makeSteps);
 		
 	}
 
 
 	@Override
-	public int insertHobbyMaterial(List<HobbyMaterialVo> hobbyMaterials) {
-		return sqlSession.insert(NAMESPACE + "insertHobbyMaterial", hobbyMaterials);
+	public void insertHobbyMaterial(List<HobbyMaterialVo> hobbyMaterials) {
+		sqlSession.insert(NAMESPACE + "insertHobbyMaterial", hobbyMaterials);
 		
 	}
 
 	
 	@Override
-	public int insertCompleteImg(List<CompleteImgVo> completeImgs) {
-		return sqlSession.insert(NAMESPACE + "insertCompleteImg", completeImgs);
+	public void insertCompleteImg(List<CompleteImgVo> completeImgs) {
+		sqlSession.insert(NAMESPACE + "insertCompleteImg", completeImgs);
 		
 	}
 
+	@Override
+	public List<HobbyMaterialVo> selectHobbyMaterialList2(HobbyVo hobbyVo) {
+		return sqlSession.selectList(NAMESPACE + "selectHobbyMaterialList2", hobbyVo);
+	}
 
 	@Override
 	public List<HobbyMaterialVo> selectHobbyMaterialList(int hobby_no) {
 		return sqlSession.selectList(NAMESPACE + "selectHobbyMaterialList", hobby_no);
 	}
 
+	@Override
+	public List<MakeStepVo> selectMakeStepList2(HobbyVo hobbyVo) {
+		return sqlSession.selectList(NAMESPACE + "selectMakeStepList2", hobbyVo);
+	}
 
 	@Override
 	public List<MakeStepVo> selectMakeStepList(int hobby_no) {
@@ -88,39 +101,34 @@ public class HobbyDaoImpl implements HobbyDao {
 
 
 	@Override
-	public int updateHobbyMaterial(List<HobbyMaterialVo> hobbyMaterials) {
-		return sqlSession.update(NAMESPACE + "updateHobbyMaterial", hobbyMaterials);
+	public void updateHobbyMaterial(List<HobbyMaterialVo> hobbyMaterials) {
+		sqlSession.update(NAMESPACE + "updateHobbyMaterial", hobbyMaterials);
 	}
 
 	@Override
-	public int updateMakeStep(List<MakeStepVo> makeSteps) {
-		return sqlSession.update(NAMESPACE + "updateMakeStep", makeSteps);
+	public void updateMakeStep(List<MakeStepVo> makeSteps) {
+		sqlSession.update(NAMESPACE + "updateMakeStep", makeSteps);
 	}
 
 	@Override
-	public int deleteHobbyMaterial(List<HobbyMaterialVo> hobbyMaterials) {
-		return sqlSession.update(NAMESPACE + "deleteHobbyMaterial", hobbyMaterials);
+	public void deleteHobbyMaterial(List<HobbyMaterialVo> hobbyMaterials) {
+		sqlSession.update(NAMESPACE + "deleteHobbyMaterial", hobbyMaterials);
 	}
 
 	@Override
-	public int deleteMakeStep(List<MakeStepVo> makeSteps) {
-		return sqlSession.update(NAMESPACE + "deleteMakeStep", makeSteps);
+	public void deleteMakeStep(List<MakeStepVo> makeSteps) {
+		sqlSession.update(NAMESPACE + "deleteMakeStep", makeSteps);
 	}
 
 	@Override
-	public int updateCompleteImg(List<CompleteImgVo> completeImgs) {
-		return sqlSession.update(NAMESPACE + "updateCompleteImg", completeImgs);
+	public void updateCompleteImg(List<CompleteImgVo> completeImgs) {
+		sqlSession.update(NAMESPACE + "updateCompleteImg", completeImgs);
 	}
 
 	@Override
-	public int updateHobby(HobbyVo hobbyVo) {
-		return sqlSession.update(NAMESPACE + "updateHobby", hobbyVo);
+	public void updateHobby(HobbyVo hobbyVo) {
+		sqlSession.update(NAMESPACE + "updateHobby", hobbyVo);
 		
-	}
-
-	@Override
-	public int deleteHobby(int hobby_no) {
-		return sqlSession.update(NAMESPACE + "deleteHobby", hobby_no);
 	}
 
 

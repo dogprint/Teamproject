@@ -2,12 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
+<script src="/resources/js/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="/resources/css/sweetalert2.min.css">
 <script>
 $(document).ready(function() {
+	
 	// 작업실 이름
 	// 수정 버튼 클릭 시 텍스트 입력으로 변경(수정버튼 비활성화)
 	$("#btnName").click(function() {
-		$("#wrName").replaceWith("<input type='text' id='wrName' style='border: 1px solid #E5E8E8; height: 30px;' value='${workroomVo.wr_name}'>");
+		$("#wrName").replaceWith("<input type='text' id='wrName' style='border: 1px solid #E5E8E8; width:400px;' value='${workroomVo.wr_name}'>");
 		$("#btnName").attr("style", "margin-left:10px; height:20px; border:none; background:none; padding: 0; display:none");
 		$("#btnNameMod").show();
 		$("#btnNameCancel").show();
@@ -19,10 +22,12 @@ $(document).ready(function() {
 		$("#btnName").show();
 		$("#btnNameMod").attr("style", "margin-left:10px; display:none;");
 		$("#btnNameCancel").attr("style", "margin-left:10px; display:none;");
+		$("#nameWarning").text("");
 	});
 	
 	// 수정실행(완료되면 수정버튼 활성화 / 변경,취소 비활성화)
 	$("#btnNameMod").click(function() {
+		var inputNameLength = $("#wrName").val().length;
 		var wr_name = $("#wrName").val();
 		var user_id = "${workroomVo.user_id}";
 		var url = "/workroomset/nameSet";
@@ -30,15 +35,20 @@ $(document).ready(function() {
 			"wr_name" : wr_name,
 			"user_id" : user_id
 		}
-		$.post(url, sendData, function(rData) {
-			console.log(rData);
-			if (rData == "nameSuccess") {
-				$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>" + wr_name + "</h4>");
-				$("#btnName").show();
-				$("#btnNameMod").attr("style", "margin-left:10px; display:none;");
-				$("#btnNameCancel").attr("style", "margin-left:10px; display:none;");
-			}
-		});
+		if (inputNameLength > 25) {
+			$("#nameWarning").text("최대 입력길이를 초과하셨습니다.");
+		} else {
+			$.post(url, sendData, function(rData) {
+				console.log(rData);
+				if (rData == "nameSuccess") {
+					$("#nameWarning").text("");
+					$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>" + wr_name + "</h4>");
+					$("#btnName").show();
+					$("#btnNameMod").attr("style", "margin-left:10px; display:none;");
+					$("#btnNameCancel").attr("style", "margin-left:10px; display:none;");
+				}
+			});
+		}
 	});
 	
 	// 작업실 소개 
@@ -50,16 +60,18 @@ $(document).ready(function() {
 		$("#btnIntroCancel").show();
 	});
 	
-	// 수정취소(wrName에 원래상태로 붙여줌)
+	// 수정취소(wrIntro에 원래상태로 붙여줌)
 	$("#btnIntroCancel").click(function() {
 		$("#wrIntro").replaceWith("<p id='wrIntro'>${workroomVo.wr_intro}</p>");
 		$("#btnIntro").show();
 		$("#btnIntroMod").attr("style", "margin-left:10px; display:none;");
 		$("#btnIntroCancel").attr("style", "margin-left:10px; display:none;");
+		$("#introWarning").text("");
 	});
 	
 	// 수정실행(완료되면 수정버튼 활성화 / 변경,취소 비활성화)
 	$("#btnIntroMod").click(function() {
+		var inputIntroLength = $("#wrIntro").val().length;
 		var wr_intro = $("#wrIntro").val();
 		var user_id = "${workroomVo.user_id}";
 		var url = "/workroomset/introSet";
@@ -67,15 +79,20 @@ $(document).ready(function() {
 			"wr_intro" 	: wr_intro,
 			"user_id"	: user_id
 		}
-		$.post(url, sendData, function(rData){
-			console.log(rData);
-			if (rData == "introSuccess") {
-				$("#wrIntro").replaceWith("<p id='wrIntro'>" + wr_intro + "</p>");
-				$("#btnIntro").show();
-				$("#btnIntroMod").attr("style", "margin-left:10px; display:none;");
-				$("#btnIntroCancel").attr("style", "margin-left:10px; display:none;");
-			}
-		});
+		if (inputIntroLength > 250) {
+			$("#introWarning").text("최대 입력길이를 초과하셨습니다.");
+		} else {
+			$.post(url, sendData, function(rData){
+				console.log(rData);
+				if (rData == "introSuccess") {
+					$("#introWarning").text("");
+					$("#wrIntro").replaceWith("<p id='wrIntro'>" + wr_intro + "</p>");
+					$("#btnIntro").show();
+					$("#btnIntroMod").attr("style", "margin-left:10px; display:none;");
+					$("#btnIntroCancel").attr("style", "margin-left:10px; display:none;");
+				}
+			});
+		}
 	});
 	
 	// 언팔로우
@@ -119,6 +136,7 @@ $(document).ready(function() {
 					<button type="button" id="btnName" class="fa fa-pencil" style="margin-left:10px; height:20px; border:none; background:none; padding: 0;"></button>
 					<button type="button" class="btn btn-primary btn-sm" id="btnNameMod" style="margin-left:10px; display:none;">변경</button>
 					<button type="button" class="btn btn-warning btn-sm" id="btnNameCancel" style="margin-left:10px; display:none;">취소</button>
+					<span id="nameWarning" style="margin-left:10px; color:#E14F4F; font-size:15px;"></span>
 				</div>
 					<hr>
 				<div class="workroom_box row">
@@ -126,6 +144,7 @@ $(document).ready(function() {
 					<button type="button" class="fa fa-pencil" id="btnIntro" style="margin-left:10px; height:20px; border:none; background:none; padding: 0;"></button>
 					<button type="button" class="btn btn-primary btn-sm" id="btnIntroMod" style="margin-left:10px; display:none;">변경</button>
 					<button type="button" class="btn btn-warning btn-sm" id="btnIntroCancel" style="margin-left:10px; display:none;">취소</button>
+					<span id="introWarning" style="margin-left:10px; color:#E14F4F; font-size:15px;"></span>
 				</div>
 			</div>
 			<div class="checkout__order">

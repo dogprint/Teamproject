@@ -3,19 +3,29 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
- <mapper namespace="com.dp.ggomjirak.cate">
+<mapper namespace="com.dp.ggomjirak.cate">
  
- 	<select id="getCateList" resultType="CateVo">
- 		SELECT * FROM tbl_hobby_cate
+ 	<select id="getCateList1" resultType="CateVo">
+ 		select * from tbl_hobby_cate where cate_level = 1
  	</select>
  	
- 	<select id="getLevelList" resultType="LevelVo">
- 		SELECT * FROM tbl_level_cate
+ 	<select id="getCateList2" resultType="CateVo">
+ 		select * from tbl_hobby_cate where cate_level = 2 and parent_cate_no = #{parent_cate_no}
  	</select>
- 	<select id="getCostList" resultType="CostVo">
- 		SELECT * FROM tbl_cost_cate
- 	</select>
- 	<select id="getTimeList" resultType="TimeVo">
- 		SELECT * FROM tbl_time_cate
- 	</select>
+ 	
+ 	
+<!--  	<select id="getLevelList" resultType="LevelVo"> -->
+<!--  		select * from tbl_level_cate -->
+<!--  	</select> -->
+ 	
+<!--  	<select id="getCostList" resultType="CostVo"> -->
+<!--  		select * from tbl_cost_cate -->
+<!--  	</select> -->
+ 	
+<!--  	<select id="getTimeList" resultType="TimeVo"> -->
+<!--  		select * from tbl_time_cate -->
+<!--  	</select> -->
+ 	
+ 	
  </mapper>
+	

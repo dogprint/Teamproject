@@ -26,6 +26,20 @@ $(document).ready(function() {
 		$("#frmPaging").submit();
 
 	});
+	
+
+	$(".btnCancel").click(function(e) {
+		e.preventDefault
+		var result = confirm("이벤트 베너 목록에서 삭제하시겠습니까?");
+		if(result){
+			var e_no = $(this).attr("data-eno");
+			console.log(e_no);
+		    $(this).attr("href", "/event/managerMainEventDeleteRun?e_no=" + e_no);
+		}else{
+		    return false;
+		}
+	});
+
 
 	
 });
@@ -40,7 +54,7 @@ $(document).ready(function() {
 <div class="container-fluid">
 
 	<!-- Page Heading -->
-	<h1 class="h3 mb-2 text-gray-800">이벤트</h1>
+	<h1 class="h3 mb-2 text-gray-800">이벤트 베너</h1>
 	<div class="card shadow mb-4">
 		<div class="card-body">
 		
@@ -142,7 +156,7 @@ $(document).ready(function() {
 		      <td>${event.mod_date}</td>
 		      <td>${event.e_img}</td>
 		      <td>
-		      	<a href="/event/managerMainEventDeleteRun?e_no=${event.e_no}" type="button" class="btn btn-danger orange_background">취소</a>
+		      	<a data-eno="${event.e_no}" type="button" class="btn btn-danger orange_background btnCancel">취소</a>
 		      </td>
 		    </tr>
 		    </c:forEach>

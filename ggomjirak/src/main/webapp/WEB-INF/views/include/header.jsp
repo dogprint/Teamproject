@@ -16,8 +16,7 @@
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="/resources/css/font-awesome.min.css" type="text/css">
 <link rel="stylesheet" href="/resources/css/elegant-icons.css" type="text/css">
-<!-- 삭제된 파일 -->
-<!-- <link rel="stylesheet" href="/resources/css/nice-select.css" type="text/css"> -->
+<link rel="stylesheet" href="/resources/css/nice-select.css" type="text/css">
 <link rel="stylesheet" href="/resources/css/jquery-ui.min.css" type="text/css">
 <link rel="stylesheet" href="/resources/css/owl.carousel.min.css" type="text/css">
 <link rel="stylesheet" href="/resources/css/slicknav.min.css" type="text/css">
@@ -50,48 +49,48 @@
 $(document).ready(function() {
 	
 	//* 카테고리 부분
-	var jsonData2 = JSON.parse('${cates}');
-	var cate3Arr = new Array();
-	var cate3Obj = new Object();
+	var jsonData = JSON.parse('${cates}');
+	var cate1Arr = new Array();
+	var cate1Obj = new Object();
 	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
-	for(var i = 0; i < jsonData2.length; i++) {
-	 if(jsonData2[i].cate_level == "1") {
-	  cate3Obj = new Object();  //초기화
-	  cate3Obj.cate_no = jsonData2[i].cate_no;
-	  cate3Obj.cate_name = jsonData2[i].cate_name;
-	  cate3Arr.push(cate3Obj);
+	for(var i = 0; i < jsonData.length; i++) {
+	 if(jsonData[i].cate_level == "1") {
+	  cate1Obj = new Object();  //초기화
+	  cate1Obj.cate_no = jsonData[i].cate_no;
+	  cate1Obj.cate_name = jsonData[i].cate_name;
+	  cate1Arr.push(cate1Obj);
 	 }
 	}
 	// 1차 분류 셀렉트 박스에 데이터 삽입
-	var cate3Select = $("select.cate3")
-	for(var i = 0; i < cate3Arr.length; i++) {
-		 cate3Select.append("<option id='parent_cate_no' name='parent_cate_no' value='" + cate3Arr[i].cate_no + "'>"
-	      + cate3Arr[i].cate_name + "</option>"); 
+	var cate1Select = $("select.cate3")
+	for(var i = 0; i < cate1Arr.length; i++) {
+		 cate1Select.append("<option id='parent_cate_no' name='parent_cate_no' value='" + cate1Arr[i].cate_no + "'>"
+	      + cate1Arr[i].cate_name + "</option>"); 
 	}
 	$(document).on("change", "select.cate3", function(){
-		 var cate4Arr = new Array();
-		 var cate4Obj = new Object();
+		 var cate2Arr = new Array();
+		 var cate2Obj = new Object();
 		 // 2차 분류 셀렉트 박스에 삽입할 데이터 준비
-		 for(var i = 0; i < jsonData2.length; i++) {
-		  if(jsonData2[i].cate_level == "2") {
-		   cate4Obj = new Object();  //초기화
-		   cate4Obj.cate_no = jsonData2[i].cate_no;
-		   cate4Obj.cate_name = jsonData2[i].cate_name;
-		   cate4Obj.parent_cate_no = jsonData2[i].parent_cate_no;
-		   cate4Arr.push(cate4Obj);
+		 for(var i = 0; i < jsonData.length; i++) {
+		  if(jsonData[i].cate_level == "2") {
+		   cate2Obj = new Object();  //초기화
+		   cate2Obj.cate_no = jsonData[i].cate_no;
+		   cate2Obj.cate_name = jsonData[i].cate_name;
+		   cate2Obj.parent_cate_no = jsonData[i].parent_cate_no;
+		   cate2Arr.push(cate2Obj);
 		  }
 		 }
-		 var cate2Select = $("ul.cate2");
+		 var cate2Select = $("ul.cate4");
 		 cate2Select.children().remove();
 		 $("option:selected", this).each(function(){
 		  var selectVal = $(this).val();  
 		  cate2Select.append("<li class='dropdown-item'>중분류</li>");
-		  for(var i = 0; i < cate4Arr.length; i++) {
-		   if(selectVal == cate4Arr[i].parent_cate_no) {
-		    cate2Select.append("<li><a class='dropdown-item' value='" + cate4Arr[i].cate_no 
-		    	+ "' data-cate='" + cate4Arr[i].parent_cate_no 
-		    	+ "' href='/main/mainHobby?parent_cate_no=" + cate4Arr[i].parent_cate_no + "&m_cate_no=" + cate4Arr[i].cate_no + "'>"
-		         + cate4Arr[i].cate_name + "</a></li>");
+		  for(var i = 0; i < cate2Arr.length; i++) {
+		   if(selectVal == cate2Arr[i].parent_cate_no) {
+		    cate2Select.append("<li><a class='dropdown-item' value='" + cate2Arr[i].cate_no 
+		    	+ "' data-cate='" + cate2Arr[i].parent_cate_no 
+		    	+ "' href='/main/mainHobby?parent_cate_no=" + cate2Arr[i].parent_cate_no + "&m_cate_no=" + cate2Arr[i].cate_no + "'>"
+		         + cate2Arr[i].cate_name + "</a></li>");
 		   }
 		  }
 		 });
@@ -140,7 +139,7 @@ $(document).ready(function() {
 								  		</ul>
 								    
 								    <ul class="nav navbar-nav navbar-right">
-										<li class="nav-item"><a class="nav-link flex-item" href="/workroom/main">내 작업실</a></li>
+										<li class="nav-item"><a class="nav-link flex-item" href="/workroom/main/${user_id}">내 작업실</a></li>
 										<li class="nav-item"><a class="nav-link" href="/mypage/login">로그인</a></li>
 										<li class="nav-item"><a class="nav-link flex-item" href="/workroom/main">
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -203,35 +202,31 @@ $(document).ready(function() {
 
 								<!-- 검색 -->
 								
-								
-								<div class="row" style="margin-bottom: 50px">
-									<div class="col-lg-3">
-									<div class="input-group">
-
-										<select class="cate3 btn btn-outline-light green_background shadow bg-body rounded"
-											style="margin-right: 10px; width:110px; height:38px"
-											aria-label="Default select example">
-											<option value="">카테고리</option>
-										</select>
-										
-										<div class="dropdown">
-									  <button class="form-control btn btn-outline-light green_background shadow bg-body rounded dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
-									  style="width:110px; height:38px">
+								<form id="frmSearch" action="/main/mainSearch" method="get" class="needs-validation" novalidate>
+								<div class="form-row">
+							    
+							    <div class="col-lg-2 col-md-3 mb-3">
+<!-- 							      <label for="validationCustom04">대분류</label> -->
+							      <select style="height: 38px; padding-top: 2px !important; text-align-last: center; text-align: center;" class="cate3 form-control btn btn-outline-light green_background white_color shadow bg-body rounded" id="validationCustom04" required>
+							        <option selected disabled value="">카테고리</option>
+							      </select>
+							      <div class="invalid-feedback">
+							      </div>
+							    </div>
+							    <div class="col-lg-2 col-md-3 mb-3">
+<!-- 							      <label for="validationCustom04">중분류</label> -->
+							      <button class="form-control btn btn-outline-light green_background shadow bg-body rounded dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 									   카테고리
 									  </button>
-									  <ul class="cate2 dropdown-menu" aria-labelledby="dropdownMenuButton1">
+									  <ul class="cate4 dropdown-menu" aria-labelledby="dropdownMenuButton1">
 									    <li><a class="dropdown-item" href="#">중분류</a></li>
 									  </ul>
-									</div>
-
-									</div>
-										
-									</div>
-									
-									<div class="col-lg-9">
-									
-									<form id="frmSearch" action="/main/mainSearch" method="get">
-									<div class="input-group mb-3">
+							      <div class="invalid-feedback">
+							      </div>
+							    </div>
+							    <div class="col-lg-8 col-md-6 mb-3">
+<!-- 							      <label for="validationCustom05">검색</label> -->
+							      <div class="input-group mb-3">
 									  <input id="keyword" name="keyword" type="text" class="form-control shadow bg-body rounded" placeholder="나의 취미를 찾아보세요" aria-label="Recipient's username" aria-describedby="button-addon2">
 									  <div class="input-group-append">
 									    <button type="submit" class="btn btn-outline-light shadow bg-body rounded" id="btnSearch">
@@ -241,8 +236,11 @@ $(document).ready(function() {
 										</svg>검색</button>
 									  </div>
 									</div>
-									</form>
-									</div>
+							      <div class="invalid-feedback">
+							      </div>
+							    </div>
+							  </div>
+							  </form>
 								</div>
 								<!-- 검색 끝 -->
 								

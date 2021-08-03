@@ -32,20 +32,15 @@ $(document).ready(function() {
 				<div class="row">
 					<div class="col-md-3 col-lg-2">
 					
-						<nav id="navbar-example3"  style="position: fixed"
-							class="navbar navbar-light flex-column align-items-stretch p-3 green_background">
-							<a class="navbar-brand border-bottom" style="color: white" href="#">검색</a>
+						<nav id="navbar-example3"  style="position: fixed; top: 250px"
+							class="navbar navbar-light flex-column align-items-stretch p-3 orange_color">
+							<a class="navbar-brand border-bottom orange_color" href="#">검색</a>
 							<nav class="nav nav-pills flex-column">
-								<a class="nav-link" style="color: white" href="#item-1">취미</a>
-								<a class="nav-link" style="color: white" href="#item-2">작가</a>
-								<a class="nav-link" style="color: white" href="#item-3">Made by Me</a>
-								<nav class="nav nav-pills flex-column">
-									<a class="nav-link ms-3 my-1" href="#item-3-1">Item 3-1</a>
-									<a class="nav-link ms-3 my-1" href="#item-3-2">Item 3-2</a>
-								</nav>
+								<a class="nav-link text-gray" href="#item-1">취미</a>
+								<a class="nav-link text-gray" href="#item-2">작가</a>
+								<a class="nav-link text-gray" href="#item-3">Made by Me</a>
 							</nav>
 						</nav>
-						
 					</div>
 					
 					<!-- 검색 카테고리 메뉴 끝-->
@@ -195,10 +190,7 @@ $(document).ready(function() {
 							</tbody>
 						</table>
 
-							<h5 id="item-3-1">Item 3-1</h5>
-							<p>...</p>
-							<h5 id="item-3-2">Item 3-2</h5>
-							<p>...</p>
+							
 						</div>
 						<!-- 페이징 -->
 						<div class="product__pagination justify-content-center pagination" style="display: flex">
@@ -233,7 +225,6 @@ $(document).ready(function() {
 	</div>
 	
 </div>
-
 
 
 <%@ include file="../include/footer.jsp" %>

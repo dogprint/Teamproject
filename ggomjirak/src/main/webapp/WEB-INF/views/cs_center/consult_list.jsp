@@ -50,9 +50,9 @@ $(document).ready(function() {
 <%-- 	<input type="hidden" name="keyword" value="${pagingDto.keyword}"/> --%>
 <!-- 	<input type="hidden" name="qna_no"/> -->
 <!-- </form> -->
-<form id="frmPaging" action="/cs_center/consultList" method="post">
+<form id="frmPaging" action="/cs_center/consultList" method="get">
 	<input type="hidden" name="qna_no"/>
-	<input type="hidden" name="user_id"/>
+	<input type="hidden" name="user_id"/> <!--  -->
 </form>
 ${list}
 <body>

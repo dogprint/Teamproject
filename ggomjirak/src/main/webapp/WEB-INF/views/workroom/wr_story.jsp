@@ -3,6 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp"%>
+<style>
+.oooo {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
+</style>
 <script>
 $(document).ready(function() {
 	// 좋아요 유지
@@ -54,9 +62,9 @@ $(document).ready(function() {
 			<div class="container-fluid">
 				<c:forEach var="storyVo" items="${list}">
 					<div class="row">
-						<div class="col-md-10" style="padding: 0px; margin: auto;">
+						<div class="col-md-9" style="padding: 0px; margin: auto;">
 							<p style="font-size: 14px; margin: 10px" id="story_detail">
-								<a href="/story/detail/${page_id}?st_no=${storyVo.st_no}">
+								<a href="/story/detail/${page_id}?st_no=${storyVo.st_no}" class="oooo">
 									${storyVo.st_content}</a><br> 
 									<a class="fa fa-heart-o like" href="#" style="margin-right: 5px" data-st_no="${storyVo.st_no}">
 									${storyVo.st_like_count}</a> 
@@ -64,8 +72,11 @@ $(document).ready(function() {
 									${storyVo.st_c_count}</a>
 							</p>
 						</div>
-						<div class="col-md-2" style="padding: 0px;">
-							<img src="/resources/img/test/duck.png" width="100px">
+						<div class="col-md-3" style="height:167px;">
+							<c:if test="${storyVo.st_img != null}">
+								<img src="/story_img/displayImage?filePath=${storyVo.st_img}"
+								style="width: 100%; height: 100%; object-fit:cover;">
+							</c:if>
 						</div>
 					</div>
 					<hr>

@@ -2,7 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../manager_include/manager_header.jsp" %>
-
+<script>
+$(document).ready(function() {
+	$("#btnCancel").click(function() {
+		var result = confirm("페이지에서 나가시면 작성하시던 글이 사라집니다.");
+		if(result){
+		    $(this).attr("href", "/manager/managerMemberContent?user_id=${memberVo.user_id}");
+		}else{
+		    return false;
+		}
+	});
+});
+</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 <form action="/manager/managerMemberContentModifyRun" method="post">
@@ -60,7 +71,7 @@
 										<tr>
 											<th scope="col">이름</th>
 											<td style="width: 80%">
-												<input id="user_name" name="user_name" type="text" class="form-control" value="${memberVo.user_name}"/>
+												<input id="user_name" name="user_name" type="text" class="form-control" value="${memberVo.user_name}" required/>
 											</td>
 										</tr>
 										<tr>
@@ -70,13 +81,13 @@
 										<tr>
 											<th scope="col">비밀번호</th>
 											<td>
-												<input id="user_pw" name="user_pw" type="text" class="form-control" value="${memberVo.user_pw}"/>
+												<input id="user_pw" name="user_pw" type="text" class="form-control" value="${memberVo.user_pw}" required/>
 											</td>
 										</tr>
 										<tr>
 											<th scope="col">이메일</th>
 											<td>
-												<input id="user_email" name="user_email" type="text" class="form-control" value="${memberVo.user_email}"/>
+												<input id="user_email" name="user_email" type="text" class="form-control" value="${memberVo.user_email}" required/>
 											</td>
 										</tr>
 										<tr>
@@ -88,54 +99,26 @@
 										<tr>
 											<th scope="col">닉네임</th>
 											<td>
-												<input id="user_nick" name="user_nick" type="text" class="form-control" value="${memberVo.user_nick}"/>
+												<input id="user_nick" name="user_nick" type="text" class="form-control" value="${memberVo.user_nick}" required/>
 											</td>
 										</tr>
 										<tr>
 											<th scope="col">관심 취미</th>
 											<td>
-											<div>
-												<select class="btn btn-light">
-													<option>취미1</option>
-													<option>취미2</option>
-													<option>취미3</option>
-													<option>취미4</option>
-												</select>
-												<select class="btn btn-light">
-													<option>취미1</option>
-													<option>취미2</option>
-													<option>취미3</option>
-													<option>취미4</option>
-												</select>
-											</div>
-											<div>
-												<select class="btn btn-light">
-													<option>취미1</option>
-													<option>취미2</option>
-													<option>취미3</option>
-													<option>취미4</option>
-												</select>
-												<select class="btn btn-light">
-													<option>취미1</option>
-													<option>취미2</option>
-													<option>취미3</option>
-													<option>취미4</option>
-												</select>
-											</div>
-											<div>
-												<select class="btn btn-light">
-													<option>취미1</option>
-													<option>취미2</option>
-													<option>취미3</option>
-													<option>취미4</option>
-												</select>
-												<select class="btn btn-light">
-													<option>취미1</option>
-													<option>취미2</option>
-													<option>취미3</option>
-													<option>취미4</option>
-												</select>
-											</div>
+											<button class="btn btn-light" disabled>${cateVo.cate_no1}</button>
+												<button class="btn btn-light" disabled>${cateVo.cate_no2}</button>
+												<button class="btn btn-light" disabled>${cateVo.cate_no3}</button>
+												<button class="btn btn-light" disabled>
+												<c:choose>
+													<c:when test="${memberVo.cate_etc == null}">
+													선택안함
+													</c:when>
+													<c:otherwise>
+													${memberVo.cate_etc}
+													</c:otherwise>
+												</c:choose>
+												
+												</button>
 												
 											</td>
 										</tr>
@@ -276,7 +259,7 @@
 		<div class="card-body">
 				
 			<button type="submit" class="btn btn-success green_background">확인</button>	
-			<a href="/manager/managerMemberContent?user_id=${memberVo.user_id}" type="button" class="btn btn-success green_background">취소</a>	
+			<a id="btnCancel" type="button" class="btn btn-success green_background">취소</a>	
 		
 		</div>
 	</div>

@@ -148,6 +148,11 @@ private static final String NAMESPACE = "com.dp.ggomjirak.manager.";
 		return count;
 	}
 
+	@Override
+	public List<Integer> getAllUserGrade() {
+		List<Integer> list = sqlSession.selectList(NAMESPACE + "getAllUserGrade");
+		return list;
+	}
 
 
 

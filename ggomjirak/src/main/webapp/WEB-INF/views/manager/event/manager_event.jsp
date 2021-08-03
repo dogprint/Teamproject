@@ -144,6 +144,7 @@ $(document).ready(function() {
 		<table class="table" id="eventTable">
 		  <thead>
 		    <tr>
+		      <th scope="col">베너</th>
 		      <th scope="col">글 번호</th>
 		      <th scope="col">작성자</th>
 		      <th scope="col">제목</th>
@@ -159,21 +160,40 @@ $(document).ready(function() {
 		    
 		 	<c:forEach var="event" items="${eventListAll}">
 		    <tr>
-		      <td scope="row">${event.e_no}</td>
+		      <td scope="row">
+		      <c:if test="${event.banner != 0}">
+		      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="orange_color bi bi-check" viewBox="0 0 16 16">
+				  <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+				</svg>
+		      </c:if>
+		      </td>
+		      <td>${event.e_no}</td>
 		      <td>${event.user_id}</td>
-		      <td><a href="/event/managerEventContent?e_no=${event.e_no}">${event.e_title}</a></td>
+		      <td><a href="/event/managerEventContent?e_no=${event.e_no}"
+		      <c:choose>
+					<c:when test='${event.is_del == "N"}'> class="text-dark font-weight-bold" </c:when>
+					<c:otherwise> class="text-muted" </c:otherwise>
+				</c:choose>
+		      >${event.e_title}</a></td>
 		      <td>${event.start_date}</td>
 		      <td 
 		      <c:choose>
 					<c:when test="${event.end_date < pagingDto.today}"> class="orange_color" </c:when>
-					<c:otherwise> class="green_color" </c:otherwise>
+					<c:otherwise> class="text-dark" </c:otherwise>
 				</c:choose>
 		      class="orange_color">
 		      ${event.end_date}
 		      </td>
 		      <td>${event.reg_date}</td>
 		      <td>${event.mod_date}</td>
-		      <td>${event.e_img}</td>
+		      <td>
+		      <c:if test="${event.e_img != null}">
+		      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+			  <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+			  <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z"/>
+			</svg>
+		      </c:if>
+		      </td>
 		      <td>${event.del_date}</td>
 		    </tr>
 		    </c:forEach>

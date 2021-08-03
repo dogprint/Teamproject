@@ -78,7 +78,7 @@ public class WorkroomController {
 		model.addAttribute("checkFollow", checkFollow);
 	}
 	
-	// 워크룸 메인
+	// 작업실 메인
 	@RequestMapping(value="/main/{user_id}", method=RequestMethod.GET)
 	public String wrMain(@PathVariable("user_id") String page_id, Model model, StoryPagingDto storyPagingDto, PagingDto pagingDto, HttpSession session) throws Exception {
 		// page_id = user_id가 같은 경우에만 팔로우, 설정, 글쓰기 가능하게

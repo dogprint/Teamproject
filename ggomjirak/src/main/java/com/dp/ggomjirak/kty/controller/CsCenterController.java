@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //import com.dp.ggomjirak.HomeController;
 import com.dp.ggomjirak.kty.service.CsCenterService;
+import com.dp.ggomjirak.vo.LoginVo;
 import com.dp.ggomjirak.vo.MemberVo;
 //import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.QnAVo;
@@ -142,15 +143,22 @@ public class CsCenterController {
 	}
 	
 	// 마이 페이지 - 문의하기 글 내용 확인
-	@RequestMapping(value = "/consultQnA", method = RequestMethod.POST)
+	@RequestMapping(value = "/consultQnA", method = RequestMethod.GET)
 	public String consultQnA(int qna_no, Model model) throws Exception {
 		System.out.println("1:1 문의 글 내용 확인 들어왔음");
 		System.out.println("qna_no:" + qna_no);
 		
+		// 세션에 있는 로그인 아이디랑
+		// 해당 글 번호의 아이디 값이랑 비교해서 같을 때만 보여줄 수 있도록 추가 작업해야 됨 
+		
+		// 아아디값 같이 받아오는 것도 괜찮은거 같다고...?
 		QnAVo qnAVo = CsCenterService.content(qna_no);
 		System.out.println(qnAVo);
 		
+		
 		model.addAttribute("qnAVo", qnAVo);
+		
+		
 	 	return "cs_center/consult_qna";
 	}
 	

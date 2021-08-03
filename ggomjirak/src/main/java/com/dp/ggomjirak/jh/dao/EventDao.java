@@ -30,6 +30,7 @@ public interface EventDao {
 	public int getCountMainEventBanner(PagingDto pagingDto);
 	public void insertMainEvent(int e_no);
 	public void deleteMainEvent(int e_no);
+	
 
 
 }

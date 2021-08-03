@@ -7,8 +7,8 @@
 		
 	<!-- 입력 -->
 	<insert id="insertStory">
-		insert into tbl_story(st_no, user_id, st_content)
-		values(seq_story_no.nextval, #{user_id}, #{st_content})
+		insert into tbl_story(st_no, user_id, st_content, st_img)
+		values(seq_story_no.nextval, #{user_id}, #{st_content}, #{st_img})
 	</insert>
 	
 	<!-- 목록 -->
@@ -25,6 +25,7 @@
 	<update id="updateStory">
 		update tbl_story set
 			st_content = #{st_content},
+			st_img = #{st_img},
 			mod_date = sysdate
 		where st_no = #{st_no}
 	</update>

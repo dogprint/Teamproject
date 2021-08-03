@@ -22,6 +22,7 @@ public class StoryDaoImpl implements StoryDao{
 
 	@Override
 	public void insertStory(StoryVo storyVo) {
+		System.out.println("daoStoryVo:" + storyVo);
 		sqlSession.insert(NAMESPACE + "insertStory", storyVo);
 	}
 

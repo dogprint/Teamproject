@@ -20,7 +20,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var searchType = $(this).attr("href");
 		$("#frmPaging > input[name=searchType]").val(searchType);
-		$("#dropdownMenuButton").text($(this).text());
+		$("#btnSearchType").text($(this).text());
 	});
 	
 	// 검색
@@ -41,6 +41,19 @@ $(document).ready(function() {
 		// 제목4검색하고 3페이지 넘어간 후에 제목5 검색했을 때 페이지가 뜨지 않는 경우(제목5의 글 수가 3페이지까지 없는경우)를 대비해 만들어줌
 		// 검색버튼 눌렀을 때 1페이지부터 보여주게 함
 		$("#frmPaging > input[name=page]").val("1");
+		$("#frmPaging > input[name=searchType]").val(searchType);
+// 		$("#btnSearchType").text("${pagingDto.searchType}");
+		$("#frmPaging").submit();
+	});
+	
+	
+	$(".a_id").click(function(e) {
+		// 페이지 이동을 막아놓음
+		e.preventDefault();
+		
+		var user_id = $(this).attr("data-id");
+		$("#frmPaging > input[name=user_id]").val(user_id);
+		$("#frmPaging").attr("action", "/manager/managerMemberContent");
 		$("#frmPaging").submit();
 	});
 });
@@ -51,6 +64,7 @@ $(document).ready(function() {
 <input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
 <input type="hidden" name="searchType" value="${pagingDto.searchType}"/>
 <input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
+<input type="hidden" name="user_id" value="${pagingDto.user_id}"/>
 </form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -58,46 +72,64 @@ $(document).ready(function() {
 	<h1 class="h3 mb-2 text-gray-800">회원 가입 정보</h1>
 	<div class="card shadow mb-4">
 		<div class="card-body">
+		<!-- 검색 -->
 		
-			<!-- 검색 -->
-			<div class="input-group">
-
-				<div class="dropdown">
-				<button class="btn btn-success green_background dropdown-toggle" type="button"
-					id="dropdownMenuButton" data-toggle="dropdown">검색옵션</button> 
-					<c:choose>
-						<c:when test="${pagingDto.searchType == 'i'}">아이디</c:when>
-						<c:when test="${pagingDto.searchType == 'n'}">닉네임</c:when>
-						<c:when test="${pagingDto.searchType == 'm'}">이름</c:when>
-						<c:when test="${pagingDto.searchType == 'in'}">아이디 + 닉네임</c:when>
-						<c:when test="${pagingDto.searchType == 'inm'}">아이디 + 닉네임 + 이름</c:when>
-					</c:choose>
-					
-					
-				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-					<a class="dropdown-item searchType" href="i">아이디</a> 
-					<a class="dropdown-item searchType" href="n">닉네임</a> 
-					<a class="dropdown-item searchType" href="m">이름</a> 
-					<a class="dropdown-item searchType" href="in">아이디 + 닉네임</a> 
-					<a class="dropdown-item searchType" href="inm">아이디 + 닉네임 + 이름</a>
-				</div>
-				<form
-					class="d-sm-inline-block form-inline navbar-search">
-					<div class="input-group">
-						<input type="text" class="form-control bg-light border-0"
-							placeholder="검색어를 입력하세요" aria-label="Search"
-							aria-describedby="basic-addon2" id="txtSearch" value="${pagingDto.keyword}">
-						<div class="input-group-append">
-							<button class="btn btn-success green_background white_color" type="button" id="btnSearch">
-								<i class="fas fa-search fa-sm"></i>
-							</button>
-						</div>
+			<div class="form-row">
+		    
+		    
+		    <div class="col-lg-2 col-md-3 mb-3">
+<!-- 							      <label for="validationCustom04">중분류</label> -->
+		    
+				  
+				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
+						id="btnSearchType" data-toggle="dropdown">
+							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == "i"}'>아이디</c:if>
+							<c:if test='${pagingDto.searchType == "n"}'>닉네임</c:if>
+							<c:if test='${pagingDto.searchType == "m"}'>이름</c:if>
+							<c:if test='${pagingDto.searchType == "in"}'>아이디 + 닉네임</c:if>
+							<c:if test='${pagingDto.searchType == "inm"}'>아이디 + 닉네임 + 이름</c:if>
+						
+						</button> 
+<%-- 						<c:choose> --%>
+<%-- 							<c:when test="${pagingDto.searchType == 'i'}">아이디</c:when> --%>
+<%-- 							<c:when test="${pagingDto.searchType == 'n'}">닉네임</c:when> --%>
+<%-- 							<c:when test="${pagingDto.searchType == 'm'}">이름</c:when> --%>
+<%-- 							<c:when test="${pagingDto.searchType == 'in'}">아이디 + 닉네임</c:when> --%>
+<%-- 							<c:when test="${pagingDto.searchType == 'inm'}">아이디 + 닉네임 + 이름</c:when> --%>
+<%-- 						</c:choose> --%>
+						
+						
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item searchType" href="i">아이디</a> 
+						<a class="dropdown-item searchType" href="n">닉네임</a> 
+						<a class="dropdown-item searchType" href="m">이름</a> 
+						<a class="dropdown-item searchType" href="in">아이디 + 닉네임</a> 
+						<a class="dropdown-item searchType" href="inm">아이디 + 닉네임 + 이름</a>
 					</div>
-				</form>
-			</div>
-
-				
-			</div>
+		      <div class="invalid-feedback">
+		      </div>
+		    </div>
+		    <div class="col-lg-10 col-md-9 mb-9">
+<!-- 							      <label for="validationCustom05">검색</label> -->
+		      <div class="input-group">
+					<input type="text" class="form-control bg-light border-0"
+						placeholder="검색어를 입력하세요" aria-label="Search"
+						aria-describedby="basic-addon2" id="txtSearch" value="${pagingDto.keyword}">
+					<div class="input-group-append">
+						<button class="btn btn-success green_background white_color" type="button" id="btnSearch">
+							<i class="fas fa-search fa-sm"></i>
+						</button>
+					</div>
+				</div>
+			      <div class="invalid-feedback">
+			      </div>
+			    </div>
+			  </div>
+			  
+		
+			
+			
 			<!-- 검색 끝 -->
 			
 		</div>
@@ -152,7 +184,7 @@ $(document).ready(function() {
 						<tr>
 							<td>${member.rnum}</td>
 							<td>${member.user_name}</td>
-							<td><a href="/manager/managerMemberContent?user_id=${member.user_id}">${member.user_id}</a></td>
+							<td><a class="a_id" href="#" data-id="${member.user_id}">${member.user_id}</a></td>
 							<td>${member.user_pw}</td>
 							<td>${member.user_email}</td>
 							<td>${member.user_tel}</td>

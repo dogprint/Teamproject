@@ -24,7 +24,7 @@
 	<!-- 이벤트 글 목록 (전체) -->
 	<select id="showEventListAll" resultType="EventVo">
 		select * from
-		    (select rownum rnum, a.*, b.user_id from
+		    (select rownum rnum, a.*, b.user_id, c.e_no "BANNER" from
 		        (select * from tbl_event
 		        <choose>
 				<when test="qCheck == 1">
@@ -41,7 +41,8 @@
 			</choose>
 		        ) a
 		        left join tbl_manager_member b on a.m_no = b.m_no
-		        order by e_no desc)
+		        left join tbl_main_event c on a.e_no = c.e_no
+		        order by a.e_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 글갯수 -->
@@ -113,8 +114,10 @@
 	
 	<!-- 이벤트 컨텐츠 들어가기 -->
 	<select id="selectByEno" resultType="EventVo">
-		select * from tbl_event
-		where e_no = #{e_no}
+		select a.*, b.e_no "BANNER" from
+			(select * from tbl_event) a
+			left join tbl_main_event b on a.e_no = b.e_no
+		where a.e_no = #{e_no}
 	</select>
 
 	<!-- 이벤트글 작성 -->
@@ -128,7 +131,7 @@
 	<!-- 이벤트 글 수정 -->
 	<update id="updateEvent">
 		update tbl_event set
-			m_no = #{m_no, jdbcType=NUMERIC}
+			m_no = #{m_no, jdbcType=NUMERIC},
 			e_title = #{e_title},
 			e_content = #{e_content, jdbcType=VARCHAR},
 			e_img = #{e_img, jdbcType=VARCHAR},

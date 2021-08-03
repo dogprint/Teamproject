@@ -12,7 +12,7 @@ public interface HobbyService {
 	/** 글작성
 	 * @param hobbyVo
 	 */
-	public boolean insertHobbyArticle (HobbyVo hobbyVo); 
+	public void insertHobbyArticle (HobbyVo hobbyVo); 
 	
 	public HobbyVo selectHobbyArticle (int hobby_no, boolean isUpdate);
 	
@@ -21,8 +21,5 @@ public interface HobbyService {
 //	public String selectMakeStepImg(MakeStepVo makeStepVo);
 	
 	//* 수정작업
-	public boolean updateHobbyArticle(HobbyVo hobbyVo);
-	
-	//*삭제 작업
-	public int deleteHobbyArticle(int hobby_no);
+	public void updateHobbyArticle(HobbyVo hobbyVo);
 }

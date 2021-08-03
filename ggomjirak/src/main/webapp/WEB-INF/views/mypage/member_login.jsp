@@ -10,7 +10,7 @@
 $(document).ready(function(){
 	var msg = "${msg}";
 	if (msg == "success") {
-		alert("회원 가입을 환영합니다~");
+		alert("회원 가입을 환영합니다! \n 로그인하고 사용해주세요.");
 	}
 });
 </script>
@@ -35,7 +35,7 @@ $(document).ready(function(){
 								<label for="user_id"> 아이디 </label> 
 								<input type="text" class="form-control" 
 									id="user_id" name="user_id"
-									value="rabbit" />
+									value="hamster" />
 							</div>
 							<div class="form-group">
 								<label for="user_pw"> 패스워드 </label> 

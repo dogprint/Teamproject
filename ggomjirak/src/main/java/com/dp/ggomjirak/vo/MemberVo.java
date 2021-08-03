@@ -1,6 +1,7 @@
 package com.dp.ggomjirak.vo;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 public class MemberVo {
 
@@ -41,17 +42,29 @@ public class MemberVo {
 	
 	// 메시지 보내기 내용
 	private int notReadCount;
-	
+
 	// 번호 매기기
 	private int rnum;
 	
 	public int getNotReadCount() {
 		return notReadCount;
 	}
-
+	
 	public void setNotReadCount(int notReadCount) {
 		this.notReadCount = notReadCount;
 	}
+
+	//첨부파일
+	private String[] files;
+	
+	public String[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(String[] files) {
+		this.files = files;
+	}
+	//
 
 	public MemberVo() {
 		super();
@@ -301,7 +314,8 @@ public class MemberVo {
 				+ ", following_cnt=" + following_cnt + ", user_img=" + user_img + ", user_grade=" + user_grade + ", cd="
 				+ cd + ", name=" + name + ", onOff=" + onOff + ", setup_save_time=" + setup_save_time + ", cate_name1="
 				+ cate_name1 + ", cate_name2=" + cate_name2 + ", cate_name3=" + cate_name3 + ", notReadCount="
-				+ notReadCount + ", rnum=" + rnum + "]";
+				+ notReadCount + ", files=" + Arrays.toString(files) + "]";
+
 	}
 
 

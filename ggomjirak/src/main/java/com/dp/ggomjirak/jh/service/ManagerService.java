@@ -37,4 +37,5 @@ public interface ManagerService {
 	// 메인
 	public List<MemberVo> selectPopularMemberList();
 	public int getMemberCount();
+	public List<Integer> getAllUserGrade();
 }

@@ -2,13 +2,30 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../manager_include/manager_header.jsp" %>
+<script>
+$(document).ready(function() {
+	$("#btnList").click(function() {
+		location.href = "/manager/managerMemberList?page=${pagingDto.page}&perPage=${pagingDto.perPage}&searchType=${pagingDto.searchType}&keyword=${pagingDto.keyword}";	
+	});
+	
 
+	$("#btnLeave").click(function() {
+		var result = confirm("${memberVo.user_id}님을 탈퇴시키시겠습니까?");
+		if(result){
+		    $(this).attr("href", "/manager/managerMemberDeleteRun?user_id=${memberVo.user_id}");
+		}else{
+		    return false;
+		}
+	});
+
+});
+</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 	<!-- Page Heading -->
 	<div style="display: flex;">
 		<h1 class="h3 mb-2 text-gray-800">회원 상세 정보</h1>
-		<a href="/manager/managerMemberList" class="btn btn-success green_background" style="margin-left: auto; margin-bottom: 20px">목록</a>
+		<button id="btnList" class="btn btn-success green_background" style="margin-left: auto; margin-bottom: 20px">목록</button>
 	</div>
 	
 	<!-- Dropdown Card Example -->
@@ -29,7 +46,7 @@
 					<div class="dropdown-header">회원 정보 관리</div>
 					<a class="dropdown-item" href="/manager/managerMemberContentModify?user_id=${memberVo.user_id}">회원 정보 수정</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/manager/managerMemberDeleteRun?user_id=${memberVo.user_id}">회원 탈퇴</a>
+					<a id="btnLeave" class="dropdown-item">회원 탈퇴</a>
 				</div>
 			</div>
 		</div>

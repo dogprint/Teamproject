@@ -37,8 +37,6 @@ public class StoryController {
 	// 스토리
 	@RequestMapping(value="/list/{user_id}", method=RequestMethod.GET)
 	public String wrStoryList(@PathVariable("user_id") String page_id, Model model, StoryPagingDto storyPagingDto, HttpSession session) throws Exception {
-//		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-//		String user_id = memberVo.getUser_id();
 		storyPagingDto.setUser_id(page_id);
 		int count = storyService.storyCount(storyPagingDto);
 		storyPagingDto.setCount(count);
@@ -52,7 +50,6 @@ public class StoryController {
 //			System.out.println(st_no);
 //			model.addAttribute("likeCheck", likeCheck);
 //		}
-//		System.out.println(list);
 		// 카드프로필 공통 메서드
 		wrController.profileCommon(page_id, model, session);
 		wrController.category(model);
@@ -97,6 +94,7 @@ public class StoryController {
 		String user_id = memberVo.getUser_id();
 		storyVo.setUser_id(user_id);
 		storyService.StoryWrite(storyVo);
+		System.out.println("storyVo:" + storyVo);
 		wrController.profileCommon(user_id, model, session);
 		wrController.category(model);
 		return "redirect:/workroom/main/" + user_id;
@@ -149,6 +147,63 @@ public class StoryController {
 		map.put("cancel", "cancel");
 		return map;
 	}
+	
+//	//이미지 출력
+//	@RequestMapping(value="/displayImage", method=RequestMethod.GET)
+//	@ResponseBody
+//	public ResponseEntity<byte[]> displayImage(String filePath) throws Exception {
+//		System.out.println(filePath);
+//		FileInputStream fis = new FileInputStream(filePath);
+//		HttpHeaders header = new HttpHeaders();
+//        header.setContentType(MediaType.IMAGE_JPEG);
+//        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(
+//        		 IOUtils.toByteArray(fis), 
+//        		 header,
+//        		 HttpStatus.CREATED);
+//        fis.close();
+//		return entity;
+//	}
+//		
+//	//이미지 파일 업로드
+//	@RequestMapping(value="/uploadImg", method=RequestMethod.POST, produces="application/text;charset=utf-8")
+//	@ResponseBody
+//	public String uploadImg(MultipartFile file, String sort) throws Exception {
+//		System.out.println("file:" + file);
+//		System.out.println("sort:" + sort);
+//		String orgFileName = file.getOriginalFilename();
+//		System.out.println("orgFileName:" + orgFileName);
+//		String thumbPath = null;
+//		switch (sort) {
+//		case "mainImg":
+//			thumbPath = MyFileUploadUtil.uploadImage(MAIN_IMG_UPLOAD_PATH, 
+//					 orgFileName, file.getBytes(), 300, 260);
+//			break;
+//		case "stepImg":
+//			thumbPath = MyFileUploadUtil.uploadImage(STEP_IMG_UPLOAD_PATH, 
+//					 orgFileName, file.getBytes(), 170, 170);
+//			break;
+//		case "complImg":
+//			thumbPath = MyFileUploadUtil.uploadImage(COMPLETE_IMG_UPLOAD_PATH, 
+//					 orgFileName, file.getBytes(), 140, 140);
+//			break;
+//		case "eventImg":
+//			thumbPath = MyFileUploadUtil.uploadImage(EVENT_IMG_UPLOAD_PATH, 
+//					orgFileName, file.getBytes(), 500, 300);
+//			break;
+//		
+//		}
+//		return thumbPath;
+//	}
+//
+//	//첨부파일 서버에서 삭제
+//	@RequestMapping(value="/deleteFile", method=RequestMethod.GET)
+//	@ResponseBody
+//	public String deleteImg(String fileName) throws Exception {
+//		if (MyFileUploadUtil.deleteFile(fileName)) {
+//			return "success";
+//		};
+//		return "fail";
+//	}
 
 }
 

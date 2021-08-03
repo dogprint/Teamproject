@@ -13,16 +13,47 @@
 		    where is_del = 'N'
 		    and user_id not in(select user_id from tbl_manager_member)
 		    order by reg_date desc) a
-		    left join tbl_memberdetail b on a.user_id = b.user_id)
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+            <include refid="search"></include>
+            )
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 회원 수(활동중) -->
 	<select id="getCountMemberList" resultType="int">
-		select count(*)
-		from tbl_memberinfo
-		where is_del = 'N'
-		and user_id not in(select user_id from tbl_manager_member)
+		 select count (*) from
+		(select a.*, b.user_nick from
+		    (select * from tbl_memberinfo
+		    where is_del = 'N'
+		    and user_id not in(select user_id from tbl_manager_member)
+		    order by reg_date desc) a
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+		    <include refid="search"></include>)
 	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "i"'>
+					where a.user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "n"'>
+					where b.user_nick like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "m"'>
+					where a.user_name like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "in"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or b.user_nick like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "inm"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or b.user_nick like '%' || #{keyword} || '%'
+					or a.user_name like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
 	
 	<!-- 회원 정보 목록 (탈퇴) -->
 	<select id="showMemberListLeave" resultType="MemberVo">
@@ -331,6 +362,18 @@
 		select count (*) from tbl_memberinfo
 		where is_del = 'N'
 		and user_id not in(select user_id from tbl_manager_member)
+	</select>
+	<!-- 회원 등급 그래프 -->
+	<select id="getAllUserGrade" resultType="int">
+		select * from (
+		select count(*) as from tbl_memberdetail
+		where user_grade = 4 union all
+		select count(*) as from tbl_memberdetail
+		where user_grade = 3 union all
+		select count(*) as from tbl_memberdetail
+		where user_grade = 2 union all
+		select count(*) as from tbl_memberdetail
+		where user_grade = 1)
 	</select>
 
 

@@ -43,10 +43,10 @@ ${memberVo}
 										<td><label for="user_id">아이디</label> </td>
 										<td>${memberVo.user_id}</td>
 									</tr>
-									<tr>
+<%-- 									<tr>
 										<td><label for="user_pw">비밀번호</label> </td>
 										<td>${memberVo.user_pw}</td>
-									</tr>
+									</tr> --%>
 									<tr>
 										<td><label for="user_name">이름</label> </td>
 										<td>${memberVo.user_name}</td>

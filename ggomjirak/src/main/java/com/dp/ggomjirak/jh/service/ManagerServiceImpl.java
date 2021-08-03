@@ -138,6 +138,11 @@ public class ManagerServiceImpl implements ManagerService {
 		return count;
 	}
 
+	@Override
+	public List<Integer> getAllUserGrade() {
+		List<Integer> list = managerDao.getAllUserGrade();
+		return list;
+	}
 
 
 

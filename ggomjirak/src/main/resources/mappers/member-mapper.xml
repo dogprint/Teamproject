@@ -5,16 +5,10 @@
 
 <mapper namespace="com.dp.ggomjirak.member">
 
-	<select id ="login-이전내용" resultType="MemberVo">
-		select * from tbl_memberInfo 
-		where user_id = #{user_id} and user_pw = #{user_pw}
-	</select>
-
 	<select id ="login" resultType="MemberVo">
 		select * from tbl_memberInfo 
 		where user_id = #{user_id} and user_pw = #{user_pw} and is_del = 'N'
 	</select>
-
 	
 	<select id ="info" resultType="MemberVo">
 		select a.user_id, a.user_pw, a.user_name, a.user_email, a.user_tel, a.reg_date, a.is_del, 
@@ -51,11 +45,20 @@
 	<update id="updateMemberProfile">
 		update tbl_memberDetail set
 			user_nick = #{user_nick},
+			cate_no1 = #{cate_no1},
 			cate_etc = #{cate_etc},
 			reg_date = reg_date
  		where user_id = #{user_id}
 	</update>
 
+<!-- 첨부파일 추가 -->
+	<update id="updateAttach">
+		update tbl_memberDetail set
+			user_img = #{file_name},
+			reg_date = sysdate
+		where user_id = #{user_id}
+	</update>
+	
 	<update id="updateMemberSetup">
 		update tbl_memberSetup set 
 			onoff = #{onOff},
@@ -63,15 +66,44 @@
 		where user_id = #{user_id}
 	</update>
 	
-	<select id="checkDupId" resultType="int">
+	<select id="checkDupId-0" resultType="int">
 		select count(*) from tbl_memberInfo
 		where user_id = #{user_id}
 	</select>
-	
+
+	<select id="checkDupId" resultType="int">
+		select sum(user_id) from (
+			select count(USER_ID) as user_id from TBL_BOOKMARK where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_HOBBY where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_HOBBY_LIKE where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_LOGIN_TIME where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MANAGER_MEMBER where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBERDETAIL where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBERINFO where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBERSETUP where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBER_ACTIV where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_QNA where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_STORY where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_STORY_COMMENT where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_STORY_LIKE where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_WORKROOM where USER_ID=#{user_id}
+		)
+	</select>
+		
 	<select id="checkDupNick" resultType="int">
 		select count(*) from tbl_memberDetail
 		where user_nick = #{user_nick}
 	</select>
+	
+	<select id="checkDupNickProfile" resultType="int">
+		select count(*) from tbl_memberDetail 
+		where user_nick = #{user_nick, jdbcType=VARCHAR} and
+				user_nick not in
+				( select user_nick from tbl_memberDetail 
+				  where user_id = #{user_id} )
+	</select>
+	
+	
 	
 	<insert id="insertMember">
 		insert into tbl_memberInfo 
@@ -93,11 +125,11 @@
 		insert into tbl_memberSetup (user_id) values (#{user_id}) 
 	</insert>
 	
-	<insert id="insertWorkRoom-이전내용">
+	<insert id="insertWorkRoom">
 		insert into tbl_workroom (user_id, wr_name, wr_intro) values (#{user_id}, #{user_id} || '의 작업실','안녕하세요~')
 	</insert>
 	
-	<insert id="insertWorkRoom">
+	<insert id="insertWorkRoom-추가했던">
 		insert into tbl_workroom (wr_no, user_id, wr_name, wr_intro) 
  			values 
  		( seq_wr_no.nextval, 
@@ -107,4 +139,22 @@
  		)
 	</insert>
 	
+	
+	<!-- 카테고리 셀렉트 -->
+	<select id="selectCate" resultType="CateVo">
+		select * from tbl_hobby_cate
+	</select>
+	
+	<!-- 카테고리 메뉴 -->
+	<select id="cateBigSort" resultType="CateVo">
+		select * from tbl_hobby_cate
+		where cate_level = 1
+		order by cate_no
+	</select>
+	
+	<select id="cateSmallSort" resultType="CateVo">
+		select * from tbl_hobby_cate
+		where cate_level = 2
+		order by cate_no
+	</select>
 </mapper>

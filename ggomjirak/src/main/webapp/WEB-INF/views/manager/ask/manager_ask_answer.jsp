@@ -1,7 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../manager_include/manager_header.jsp" %>
-
+<script>
+$(document).ready(function() {
+	$("#btnCancel").click(function() {
+		var result = confirm("페이지에서 나가시면 작성하시던 글이 사라집니다.");
+		if(result){
+		    $(this).attr("href", "/ask/managerAskContent?qna_no=${qnaVo.qna_no}");
+		}else{
+		    return false;
+		}
+	});
+});
+</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 	<!-- Page Heading -->
@@ -75,7 +86,7 @@
 				</table>
 				<div style="display: flex;">
 					<button type="submit" class="btn btn-success green_background" style="margin-left: auto">답변</button>
-					<a href="/ask/managerAsk" type="button" class="btn btn-danger orange_background" style="margin-left: 10px">취소</a>
+					<a id="btnCancel" type="button" class="btn btn-danger orange_background" style="margin-left: 10px">취소</a>
 				</div>
 				
 			</form>

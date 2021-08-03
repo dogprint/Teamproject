@@ -43,7 +43,7 @@ $(document).ready(function() {
 							commentHtml += "	<div class='col-md-10'>";
 							commentHtml += "		<div class='blog__details__author'>";
 							commentHtml += "			<div class='blog__details__author__pic'>";
-							commentHtml += "				<a href='/workroom/main/" + this.user_id + "><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
+							commentHtml += "				<a href='/workroom/main/" + this.user_id + "'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
 							commentHtml += "					<div class='blog__details__author__text'>";
 							commentHtml += "						<h6>" + this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
 							commentHtml += "							<span class='st_c_content'>" + this.st_c_content + "</span></div></div></div>";
@@ -51,9 +51,9 @@ $(document).ready(function() {
 							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;' id='commentMod'>수정</a>"
 							commentHtml += "		<a href='#' style='font-size:13px;' class='commentDel' data-cno=" + this.st_c_no + ">삭제</a></div></div></div>"
 							commentHtml += "<div class='row' id='divCommentMod' style='display:none'><div class='col-md-9'>";
-							commentHtml += "	<textarea class='form-control txtCommentMod' style='width: 100%; resize: none;>" + this.st_c_content + "</textarea></div>";
+							commentHtml += "	<textarea class='form-control' style='width: 100%; resize: none; id='txtCommentMod'>" + this.st_c_content + "</textarea></div>";
 							commentHtml += "<div class='col-md-3'>";
-							commentHtml += "	<button type='button' class='btn btn-warning btn-sm modRun' data-st_c_no" + this.st_c_no + ">등록</button><br>";
+							commentHtml += "	<button type='button' class='btn btn-warning btn-sm modRun' data-st_c_no=" + this.st_c_no + ">등록</button><br>";
 							commentHtml += "	<button tyle='button' class='btn btn-light btn-sm modCancel'>취소</button></div></div><hr>";
 							$("#comment").html(commentHtml);
 						});
@@ -160,8 +160,10 @@ $(document).ready(function() {
 		</div>
 		<hr>
 		<div>
-			<img src="/resources/img/test/duck.png" width="300px"
+			<c:if test="${storyVo.st_img != null}">
+				<img src="/story_img/displayImage?filePath=${storyVo.st_img}" width="300px" 
 				style="display: block; margin: 0px auto; margin-top: 50px">
+			</c:if>
 		</div>
 		<!-- 스토리 전체 내용 -->
 		<div style="margin: 50px">
@@ -216,8 +218,10 @@ $(document).ready(function() {
 						</div>
 						<div class="col-md-2">
 							<div style="text-align: right">
+							<c:if test="${user_id == commentVo.user_id}">
 								<a href="#" style="margin-right: 5px; font-size:13px;" id="commentMod" >수정</a> 
 								<a href="#" style="font-size:13px;" class="commentDel" data-cno="${commentVo.st_c_no}">삭제</a>
+							</c:if>
 							</div>
 						</div>
 					</div>

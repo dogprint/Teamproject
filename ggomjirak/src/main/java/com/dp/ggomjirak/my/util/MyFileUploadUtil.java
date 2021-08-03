@@ -1,4 +1,4 @@
-package com.dp.ggomjirak.jh.util;
+package com.dp.ggomjirak.my.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

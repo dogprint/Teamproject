@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp" %>
 <!-- 이벤트 -->
 <div class="row">
@@ -22,8 +23,11 @@
 				    </tr>
 				    <tr>
 				      <td colspan="2">
-				      	<img src="/event/displayImage?filePath=${rootPath}${eventVo.e_img}" class="rounded mx-auto d-block" alt="..."
-							width="1200px" height="400px">
+				      <c:if test="${eventVo.e_img != null}">
+				      	<img src="/eventImg/displayImage?filePath=${eventVo.e_img}"
+				      		class="rounded mx-auto d-block" alt="EventImage"
+							width="1200px" height="600px">
+				      </c:if>
 				      </td>
 				    </tr>
 				    <tr>

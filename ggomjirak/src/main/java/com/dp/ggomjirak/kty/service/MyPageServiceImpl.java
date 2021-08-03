@@ -7,6 +7,9 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.dp.ggomjirak.kty.dao.MemberDao;
+
+import com.dp.ggomjirak.vo.CateVo;
+
 import com.dp.ggomjirak.vo.MemberVo;
 
 @Service
@@ -14,7 +17,7 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Inject
 	private MemberDao memberDao;
-	
+
 	@Override
 	public MemberVo login(String user_id, String user_pw) {
 		MemberVo memberVo = memberDao.login(user_id, user_pw);
@@ -49,8 +52,14 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 
 	@Override
+	public boolean checkDupNickProfile(String user_id, String user_nick) {
+		return memberDao.checkDupNickProfile(user_id, user_nick);
+	}
+	
+	@Override
 	public void modifyProfileRun(MemberVo memberVo) {
 		memberDao.updateProfileArticle(memberVo);
+		memberDao.updateAttach(memberVo);
 		
 	}
 
@@ -58,6 +67,24 @@ public class MyPageServiceImpl implements MyPageService {
 	public void alarmSetUpRun(MemberVo memberVo) {
 		memberDao.updateSetupArticle(memberVo);
 		
+	}
+
+	@Override
+	public List<CateVo> cateBigSort() {
+		List<CateVo> list = memberDao.cateBigSort();
+		return list;
+	}
+
+	@Override
+	public List<CateVo> cateSmallSort() {
+		List<CateVo> list = memberDao.cateSmallSort();
+		return list;
+	}
+
+	@Override
+	public List<CateVo> selectCate() {
+		List<CateVo> list = memberDao.selectCate();
+		return list;
 	}
 	
 }

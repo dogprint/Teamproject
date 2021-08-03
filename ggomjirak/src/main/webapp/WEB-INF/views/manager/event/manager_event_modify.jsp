@@ -1,8 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../manager_include/manager_header.jsp" %>
-
-
+<script>
+$(document).ready(function() {
+	$("#btnCancel").click(function() {
+		var result = confirm("페이지에서 나가시면 작성하시던 글이 사라집니다.");
+		if(result){
+		    $(this).attr("href", "/event/managerEventContent?e_no=${eventVo.e_no}");
+		}else{
+		    return false;
+		}
+	});
+});
+</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -23,20 +34,20 @@
 		<div class="card-body">
 			<div class="mb-3">
 			    <label for="e_title" class="form-label">제목</label>
-			    <input type="text" class="form-control" id="e_title" name="e_title" value="${eventVo.e_title}"  required>
+			    <input type="text" class="form-control" id="e_title" name="e_title" value="${eventVo.e_title}" required>
 			  </div>
 			  
 			  <div class="form-group row">
 			  <div class="col-lg-6 col-md-6 mb-3" style="float:left;">
 			      <label for="start_date">이벤트 시작일</label>
 			      <input type="date" class="form-control" id="start_date" name="start_date"
-			      	value="${eventVo.start_date}">
+			      	value="${eventVo.start_date}" required>
 			      
 			    </div>
 			    <div class="col-lg-6 col-md-6 mb-3">
 			      <label for="end_date">이벤트 종료일</label>
 			      <input type="date" class="form-control" id="end_date" name="end_date"
-			      	value="${eventVo.end_date}">
+			      	value="${eventVo.end_date}" required>
 			      </div>
 			    </div>
 			    
@@ -46,7 +57,14 @@
 					<div class="divMainImg card-img rounded" style="position: relative;">
 						<label for="mainImg_file" id="mainImg_label" style="overflow: hidden;">
 							<img class="card-img rounded" id="previewImg_main"
-							src="/event/displayImage?filePath=${rootPath}${eventVo.e_img}"
+							<c:choose>
+							<c:when test="${eventVo.e_img != null}">
+								src="/eventImg/displayImage?filePath=${eventVo.e_img}"
+							</c:when>
+							<c:otherwise>
+								src="${contextPath}/resources/images/main_img_btn.jpg"
+							</c:otherwise>
+							</c:choose>
 							style="object-fit: cover; cursor: pointer; border: 1px solid #e1e1e1;">
 						</label>
 						<input type="file" class="mainImg_file" name="mainImg_file"
@@ -67,7 +85,7 @@
 
 		</div>
 	</div>
-	
+	</div>
 
 
 
@@ -76,7 +94,7 @@
 		<div class="card-body">
 				
 			<button type="submit" class="btn btn-success green_background">수정</button>	
-			<a href="/event/managerEventContent?e_no=${eventVo.e_no}"type="button" class="btn btn-danger orange_background">취소</a>	
+			<a id="btnCancel" type="button" class="btn btn-danger orange_background">취소</a>	
 		
 		</div>
 	</div>

@@ -19,6 +19,7 @@ public class CateVo {
 		this.parent_cate_no = parent_cate_no;
 		this.cate_level = cate_level;
 	}
+	
 	public int getCate_no() {
 		return cate_no;
 	}
