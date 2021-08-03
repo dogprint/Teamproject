@@ -23,7 +23,7 @@ import com.dp.ggomjirak.yj.service.HobbyService;
 
 import net.sf.json.JSONArray;
 
-
+//수정
 @Controller
 @RequestMapping("/hobby")
 public class HobbyController {
