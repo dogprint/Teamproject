@@ -42,23 +42,46 @@
 	</beans:bean>
 	
 	<!-- 인터셉터 -->
+
+<!-- 	<beans:bean class="com.kh.sample01.interceptor.SampleInterceptor" -->
+<!-- 		id="sampleInterceptor"></beans:bean> -->
+<!-- 	<beans:bean class="com.kh.sample01.interceptor.AuthInterceptor" -->
+<!-- 		id="authInterceptor"></beans:bean> -->
+
 	<beans:bean class="com.dp.ggomjirak.kty.interceptor.AuthInterceptor"
 		id="authInterceptor"></beans:bean>
 	
+
 	
-	<interceptors>
+		
+  	<interceptors>
 		<interceptor>
+			<mapping path="/mypage/**/*"/>
+			<mapping path="/message/**/*"/>
+			
+
+			<mapping path="/manager/**/*"/>
+			<mapping path="/event/**/*"/>
+			<mapping path="/ask/**/*"/>
 			<mapping path="/hobby/**/*"/>
 			<mapping path="/comment/**/*"/>
 			<mapping path="/story/**/*"/>
-            <mapping path="/st_comment/**/*"/>
-            <exclude-mapping path="/story/list/**"/>
-            <exclude-mapping path="/story/detail/**"/>
-            <exclude-mapping path="/st_comment/list/**"/>
+	      <mapping path="/st_comment/**/*"/>
+	      <exclude-mapping path="/mypage/login"/>
+			<exclude-mapping path="/mypage/loginRun"/>
+			<exclude-mapping path="/mypage/joinForm"/>
+			<exclude-mapping path="/mypage/joinRun"/>
+			<exclude-mapping path="/mypage/checkDupId"/>
+			<exclude-mapping path="/mypage/checkDupNick"/>
+	      <exclude-mapping path="/main/**/*"/>
+	      <exclude-mapping path="/story/list/**"/>
+	      <exclude-mapping path="/story/detail/**"/>
+	      <exclude-mapping path="/st_comment/list/**"/>
 			<exclude-mapping path="/hobby/content/**"/>
 			<exclude-mapping path="/material/**/*"/>
 			<exclude-mapping path="/comment/selectCommentList/**"/>
 			<beans:ref bean="authInterceptor"/>
 		</interceptor>
 	</interceptors>
+
 </beans:beans>

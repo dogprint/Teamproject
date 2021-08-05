@@ -24,7 +24,7 @@ import com.dp.ggomjirak.yj.service.HobbyService;
 import com.dp.ggomjirak.yj.util.MyFileUploadUtil;
 
 @RestController
-@RequestMapping(value="/story_img")
+@RequestMapping(value="/img")
 public class ImageController {
 	
 	@Resource(name="rootPath")
@@ -36,6 +36,7 @@ public class ImageController {
 	private static final String STEP_IMG_UPLOAD_PATH = "test/make_step";
 	private static final String COMPLETE_IMG_UPLOAD_PATH = "test/complete_img";
 	private static final String STORY_IMG_UPLOAD_PATH = "story/story_img";
+	private static final String MBM_IMG_UPLOAD_PATH = "madebyme/mbm_img";
 	
 	@Inject
 	private HobbyService hobbyService;
@@ -81,6 +82,10 @@ public class ImageController {
 			break;
 		case "storyImg":
 			filePath = MyFileUploadUtil.uploadImage(rootPath, STORY_IMG_UPLOAD_PATH, 
+					orgFileName, file.getBytes());
+			break;
+		case "mbmImg":
+			filePath = MyFileUploadUtil.uploadImage(rootPath, MBM_IMG_UPLOAD_PATH, 
 					orgFileName, file.getBytes());
 			break;
 		}

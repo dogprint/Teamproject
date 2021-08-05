@@ -6,24 +6,20 @@
 $(document).ready(function() {
 	//* 카테고리 부분
 	var jsonData = JSON.parse('${gradeList}');
-// 	var grade1Arr = new Array();
-// 	var cate1Obj = new Object();
-// 	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
-// 	for(var i = 0; i < jsonData.length; i++) {
-// 	 if(jsonData[i].cate_level == "1") {
-// 	  cate1Obj = new Object();  //초기화
-// 	  cate1Obj.cate_no = jsonData[i].cate_no;
-// 	  cate1Obj.cate_name = jsonData[i].cate_name;
-// 	  cate1Arr.push(cate1Obj);
-// 	 }
-// 	}
+	var gradeArr = new Array();
+	var gradeObj = new Object();
+	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
+	for(var i = 0; i < jsonData.length; i++) {
+		 gradeObj = new Object();  //초기화
+		 gradeArr.push(gradeObj);
+	}
 	var ctx = document.getElementById("myPieChart2");
 	var myPieChart = new Chart(ctx, {
 	  type: 'doughnut',
 	  data: {
 	    labels: ["금손", "은손", "곰손", "맨손"],
 	    datasets: [{
-	      data: ${gradeList},
+	      data: [jsonData[0], jsonData[1], jsonData[2], jsonData[3]],
 	      backgroundColor: ['#f6c23e', '#858796', '#1cc88a', '#36b9cc'],
 	      hoverBackgroundColor: ['#987B3B', '#5E6068', '#3A7C5F', '#3B7C82'],
 	      hoverBorderColor: "rgba(234, 236, 244, 1)",

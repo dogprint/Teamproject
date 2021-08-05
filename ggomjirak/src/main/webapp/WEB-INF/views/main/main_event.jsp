@@ -4,7 +4,7 @@
 <%@ include file="../include/header.jsp" %>
 <!-- 이벤트 -->
 
-<div class="row">
+<div class="row m_top">
 	<div class="col-md-12">
 		<div class="row">
 			<div class="col-md-2"></div>

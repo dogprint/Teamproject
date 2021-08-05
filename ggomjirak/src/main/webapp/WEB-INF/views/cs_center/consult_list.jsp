@@ -37,6 +37,7 @@ $(document).ready(function() {
 		// attr: attribute(속성)
 		var qna_no = $(this).attr("qna_no"); // 489
 		$("#frmPaging > input[name=qna_no]").val(qna_no);
+		//$("#frmPaging > input[name=user_id]").val(user_id);
 		$("#frmPaging").attr("action", "/cs_center/consultQnA");
 		$("#frmPaging").submit();
 	});
@@ -52,7 +53,7 @@ $(document).ready(function() {
 <!-- </form> -->
 <form id="frmPaging" action="/cs_center/consultList" method="get">
 	<input type="hidden" name="qna_no"/>
-	<input type="hidden" name="user_id"/> <!--  -->
+	<input type="hidden" name="user_id"/>
 </form>
 ${list}
 <body>

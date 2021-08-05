@@ -8,16 +8,9 @@ import com.dp.ggomjirak.vo.QnAVo;
 public interface CsCenterService {
 	
 	public List<QnAVo> listAll(String userID);
-
 	public void wirteRun(QnAVo qnAVo);
-
 	public QnAVo content(int qna_no);
-
 	public void updateRun(QnAVo qnAVo);
-
 	public void deleteRun(int qna_no);
-
-	//public int getCount(PagingDto pagingDto);
-	
 	
 }

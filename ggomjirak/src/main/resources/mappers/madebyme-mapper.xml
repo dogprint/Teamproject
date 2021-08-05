@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.madebyme">
+		
+	<!-- 입력 -->
+	<insert id="insertMbm">
+		insert into tbl_madebyme(mbm_no, user_id, hobby_no, level_no, mbm_content, mbm_img)
+		values(seq_mbm_no.nextval, #{user_id}, #{hobby_no}, #{level_no}, #{mbm_content}, #{mbm_img, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectHobby" resultType="HobbyVo">
+		select * from tbl_hobby
+		where hobby_no = #{hobby_no}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+

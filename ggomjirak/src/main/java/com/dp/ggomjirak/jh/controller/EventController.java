@@ -3,6 +3,7 @@ package com.dp.ggomjirak.jh.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dp.ggomjirak.jh.service.EventService;
 import com.dp.ggomjirak.vo.EventVo;
+import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 
 @Controller
@@ -24,7 +26,7 @@ public class EventController {
 	
 	// 이벤트 리스트 (진행중)
 	@RequestMapping(value="/managerEvent", method=RequestMethod.GET)
-	public String managerEvent(Model model, PagingDto pagingDto) throws Exception {
+	public String managerEvent(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		int count = eventService.getCountEventAll(pagingDto);
 		pagingDto.setEndRow(10);
 		pagingDto.setPerPage(10);
@@ -34,20 +36,36 @@ public class EventController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<EventVo> eventListAll = eventService.showEventListAll(pagingDto);
 		model.addAttribute("eventListAll", eventListAll);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/event/manager_event";
 	}
 	
 	// 이벤트 상세페이지
 	@RequestMapping(value="/managerEventContent", method=RequestMethod.GET)
-	public String managerEventContent(int e_no, Model model) throws Exception {
+	public String managerEventContent(int e_no, Model model, HttpSession session) throws Exception {
 		EventVo eventVo = eventService.selectByEno(e_no);
 		model.addAttribute("eventVo", eventVo);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/event/manager_event_content";
 	}
 	
 	// 이벤트 작성폼
 	@RequestMapping(value="/managerEventWrite", method=RequestMethod.GET)
-	public String managerEventWrite() throws Exception {
+	public String managerEventWrite(HttpSession session, Model model) throws Exception {
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+			model.addAttribute("lo_memberVo", lo_memberVo);
+		}
 		return "manager/event/manager_event_write";
 	}
 	
@@ -62,9 +80,14 @@ public class EventController {
 	
 	// 이벤트 수정 페이지
 	@RequestMapping(value="/managerEventModify", method=RequestMethod.GET)
-	public String managerEventModify(int e_no, Model model) throws Exception {
+	public String managerEventModify(int e_no, Model model, HttpSession session) throws Exception {
 		EventVo eventVo = eventService.selectByEno(e_no);
 		model.addAttribute("eventVo", eventVo);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/event/manager_event_modify";
 	}
 	
@@ -86,7 +109,7 @@ public class EventController {
 	
 	// 메인 이벤트 리스트
 	@RequestMapping(value="/managerMainEvent", method=RequestMethod.GET)
-	public String managerMainEvent(Model model, PagingDto pagingDto) throws Exception {
+	public String managerMainEvent(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		int count = eventService.getCountMainEventBanner(pagingDto);
 		pagingDto.setEndRow(10);
 		pagingDto.setPerPage(10);
@@ -96,6 +119,11 @@ public class EventController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<EventVo> mainEvent = eventService.mainEventBannerList(pagingDto);
 		model.addAttribute("mainEvent", mainEvent);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/event/manager_main_event";
 	}
 	

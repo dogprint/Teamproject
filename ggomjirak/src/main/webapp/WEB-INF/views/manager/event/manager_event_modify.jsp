@@ -20,8 +20,8 @@ $(document).ready(function() {
 	<!-- Page Heading -->
 	<h1 class="h3 mb-2 text-gray-800">이벤트 글 수정</h1>
 	<form action="/event/managerEventModifyRun" method="post">
-	<input type="text" id="e_no" name="e_no" value="${eventVo.e_no}">
-	<input type="text" id="m_no" name="m_no" value="1001">
+	<input type="hidden" id="e_no" name="e_no" value="${eventVo.e_no}">
+	<input type="hidden" id="user_id" name="user_id" value="${lo_user_id}">
 
 		<!-- DataTales Example -->
 	<div class="card shadow mb-4">
@@ -55,7 +55,7 @@ $(document).ready(function() {
 					<label for="mainImg_file">이미지</label>
 
 					<div class="divMainImg card-img rounded" style="position: relative;">
-						<label for="mainImg_file" id="mainImg_label" style="overflow: hidden;">
+						<label for="mainImg_file" id="mainImg_label" style="overflow: hidden; width: 100%; height: 600px; ">
 							<img class="card-img rounded" id="previewImg_main"
 							<c:choose>
 							<c:when test="${eventVo.e_img != null}">
@@ -65,13 +65,13 @@ $(document).ready(function() {
 								src="${contextPath}/resources/images/main_img_btn.jpg"
 							</c:otherwise>
 							</c:choose>
-							style="object-fit: cover; cursor: pointer; border: 1px solid #e1e1e1;">
+							style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; border: 1px solid #e1e1e1;">
 						</label>
 						<input type="file" class="mainImg_file" name="mainImg_file"
 							id="mainImg_file" accept=".gif, .jpg, .png"
 							onchange="previewMainImg(this);"
 							style="display: none; width: 0px; height: 0px; font-size: 0px;" />
-						<input type="hidden" name="e_img" id="e_img" />
+						<input type="hidden" name="e_img" id="e_img"  required/>
 						<a id="btnDelMainImg" href="javascript:delMainImg()" class="btn_del"
 							style="display: none; position: absolute; top: 0; right: 0.1rem;"></a>
 				</div>
@@ -104,39 +104,11 @@ $(document).ready(function() {
 
 <%@ include file="../manager_include/manager_footer.jsp" %>
 <script>
-function calcFileName(thumbPath) {
-	// var rootIndex;
-	// const home = 21;
-	// const yj = 12;
-	// const team;
-	var rootIndex = 12;
-	// -> /test ~ 이런식으로 대쉬부터 시작하는 값으로 설정해놔야함 ! 
-	
-	console.log(thumbPath);
-	var str = thumbPath.substring(rootIndex);
-	var prefix = str.substring(0, str.lastIndexOf("/") + 1);
-	console.log(prefix);
-	console.log("str", str);
-	var thumbName = str.substring(str.lastIndexOf("/") + 1);
-	var splits = thumbName.split("_");
-	console.log(splits);
-	var suffix = "";
-	for (var v = 1; v < splits.length; v++) {
-		if (v == (splits.length - 1)) {
-			suffix += splits[v];
-			break;
-		}
-		suffix += splits[v] + "_";
-	}
-	var fileName = prefix + suffix;
-	
-	return fileName;
-}
-//ajax
+//ajax, 사진넣기
 function previewMainImg(targetObj) {
 	if (targetObj.files.length == 0){
 		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
+		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로
 		console.log("$('#e_img').val()", $('#e_img').val());
 		return false;
 	}
@@ -145,9 +117,10 @@ function previewMainImg(targetObj) {
 	console.log("파일존재");
 	var formData = new FormData();
 	formData.append("file", file);
+	// sort의 storyImg(Controller의 case문)
 	formData.append("sort", "eventImg");
 	
-	var url = "/event/uploadImg";
+	var url = "/eventImg/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -155,18 +128,21 @@ function previewMainImg(targetObj) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log("fileName:" + fileName);
-			// 1. hidden에 값 넣기 
-			$("#e_img").val(fileName);
-			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_main").attr("src", "/event/displayImage?filePath=" + thumbPath);
-			console.log("$('#e_img').val()", $('#e_img').val());
-			$("#btnDelMainImg").show();
+		"success" : function(filePath) {
+			console.log("filePath:" + filePath);
+			// 1. hidden에 값 넣기
+			$("#e_img").val(filePath);
+			// 2. 프리뷰이미지 보여주기
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_main").attr("src", e.target.result);
+				console.log("$('#e_img').val()", $('#e_img').val());
+				$("#btnDelMainImg").show();				
+			}
 		},
 		"error" : function() {
-			alert("파일 업로드 실패!");
+			alert("사진 업로드에 실패하였습니다.");
 		},
 		"beforeSend" : function() {
 			$("#previewImg_main").attr("src", "${contextPath}/resources/images/loading.gif");
@@ -179,78 +155,16 @@ function previewMainImg(targetObj) {
 	
 function delMainImg() {
 	console.log("삭제")
-	var fileName = $("#e_img").val();
-	console.log(fileName);
-	var url = "/event/deleteFile?fileName=" + fileName;
+	var filePath = $("#e_img").val();
+	console.log(filePath);
+	var url = "/eventImg/deleteFile?filePath=" + filePath;
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#e_img").val("");
 			$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
 			$("#btnDelMainImg").css("display", "none");
 		}
-	})
-}
-function previewMakeStepImg(targetObj, seq) {
-	
-	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
-	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("val", $(el).val());
-		return false;
-	}
-	var file = targetObj.files[0];
-	console.log("파일존재");
-	var formData = new FormData();
-	formData.append("file", file);
-	formData.append("sort", "stepImg");
-	
-	var url = "/event/uploadImg";
-	
-	$.ajax({
-		"processData" : false,
-		"contentType" : false,
-		"url" : url,
-		"method" : "post",
-		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log(fileName);
-			// 1. hidden에 값 넣기 
-			$(el).val(fileName);
-			$(el).attr("data-exist", 1);
-			$("#stepBox_" + seq).removeClass("none_img");
-			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_step_" + seq).attr("src", "/event/displayImage?filePath=" + thumbPath);
-			console.log("val", $(el).val());
-			$("#btnDelStepImg_" + seq).show();
-			
-		},
-		"error" : function() {
-			alert("파일 업로드 실패!");
-		},
-		"beforeSend" : function() {
-			$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/loading.gif");
-		}
-	});
-    
-}
-function delStepImg(seq) {
-	console.log("삭제")
-	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
-	var fileName = $(el).val();
-	console.log(fileName);
-	var url = "/event/deleteFile?fileName=" + fileName;
-	$.get(url, function(rData) {
-		if (rData == "success") {
-			$(el).val("");
-			$(el).attr("data-exist", 0);
-			$("#stepBox_" + seq).addClass("none_img");
-			
-			$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-			$("#btnDelStepImg_" + seq).css("display", "none");
-// 			console.log($("#previewImg_step_" + seq).parent().parent());
-		}
 	});
 }
+
 </script>

@@ -37,6 +37,15 @@
 		where f.following = m.user_id
 			and f.follower = #{follower}
 	</select>
+	
+	<!-- 좋아요 목록 -->
+	<select id="likeList" resultType="LikeBookmarkVo">
+		select hl.hobby_no, hb.hobby_title, md.user_img, md.user_nick
+			from tbl_hobby_like hl, tbl_hobby hb, tbl_memberdetail md
+		where hl.hobby_no = hb.hobby_no
+		and hb.user_id = md.user_id
+		and hl.user_id = #{user_id}
+	</select>
 
 </mapper>
 

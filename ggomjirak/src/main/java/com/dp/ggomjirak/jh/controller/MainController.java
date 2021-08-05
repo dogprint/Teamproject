@@ -17,6 +17,7 @@ import com.dp.ggomjirak.vo.CateStrVo;
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.EventVo;
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 
@@ -38,46 +39,50 @@ public class MainController {
 
 	@RequestMapping(value="/mainHome", method=RequestMethod.GET)
 	public String mainHome(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
-//		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-//		String user_id = memberVo.getUser_id();
-		String user_id = "hong";
-		List<CateVo> category = mainService.selectCate();
+			
+			List<CateVo> category = mainService.selectCate();
+			int count = eventService.getCountBanner(pagingDto);
+			pagingDto.setCount(count);
+			
+			System.out.println("count: " + count);
+			System.out.println("pagingDto: " + pagingDto);
+			List<EventVo> mainEvent = eventService.getEventBannerList();
+			model.addAttribute("mainEvent", mainEvent);
+			model.addAttribute("pagingDto", pagingDto);
+			
+			List<HobbyVo> popularHobby = mainService.getPopularHobbyList();
+			List<HobbyVo> monthHobby = mainService.getMonthHobbyList();
+			List<MemberVo> popularMember1 = mainService.getPopularMemberList1();
+			List<MemberVo> popularMember2 = mainService.getPopularMemberList2();
+			List<MemberVo> popularMember3 = mainService.getPopularMemberList3();
+			List<MemberVo> popularMember4 = mainService.getPopularMemberList4();
 
-
-		int count = eventService.getCountBanner(pagingDto);
-		pagingDto.setCount(count);
+			model.addAttribute("cates", JSONArray.fromObject(category));
+			model.addAttribute("popularHobby", popularHobby);
+			model.addAttribute("monthHobby", monthHobby);
+			model.addAttribute("popularMember1", popularMember1);
+			model.addAttribute("popularMember2", popularMember2);
+			model.addAttribute("popularMember3", popularMember3);
+			model.addAttribute("popularMember4", popularMember4);
+			
+			if (session.getAttribute("loginVo") != null) {
+				MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+				String user_id = memberVo.getUser_id();
+				
+				List<ManagerVo> managerList = managerService.showManagerList(pagingDto);
+				List<HobbyVo> suggestHobby = mainService.getSuggestHobby(user_id);
+				CateStrVo cateStrVo = managerService.selectCateStr(user_id);
+				model.addAttribute("user_id", user_id);
+				model.addAttribute("managerList", JSONArray.fromObject(managerList));
+				model.addAttribute("suggestHobby", suggestHobby);
+				model.addAttribute("cateStrVo", cateStrVo);
+		}
 		
-		
-		System.out.println("count: " + count);
-		System.out.println("pagingDto: " + pagingDto);
-		List<EventVo> mainEvent = eventService.getEventBannerList();
-		model.addAttribute("mainEvent", mainEvent);
-		model.addAttribute("pagingDto", pagingDto);
-		
-		List<HobbyVo> suggestHobby = mainService.getSuggestHobby(user_id);
-		List<HobbyVo> popularHobby = mainService.getPopularHobbyList();
-		List<HobbyVo> monthHobby = mainService.getMonthHobbyList();
-		List<MemberVo> popularMember1 = mainService.getPopularMemberList1();
-		List<MemberVo> popularMember2 = mainService.getPopularMemberList2();
-		List<MemberVo> popularMember3 = mainService.getPopularMemberList3();
-		List<MemberVo> popularMember4 = mainService.getPopularMemberList4();
-		CateStrVo cateStrVo = managerService.selectCateStr(user_id);
-
-		model.addAttribute("cates", JSONArray.fromObject(category));
-		model.addAttribute("suggestHobby", suggestHobby);
-		model.addAttribute("popularHobby", popularHobby);
-		model.addAttribute("monthHobby", monthHobby);
-		model.addAttribute("popularMember1", popularMember1);
-		model.addAttribute("popularMember2", popularMember2);
-		model.addAttribute("popularMember3", popularMember3);
-		model.addAttribute("popularMember4", popularMember4);
-		model.addAttribute("cateStrVo", cateStrVo);
-		model.addAttribute("user_id", user_id);
 		return "main/main_home";
 	}
 	
 	@RequestMapping(value="/mainHobby", method=RequestMethod.GET)
-	public String mainHobby(Model model, PagingDto pagingDto) throws Exception {
+	public String mainHobby(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 //		int count = mainService.getCountHobbyList(pagingDto);
@@ -99,15 +104,20 @@ public class MainController {
 		
 		model.addAttribute("cateHobby", cateHobby);
 
-		List<HobbyVo> hobbyPopular = mainService.hobbyListPopular(pagingDto);
-		model.addAttribute("hobbyPopular", hobbyPopular);
 		model.addAttribute("pagingDto", pagingDto);
+		
+		
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_hobby";
 	}
 
 	// 이벤트 리스트
 	@RequestMapping(value="/mainEvent", method=RequestMethod.GET)
-	public String mainEvent(Model model, PagingDto pagingDto) throws Exception {
+	public String mainEvent(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		
@@ -118,11 +128,16 @@ public class MainController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<EventVo> eventList = eventService.showEventList(pagingDto);
 		model.addAttribute("eventList", eventList);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_event";
 	}
 	// 전체 이벤트
 	@RequestMapping(value="/mainEventListAll", method=RequestMethod.GET)
-	public String mainEventListAll(Model model, PagingDto pagingDto) throws Exception {
+	public String mainEventListAll(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		
@@ -133,12 +148,17 @@ public class MainController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<EventVo> eventListAll = eventService.showEventListAll(pagingDto);
 		model.addAttribute("eventListAll", eventListAll);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_event_all";
 	}
 	
 	// 완료된 이벤트
 	@RequestMapping(value="/mainEventListEnd", method=RequestMethod.GET)
-	public String mainEventListEnd(Model model, PagingDto pagingDto) throws Exception {
+	public String mainEventListEnd(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		
@@ -149,28 +169,43 @@ public class MainController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<EventVo> eventListEnd = eventService.showEventListEnd(pagingDto);
 		model.addAttribute("eventListEnd", eventListEnd);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_event_end";
 	}
 
 	// 이벤트 상세페이지
 	@RequestMapping(value="/mainEventContent", method=RequestMethod.GET)
-	public String mainEventContent(int e_no, Model model) throws Exception {
+	public String mainEventContent(int e_no, Model model, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		EventVo eventVo = eventService.selectByEno(e_no);
 		model.addAttribute("eventVo", eventVo);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_event_content";
 	}
 	
 	@RequestMapping(value="/mainAboutUs", method=RequestMethod.GET)
-	public String mainAboutUs(Model model) throws Exception {
+	public String mainAboutUs(Model model, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_about_us";
 	}
 	
 	@RequestMapping(value="/mainSearch", method=RequestMethod.GET)
-	public String mainSearch(PagingDto pagingDto, Model model) throws Exception {
+	public String mainSearch(PagingDto pagingDto, Model model, HttpSession session) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		int count1 = mainService.getCountHobbySearch(pagingDto);
@@ -191,11 +226,12 @@ public class MainController {
 		model.addAttribute("searchHobbyList", searchHobbyList);
 		model.addAttribute("searchMemberList", searchMemberList);
 		model.addAttribute("pagingDto", pagingDto);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			model.addAttribute("user_id", user_id);
+		}
 		return "main/main_search";
 	}
-	
-	// 카테고리
-	public void getHobbyCate(Model model) throws Exception {
-		
-	}
+
 }

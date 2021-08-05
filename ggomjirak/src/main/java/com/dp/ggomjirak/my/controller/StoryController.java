@@ -61,15 +61,16 @@ public class StoryController {
 	// 스토리 상세
 	@RequestMapping(value="/detail/{user_id}", method=RequestMethod.GET)
 	public String wrStoryDetail(@PathVariable("user_id") String page_id, int st_no, Model model, HttpSession session) throws Exception {
-		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-		String user_id = memberVo.getUser_id();
 		StoryVo storyVo = storyService.StorySelect(st_no);
 		List<StoryCommentVo> list = storyCommentService.listComment(st_no);
 		wrController.profileCommon(page_id, model, session);
-		int likeCheck = storyService.likeCheck(st_no, user_id);
-		
 		wrController.category(model);
-		model.addAttribute("likeCheck", likeCheck);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			int likeCheck = storyService.likeCheck(st_no, user_id);
+			model.addAttribute("likeCheck", likeCheck);
+		}
 		model.addAttribute("storyVo", storyVo);
 		model.addAttribute("list", list);
 		return "workroom/wr_story_detail";

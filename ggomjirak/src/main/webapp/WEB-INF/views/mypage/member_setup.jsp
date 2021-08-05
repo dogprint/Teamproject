@@ -23,19 +23,16 @@ $(document).ready(function(){
 		$("#off").prop("checked", true);
 	}
 	
-//  	// 회원 알림 설정 폼 전송
-// 	$("#frmMemberSetUp").submit(function(){
-// 		//msg = success
-// 		// 
-// 	});
-
 	// 설정 완료 버튼 클릭
 	$("#btnSetup").click(function() {
-		if($("#on").checked){
-			onOff = "on";
-		} else {
-			onOff = "off";
-		}
+
+// 		if($("#on").checked){
+// 			onOff = "on";
+// 		} else {
+// 			onOff = "off";
+// 		}
+		
+		onOff = $(':radio[name="onOff"]:checked').val();
 		console.log("onOff: " + onOff);
 		
 		var user_id = "${memberVo.user_id}";

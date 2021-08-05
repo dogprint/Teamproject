@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.dp.ggomjirak.my.dao.LikeBookmarkDao;
 import com.dp.ggomjirak.my.dao.WorkroomSetDao;
 import com.dp.ggomjirak.vo.FollowVo;
 import com.dp.ggomjirak.vo.WorkroomVo;
@@ -35,6 +36,12 @@ public class WorkroomSetServiceImpl implements WorkroomSetService {
 	@Override
 	public List<FollowVo> followingList(String follower) {
 		List<FollowVo> list = workroomSetDao.followingList(follower);
+		return list;
+	}
+
+	@Override
+	public List<LikeBookmarkDao> likeList(String user_id) {
+		List<LikeBookmarkDao> list = workroomSetDao.likeList(user_id);
 		return list;
 	}
 

@@ -13,7 +13,7 @@
 	
 	<!-- 댓글목록 -->
 	<select id="listComment" resultType="StoryCommentVo">
-		select sc.*, mb.user_nick
+		select sc.*, mb.user_nick, mb.user_img
 			from tbl_story_comment sc, tbl_memberdetail mb
 		where  sc.user_id = mb.user_id and st_no = #{st_no} and is_del = 'N'
 	</select>

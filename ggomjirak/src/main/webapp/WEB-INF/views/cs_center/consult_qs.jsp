@@ -18,11 +18,11 @@ $(document).ready(function(){
 	
 	// 저장 버튼 클릭
 	$("#frmConsultQS").submit(function(){
-		if($("#user_name").val() == ""){
+		if($("#input_name").val() == ""){
 			alert("이름을 입력해주세요.");
 			return false;
 		}
-		if($("#user_tel").val() == ""){
+		if($("#input_tel").val() == ""){
 			alert("연락처를 입력해주세요.");
 			return false;
 		}
@@ -92,8 +92,8 @@ ${qnAVo}
 						<form role="form" id="frmConsultQS" action="/cs_center/consultQsRun" method="post" enctype="multipart/form-data">
 							<input type="hidden" name="qna_type" value="Q"/> 
 							<input type="hidden" id = "user_id" name="user_id" value="${memberVo.user_id}"/> 
-							<input type="hidden" id = "user_name" name="user_name" value="${memberVo.user_name}"/> 
-							<input type="hidden" id = "user_tel" name="user_tel" value="${memberVo.user_tel}"/> 
+							<%-- <input type="hidden" id = "user_name" name="user_name" value="${memberVo.user_name}"/>  --%>
+							<%-- <input type="hidden" id = "user_tel" name="user_tel" value="${memberVo.user_tel}"/>  --%>
 							<input type="hidden" id = "user_email" name="user_email" value="${memberVo.user_email}"/> 
 							<%-- <input type="hidden" id = "qna_no" name="qna_no" value="${qnAVo.qna_no}"/> --%> 
 							<div class="form-group">

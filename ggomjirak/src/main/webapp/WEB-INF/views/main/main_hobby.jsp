@@ -27,6 +27,20 @@ $(document).ready(function() {
 
 	});
 	
+	$(".qCheck > li > a").click(function(e) {
+		e.preventDefault();
+		var searchType = $(this).text();
+		$("#btnOption").text(searchType);
+		console.log(searchType);
+		console.log(searchType);
+		var qCheck = $(this).attr("href");
+		
+		$("#frmPaging > input[name=qCheck]").val(qCheck);
+		$("#frmPaging > input[name=page]").val("1");
+		$("#frmPaging").submit();
+
+	});
+	
 
 });
 </script>
@@ -36,8 +50,9 @@ $(document).ready(function() {
 <input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
 <input type="hidden" name="parent_cate_no" value="${pagingDto.parent_cate_no}"/>
 <input type="hidden" name="m_cate_no" value="${pagingDto.m_cate_no}"/>
+<input type="hidden" name="qCheck" value="${pagingDto.qCheck}"/>
 </form>
-<div class="row">
+<div class="row m_top">
 	<div class="col-md-12">
 		<div class="row">
 			<div class="col-md-1 col-lg-2"></div>
@@ -107,16 +122,24 @@ $(document).ready(function() {
 					<div class="col-md-9 col-lg-10">
 
 						<ul class="nav nav-pills">
-							<li class="nav-item">
-								<h4 class="green_color">취미</h4>
+							<li>
+							<div class="dropdown">
+							  <button id="btnOption" class="form-control btn btn-outline-light green_background dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							    <c:choose>
+							    <c:when test="${pagingDto.qCheck == null}">검색 옵션</c:when>
+							    <c:when test="${pagingDto.qCheck == 0}">인기 취미</c:when>
+							    <c:when test="${pagingDto.qCheck == 1}">최신 취미</c:when>
+							    <c:when test="${pagingDto.qCheck == 2}">이달의 취미</c:when>
+							    </c:choose>
+							    
+							  </button>
+							  <ul class="qCheck dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							    <li><a class="dropdown-item" href="0">인기 취미</a></li>
+							    <li><a class="dropdown-item" href="1">최신 취미</a></li>
+							    <li><a class="dropdown-item" href="2">이달의 취미</a></li>
+							  </ul>
+							</div>
 							</li>
-							<li class="nav-item dropdown"><select
-								class="form-control btn btn-outline-light green_background shadow bg-body rounded"
-								style="margin-right: 10px" aria-label="Default select example">
-									<option value="popular" selected>인기순</option>
-									<option value="new">최신순</option>
-									<option value="month">이번달</option>
-							</select></li>
 							<li class="nav-item dropdown">
 								<button type="button"
 									class="btn dropdown-toggle btn-outline-light green_background"
@@ -129,13 +152,15 @@ $(document).ready(function() {
 								</ul>
 							</li>
 						</ul>
+						
+						<!-- 취미글 목록 -->
 
-						<div style="overflow: hidden;">
-							<c:forEach var="popular" items="${cateHobby}">
+						<div style="overflow: hidden;" class="m_top">
+							<c:forEach var="cate" items="${cateHobby}">
 								<div class="col-lg-3 col-md-4 col-sm-6" style="float: left;">
 									<div class="featured__item">
 										<div class="featured__item__pic set-bg"
-											data-setbg="/resources/img/featured/feature-2.jpg">
+											data-setbg="/displayImage?filePath=${cate.main_img}">
 											<ul class="featured__item__pic__hover">
 												<li><a href="#"><i class="fa fa-heart"></i></a></li>
 												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -144,9 +169,9 @@ $(document).ready(function() {
 										</div>
 										<div class="featured__item__text">
 											<h6>
-												<a href="#">${popular.hobby_title}</a>
+												<a class="short" href="/hobby/content/${cate.hobby_no}">${cate.hobby_title}</a>
 											</h6>
-											<h5>${popular.user_nick}</h5>
+											<h5><a class="short" href="/workroom/main/${cate.user_id}">${cate.user_nick}</a></h5>
 										</div>
 									</div>
 								</div>
@@ -191,5 +216,6 @@ $(document).ready(function() {
 
 
 
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <%@ include file="../include/footer.jsp" %>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

@@ -50,47 +50,47 @@
 	<!-- 인기작가 -->
 	<select id="getPopularMemberList1" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.*, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
 		         where a.user_grade = 1
                  and a.user_id not in(select user_id from tbl_manager_member)
 		         order by follower_cnt desc)
-		where rnum between 1 and 12
+		where rnum between 1 and 6
 	</select>
 	<select id="getPopularMemberList2" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.*, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
 		         where a.user_grade = 2
                  and a.user_id not in(select user_id from tbl_manager_member)
 		         order by follower_cnt desc)
-		where rnum between 1 and 12
+		where rnum between 1 and 6
 	</select>
 	<select id="getPopularMemberList3" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.*, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
 		         where a.user_grade = 3
                  and a.user_id not in(select user_id from tbl_manager_member)
 		         order by follower_cnt desc)
-		where rnum between 1 and 12
+		where rnum between 1 and 6
 	</select>
 	<select id="getPopularMemberList4" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.*, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
 		         where a.user_grade = 4
                  and a.user_id not in(select user_id from tbl_manager_member)
 		         order by follower_cnt desc)
-		where rnum between 1 and 12
+		where rnum between 1 and 6
 	</select>
 	
 	<!-- 등급 표시 -->
@@ -145,7 +145,23 @@
 		        <if test="m_cate_no != 0">
 		         where m_cate_no = #{m_cate_no}
 		        </if>
-		         order by hobby_no desc)
+		        <choose>
+				<when test="qCheck == 0">
+				order by like_cnt desc, view_cnt desc
+				</when>
+				<when test="qCheck == 1">
+				order by hobby_no desc
+				</when>
+				<when test="m_cate_no != 0 and qCheck == 2">
+	                and to_char(a.reg_date, 'mm') = to_char(sysdate, 'mm')
+					order by like_cnt desc, view_cnt desc
+				</when>
+				<when test="m_cate_no == 0 and qCheck == 2">
+	                where to_char(a.reg_date, 'mm') = to_char(sysdate, 'mm')
+					order by like_cnt desc, view_cnt desc
+				</when>
+				</choose>
+		        )
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	
@@ -157,8 +173,25 @@
 		        and user_id not in(select user_id from tbl_manager_member)))a
                 left join tbl_memberdetail c on a.user_id = c.user_id
                 <if test="m_cate_no != 0">
-                where m_cate_no = #{m_cate_no}
+                	where m_cate_no = #{m_cate_no}
                 </if>
+                
+                <choose>
+				<when test="qCheck == 0">
+					order by like_cnt desc, view_cnt desc
+				</when>
+				<when test="qCheck == 1">
+					order by hobby_no desc
+				</when>
+				<when test="m_cate_no != 0 and qCheck == 2">
+	                and to_char(a.reg_date, 'mm') = to_char(sysdate, 'mm')
+					order by like_cnt desc, view_cnt desc
+				</when>
+				<when test="m_cate_no == 0 and qCheck == 2">
+	                where to_char(a.reg_date, 'mm') = to_char(sysdate, 'mm')
+					order by like_cnt desc, view_cnt desc
+				</when>
+				</choose>
 	</select>
 	
 	<!-- 검색(취미) -->
@@ -189,7 +222,7 @@
 	<!-- 검색(작가) -->
 	<select id="searchMember" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.user_nick, a.user_grade, a.user_id, c.name from
 		        (select * from tbl_memberdetail where user_id in 
 		        	(select user_id from tbl_memberinfo where is_del = 'N')) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd

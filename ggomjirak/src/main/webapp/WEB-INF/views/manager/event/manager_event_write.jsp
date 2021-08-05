@@ -35,7 +35,7 @@ $(document).ready(function() {
 	<!-- Page Heading -->
 	<h1 class="h3 mb-2 text-gray-800">이벤트 글 작성</h1>
 	<form role="form" id="frmEventWrite" action="/event/managerEventWriteRun" method="post">
-	<input type="text" id="m_no" name="m_no" value="1001">
+	<input type="text" id="user_id" name="user_id" value="${lo_user_id}">
 		<!-- DataTales Example -->
 	<div class="card shadow mb-4">
 		<div
@@ -88,6 +88,7 @@ $(document).ready(function() {
 			
 
 		</div>
+	</div>
 	</div>
 
 <!-- DataTales Example -->

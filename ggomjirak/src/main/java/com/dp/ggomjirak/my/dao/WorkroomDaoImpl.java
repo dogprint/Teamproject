@@ -29,8 +29,8 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 	}
 	
 	@Override
-	public int hobbyCount(String hobby_writer) {
-		int count = sqlSession.selectOne(NAMESPACE + "hobbyCount", hobby_writer);
+	public int hobbyCount(String user_id) {
+		int count = sqlSession.selectOne(NAMESPACE + "hobbyCount", user_id);
 		return count;
 	}
 	
@@ -69,6 +69,12 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto) {
 		List<LikeBookmarkVo> list = sqlSession.selectList(NAMESPACE + "listBookmark", pagingDto);
 		return list;
+	}
+
+	@Override
+	public int bookmarkCount(String user_id) {
+		int count = sqlSession.selectOne(NAMESPACE + "bookmarkCount", user_id);
+		return count;
 	}
 
 }

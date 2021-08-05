@@ -43,10 +43,10 @@ $(document).ready(function(){
 		$.get(url, sendData, function(rData) {
 			console.log(rData);
 			if(rData == "true"){
-				$("#checkDupNickResult").text("사용 중인 별명").css("color", "red");
+				$("#checkDupNickResult").text("사용 중인 닉네임").css("color", "red");
 				isCheckDupNick = false;
 			} else {
-				$("#checkDupNickResult").text("사용 가능한 별명").css("color", "blue");
+				$("#checkDupNickResult").text("사용 가능한 닉네임").css("color", "blue");
 				isCheckDupNick = false;
 			}
 			checkedNick = user_nick;
@@ -88,7 +88,7 @@ $(document).ready(function(){
 						receivedData.lastIndexOf("_") + 1);
 				var cloneDiv = $("#uploadedList").prev().clone();
 				var img = cloneDiv.find("img");
-				// 이미지인 경우
+				//이미지인 경우
 				if(isImage(fileName)){
 					//img.attr("src", "http://localhost/mypage/displayImage?fileName=" + receivedData);
 					img.attr("src", "/mypage/displayImage?fileName=" + receivedData);
@@ -133,103 +133,201 @@ $(document).ready(function(){
 		// return false;
 	});
 
-// 	var selectBoxChange = function(value){
-// 		console.log("값 변경 테스트: " + value);
-// 		$("#changeInput").val(value);
-	$("#changeTest").change(function(){
-
-		var url = "/mypage/changeCate";
-		var parent_cate_no = $(this).val();
-		console.log("값 변경 테스트: " + parent_cate_no);
-		$("#changeInput").val(parent_cate_no);
-		
-		var sendData = {
-			"parent_cate_no" : parent_cate_no
-		};
-		
-		$.get(url, sendData, function(rData) {
-			console.log(rData);
-		});
-	});
-	
-	//* 카테고리 부분
+	//* 카테고리 부분 1st
 	var jsonData = JSON.parse('${cates}');
-	var cate1Arr = new Array();
-	var cate1Obj = new Object();
+	var category1Arr = new Array();
+	var category1Obj = new Object();
+	
 	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
 	for(var i = 0; i < jsonData.length; i++) {
 	 if(jsonData[i].cate_level == "1") {
-	  cate1Obj = new Object();  //초기화
-	  cate1Obj.cate_no = jsonData[i].cate_no;
-	  cate1Obj.cate_name = jsonData[i].cate_name;
-	  cate1Arr.push(cate1Obj);
+	  category1Obj = new Object();  //초기화
+	  category1Obj.cate_no = jsonData[i].cate_no;
+	  category1Obj.cate_name = jsonData[i].cate_name;
+	  category1Arr.push(category1Obj);
 	 }
 	}
+	
 	// 1차 분류 셀렉트 박스에 데이터 삽입
-	var cate1Select = $("select.cate1")
-	for(var i = 0; i < cate1Arr.length; i++) {
-		 cate1Select.append("<option value='" + cate1Arr[i].cate_no + "'>"
-	      + cate1Arr[i].cate_name + "</option>"); 
+	var category1Select = $("select.category1")
+	for(var i = 0; i < category1Arr.length; i++) {
+		 category1Select.append("<option value='" + category1Arr[i].cate_no + "'>"
+	      + category1Arr[i].cate_name + "</option>"); 
 	}
-	$(document).on("change", "select.cate1", function(){
-		 var cate2Arr = new Array();
-		 var cate2Obj = new Object();
+	
+	$(document).on("change", "select.category1", function(){
+		 var category2Arr = new Array();
+		 var category2Obj = new Object();
 		 // 2차 분류 셀렉트 박스에 삽입할 데이터 준비
 		 for(var i = 0; i < jsonData.length; i++) {
 		  if(jsonData[i].cate_level == "2") {
-		   cate2Obj = new Object();  //초기화
-		   cate2Obj.cate_no = jsonData[i].cate_no;
-		   cate2Obj.cate_name = jsonData[i].cate_name;
-		   cate2Obj.parent_cate_no = jsonData[i].parent_cate_no;
-		   cate2Arr.push(cate2Obj);
+		   category2Obj = new Object();  //초기화
+		   category2Obj.cate_no = jsonData[i].cate_no;
+		   category2Obj.cate_name = jsonData[i].cate_name;
+		   category2Obj.parent_cate_no = jsonData[i].parent_cate_no;
+		   category2Arr.push(category2Obj);
 		  }
 		 }
-		 var cate2Select = $("select.cate2");
-		 cate2Select.children().remove();
+		 var category2Select = $("select.category2");
+		 category2Select.children().remove();
 		 $("option:selected", this).each(function(){
 		  var selectVal = $(this).val();  
-		  cate2Select.append("<option value=''>중분류</option>");
-		  for(var i = 0; i < cate2Arr.length; i++) {
-		   if(selectVal == cate2Arr[i].parent_cate_no) {
-		    cate2Select.append("<option value='" + cate2Arr[i].cate_no + "'>"
-		         + cate2Arr[i].cate_name + "</option>");
+		  category2Select.append("<option value=''>중분류</option>");
+		  for(var i = 0; i < category2Arr.length; i++) {
+		   if(selectVal == category2Arr[i].parent_cate_no) {
+		    category2Select.append("<option value='" + category2Arr[i].cate_no + "'>"
+		         + category2Arr[i].cate_name + "</option>");
 		   }
 		  }
-		 });
+		});
+	});
+	
+	//* 카테고리 부분 2nd
+	var jsonData = JSON.parse('${cates}');
+	var category3Arr = new Array();
+	var category3Obj = new Object();
+	
+	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
+	for(var i = 0; i < jsonData.length; i++) {
+	 if(jsonData[i].cate_level == "1") {
+	  category3Obj = new Object();  //초기화
+	  category3Obj.cate_no = jsonData[i].cate_no;
+	  category3Obj.cate_name = jsonData[i].cate_name;
+	  category3Arr.push(category3Obj);
+	 }
+	}
+	
+	// 1차 분류 셀렉트 박스에 데이터 삽입
+	var category3Select = $("select.category3")
+	for(var i = 0; i < category3Arr.length; i++) {
+		 category3Select.append("<option value='" + category3Arr[i].cate_no + "'>"
+	      + category3Arr[i].cate_name + "</option>"); 
+	}
+	
+	$(document).on("change", "select.category3", function(){
+		 var category4Arr = new Array();
+		 var category4Obj = new Object();
+		 // 2차 분류 셀렉트 박스에 삽입할 데이터 준비
+		 for(var i = 0; i < jsonData.length; i++) {
+		  if(jsonData[i].cate_level == "2") {
+		   category4Obj = new Object();  //초기화
+		   category4Obj.cate_no = jsonData[i].cate_no;
+		   category4Obj.cate_name = jsonData[i].cate_name;
+		   category4Obj.parent_cate_no = jsonData[i].parent_cate_no;
+		   category4Arr.push(category4Obj);
+		  }
+		 }
+		 var category4Select = $("select.category4");
+		 category4Select.children().remove();
+		 $("option:selected", this).each(function(){
+		  var selectVal = $(this).val();  
+		  category4Select.append("<option value=''>중분류</option>");
+		  for(var i = 0; i < category4Arr.length; i++) {
+		   if(selectVal == category4Arr[i].parent_cate_no) {
+		    category4Select.append("<option value='" + category4Arr[i].cate_no + "'>"
+		         + category4Arr[i].cate_name + "</option>");
+		   }
+		  }
+		});
+	});
+	
+	//* 카테고리 부분 3rd
+	var jsonData = JSON.parse('${cates}');
+	var category5Arr = new Array();
+	var category5Obj = new Object();
+	
+	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
+	for(var i = 0; i < jsonData.length; i++) {
+	 if(jsonData[i].cate_level == "1") {
+	  category5Obj = new Object();  //초기화
+	  category5Obj.cate_no = jsonData[i].cate_no;
+	  category5Obj.cate_name = jsonData[i].cate_name;
+	  category5Arr.push(category5Obj);
+	 }
+	}
+	
+	// 1차 분류 셀렉트 박스에 데이터 삽입
+	var category5Select = $("select.category5")
+	for(var i = 0; i < category5Arr.length; i++) {
+		 category5Select.append("<option value='" + category5Arr[i].cate_no + "'>"
+	      + category5Arr[i].cate_name + "</option>"); 
+	}
+	
+	$(document).on("change", "select.category5", function(){
+		 var category6Arr = new Array();
+		 var category6Obj = new Object();
+		 // 2차 분류 셀렉트 박스에 삽입할 데이터 준비
+		 for(var i = 0; i < jsonData.length; i++) {
+		  if(jsonData[i].cate_level == "2") {
+		   category6Obj = new Object();  //초기화
+		   category6Obj.cate_no = jsonData[i].cate_no;
+		   category6Obj.cate_name = jsonData[i].cate_name;
+		   category6Obj.parent_cate_no = jsonData[i].parent_cate_no;
+		   category6Arr.push(category6Obj);
+		  }
+		 }
+		 var category6Select = $("select.category6");
+		 category6Select.children().remove();
+		 $("option:selected", this).each(function(){
+		  var selectVal = $(this).val();  
+		  category6Select.append("<option value=''>중분류</option>");
+		  for(var i = 0; i < category6Arr.length; i++) {
+		   if(selectVal == category6Arr[i].parent_cate_no) {
+		    category6Select.append("<option value='" + category6Arr[i].cate_no + "'>"
+		         + category6Arr[i].cate_name + "</option>");
+		   }
+		  }
+		});
+	});
+	
+// 	$("select.category2").on('change', function() {
+// 		console.log("$(this)");
+// 	});
+	
+	$("#btnProfileSave").click(function(e){
+		e.preventDefault();
+		var cate2 = $("select.category2").val();
+		var cate4 = $("select.category4").val();
+		var cate6 = $("select.category6").val();
+
+		$("#frmMemberProfile > input[name=cate_no1]").val(cate2);
+		$("#frmMemberProfile > input[name=cate_no2]").val(cate4);
+		$("#frmMemberProfile > input[name=cate_no3]").val(cate6);
+		$("#frmMemberProfile").submit();
 	});
 	
 });
 </script>
-${memberVo}
+<%-- ${memberVo} --%>
 <%-- ${cates} --%>
 <!-- 파일 업로드 안내 모달-->
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-			<a id="modal-167712" href="#modal-container-167712" role="button"
-				class="btn" data-toggle="modal" style="">Launch demo modal</a>
+<!-- <div class="container-fluid"> -->
+<!-- 	<div class="row"> -->
+<!-- 		<div class="col-md-12"> -->
+<!-- 			<a id="modal-167712" href="#modal-container-167712" role="button" -->
+<!-- 				class="btn" data-toggle="modal" style="">Launch demo modal</a> -->
 
-			<div class="modal fade" id="modal-container-167712" role="dialog"
-				aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="myModalLabel">파일 처리</h5>
-							<button type="button" class="close" data-dismiss="modal">
-								<span aria-hidden="true">×</span>
-							</button>
-						</div>
-						<div class="modal-body">파일을 업로드하는 중입니다...</div>
-						<div class="modal-footer">
-							<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-							<button type="button" class="btn btn-secondary"	data-dismiss="modal">닫기</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+<!-- 			<div class="modal fade" id="modal-container-167712" role="dialog" -->
+<!-- 				aria-labelledby="myModalLabel" aria-hidden="true"> -->
+<!-- 				<div class="modal-dialog" role="document"> -->
+<!-- 					<div class="modal-content"> -->
+<!-- 						<div class="modal-header"> -->
+<!-- 							<h5 class="modal-title" id="myModalLabel">파일 처리</h5> -->
+<!-- 							<button type="button" class="close" data-dismiss="modal"> -->
+<!-- 								<span aria-hidden="true">×</span> -->
+<!-- 							</button> -->
+<!-- 						</div> -->
+<!-- 						<div class="modal-body">파일을 업로드하는 중입니다...</div> -->
+<!-- 						<div class="modal-footer"> -->
+<!-- 							<button type="button" class="btn btn-primary">Save changes</button> -->
+<!-- 							<button type="button" class="btn btn-secondary"	data-dismiss="modal">닫기</button> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div> -->
 <!-- <head> -->
 <!-- <meta charset="UTF-8"> -->
 <!-- <title>프로필 정보</title> -->
@@ -253,6 +351,9 @@ ${memberVo}
 						<!-- 내부 패널 메인 -->
 						<form role="form" id="frmMemberProfile" action="/mypage/modifyProfileRun" method="post" enctype="multipart/form-data">
 							<input type="hidden" id="user_id" name="user_id" value="${memberVo.user_id}"/> 
+							<input type="hidden" id="cate_no1" name="cate_no1" value="${memberVo.cate_no1}"/> 
+							<input type="hidden" id="cate_no2" name="cate_no2" value="${memberVo.cate_no2}"/> 
+							<input type="hidden" id="cate_no3" name="cate_no3" value="${memberVo.cate_no3}"/> 
 							
 							<div class="form-group">
 								<label for="user_nick">닉네임</label> 
@@ -303,142 +404,50 @@ ${memberVo}
 						<div class="form-group">
 							<label for="user_hobbys">관심 취미 선택</label>
 						</div>
-<%-- 							<input type="text" id="cate_no1" name="cate_no1" value="${memberVo.cate_no1}"/>  --%>
-<%-- 							<input type="text" id="cate_no2" name="cate_no2" value="${memberVo.cate_no2}"/>  --%>
-<%-- 							<input type="text" id="cate_no3" name="cate_no3" value="${memberVo.cate_no3}"/>  --%>
-<%-- 							<input type="text" id="cate_name1" name="cate_name1" value="${memberVo.cate_name1}"/>  --%>
-<%-- 							<input type="text" id="cate_name2" name="cate_name2" value="${memberVo.cate_name2}"/>  --%>
-<%-- 							<input type="text" id="cate_name3" name="cate_name3" value="${memberVo.cate_name3}"/>  --%>
 						<table>
-<!-- 							<tr>
-								<td>
-									<select	class="cate1 form-control btn btn-outline-light green_background shadow bg-body rounded" 
-									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="">대분류</option>
-									</select>
-								</td>
-								<td>
-									<select	class="cate2 form-control btn btn-outline-light green_background shadow bg-body rounded" 
-									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="">중분류</option>
-								    </select>
-								</td>
-							</tr> -->
 							<tr>
 								<td>
-									<select	class="cate1 form-control btn btn-outline-light green_background shadow bg-body rounded" 
+									<select	class="category1 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="" id="">대분류</option>
+									<option value="${memberVo.parent_cate_no1}" id="parent_cate_no1" >${memberVo.parent_cate_name1}</option>
 									</select>
 								</td>
 								<td>
-									<select	class="cate2 form-control btn btn-outline-light green_background shadow bg-body rounded" 
+									<select	class="category2 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="${memberVo.cate_no1}" id="cate_no1" name="cate_no1" >${memberVo.cate_name1}</option>
+									<option value="${memberVo.cate_no1}" >${memberVo.cate_name1}</option>
 								    </select>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<select	class="cate1 form-control btn btn-outline-light green_background shadow bg-body rounded" 
+									<select	class="category3 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example" >
-									<option value="" id="">대분류</option>
+									<option value="${memberVo.parent_cate_no2}" id="parent_cate_no2">${memberVo.parent_cate_name2}</option>
 									</select>
 								</td>
 								<td>
-									<select	class="cate2 form-control btn btn-outline-light green_background shadow bg-body rounded" 
+									<select	class="category4 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="${memberVo.cate_no2}" id="cate_no2" name="cate_no2">${memberVo.cate_name2}</option>
+									<option value="${memberVo.cate_no2}">${memberVo.cate_name2}</option>
 								    </select>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<select	class="cate1 form-control btn btn-outline-light green_background shadow bg-body rounded" 
+									<select	class="category5 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="" id="">대분류</option>
+									<option value="${memberVo.parent_cate_no3}" id="parent_cate_no3">${memberVo.parent_cate_name3}</option>
 									</select>
 								</td>
 								<td>
-									<select	class="cate2 form-control btn btn-outline-light green_background shadow bg-body rounded" 
+									<select	class="category6 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
-									<option value="${memberVo.cate_no3}" id="cate_no3" name="cate_no3">${memberVo.cate_name3}</option>
+									<option value="${memberVo.cate_no3}">${memberVo.cate_name3}</option>
 								    </select>
 								</td>
 							</tr>
 						</table>
-								<!-- <div class="form-group"> -->
-<!-- 								<label for="user_details">부가 정보</label> -->
-<!-- 							</div> -->
-<!-- 							<div class="form-group"> -->
-<!-- 								<label for="user_hobbys">관심 취미 선택</label> -->
-<!-- 							</div> -->
-<!-- 							<table>	 -->
-<!-- 							<tr> -->
-<!-- 								<td> -->
-<!-- 								<input type="text" id ="changeInput"/> -->
-<%-- 								<c:if test ="${!empty list1}" > --%>
-<!-- 									<select id="changeTest" onchange="selectBoxChange(this.value)"> -->
-<!-- 									<select id="changeTest"> -->
-<%-- 									<c:forEach var ="list1" items="${list1}"> --%>
-<%-- 										<option value="${list1.cate_no}">${list1.cate_name}</option> --%>
-<%-- 									</c:forEach> --%>
-<!-- 									</select> -->
-<%-- 								</c:if>									 --%>
-<!-- 									&nbsp;??? -->
-<!-- 								</td> -->
-								
-<!-- 								<td> -->
-<%-- <%-- 								<c:if test ="${!empty list2}">										 --%> 
-<!-- 									<select name="cate_no1" id="cate_no1"> -->
-<%-- 										<c:forEach var ="list2" items="${list2}"> --%>
-<%-- 										<option value="${list2.cate_no}">${list2.cate_name}</option> --%>
-<%-- 									</c:forEach> --%>
-<!-- 									</select> -->
-<%-- <%-- 								</c:if> --%> 
-<!-- 								</td> -->
-<!-- 								<td> -->
-<!-- 								<label for="changeInput">대분류에서 선택한 내용 코드</label> -->
-							
-<!-- 								</td> -->
-<!-- 							</tr> -->
-<!-- 							<tr> -->
-<!-- 								<td> -->
-<!-- 									<select name="bigSort2" id="bigSort2"> -->
-<!-- 										<option value="bigSort2">대분류</option> -->
-<!-- 										<option value="DIY">만들기</option> -->
-<!-- 										<option value="painting">그리기</option> -->
-<!-- 										<option value="decorating">꾸미기</option> -->
-<!-- 									</select> -->
-<!-- 								</td> -->
-<!-- 								<td>										 -->
-<!-- 									<select name="midSort2" id="midSort2"> -->
-<!-- 										<option value="midSort2">중분류</option> -->
-<!-- 										<option value="DIY">향초</option> -->
-<!-- 										<option value="painting">수채화</option> -->
-<!-- 										<option value="decorating">다이어리</option> -->
-<!-- 									</select> -->
-<!-- 								</td> -->
-<!-- 							</tr> -->
-<!-- 							<tr> -->
-<!-- 								<td> -->
-<!-- 									<select name="bigSort3" id="bigSort3"> -->
-<!-- 										<option value="bigSort3">대분류</option> -->
-<!-- 										<option value="DIY">만들기</option> -->
-<!-- 										<option value="painting">그리기</option> -->
-<!-- 										<option value="decorating">꾸미기</option> -->
-<!-- 									</select> -->
-<!-- 								</td> -->
-<!-- 								<td>										 -->
-<!-- 									<select name="midSort3" id="midSort3"> -->
-<!-- 										<option value="midSort3">중분류</option> -->
-<!-- 										<option value="DIY">향초</option> -->
-<!-- 										<option value="painting">수채화</option> -->
-<!-- 										<option value="decorating">다이어리</option> -->
-<!-- 									</select> -->
-<!-- 								</td> -->
-<!-- 							</tr> -->
-<!-- 							</table> -->
 							<br>
 							<br>
 							<div class="form-group">
@@ -460,7 +469,7 @@ ${memberVo}
 							
 						</div>
 						<div style="clear:both;">
-							<button type="submit" class="btn btn-primary">프로필 저장</button>
+							<button type="submit" id="btnProfileSave" class="btn btn-primary">프로필 저장</button>
 						</div>
 						</form>
 						</div> <!-- </div class="row"> --> 

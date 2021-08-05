@@ -13,7 +13,7 @@ public interface WorkRoomDao {
 	// 취미 리스트
 	public List<HobbyVo> listHobby(PagingDto pagingDto);
 	// 취미 총 갯수
-	public int hobbyCount(String hobby_writer);
+	public int hobbyCount(String user_id);
 	// 프로필카드용 유저정보
 	public MemberVo getMemInfo(String user_id);
 	// 취미, 스토리 검색
@@ -24,4 +24,6 @@ public interface WorkRoomDao {
 	public int searchStoryCount(PagingDto pagingDto);
 	// 북마크 목록 불러오기
 	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto);
+	// 북마크 총 갯수
+	public int bookmarkCount(String user_id);
 }

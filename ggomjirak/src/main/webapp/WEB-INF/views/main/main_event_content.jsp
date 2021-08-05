@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp" %>
 <!-- 이벤트 -->
-<div class="row">
+<div class="row m_top">
 	<div class="col-md-12">
 		<div class="row">
 			<div class="col-md-2"></div>
@@ -38,7 +38,7 @@
 				  </tbody>
 				</table>
 				<div class="row justify-content-center">
-					<a href="/main/mainEvent" type="button" class="btn btn-success green_background center">목록</a>
+					<a href="/main/mainEvent" type="button" class="site-btn center">목록</a>
 				</div>			
 			</div>
 			

@@ -14,18 +14,6 @@ $(document).ready(function() {
 		frmPaging.submit();
 		// -> 주소창에 : http://localhost/board/listAll?page=1&perPage=10&searchType=&keyword=
 	});
-	$(".qCheck > li > a").click(function(e) {
-		e.preventDefault();
-		var qCheck = $(this).attr("href");
-		
-		console.log(qCheck);
-		$("#frmPaging > input[name=qCheck]").val(qCheck);
-		
-		$("#frmPaging > input[name=page]").val("1");
-
-		$("#frmPaging").submit();
-
-	});
 	
 
 	$(".btnCancel").click(function(e) {
@@ -39,9 +27,47 @@ $(document).ready(function() {
 		    return false;
 		}
 	});
+	// 카테고리 검색
+	$(".qCheck > li > a").click(function(e) {
+		e.preventDefault();
+		var qCheck = $(this).attr("href");
+		var searchType = $("#frmPaging > input[name=searchType]").val();
+		
+		$("#frmPaging > input[name=qCheck]").val(qCheck);
+		
+		$("#frmPaging > input[name=page]").val("1");
+		$("#frmPaging > input[name=searchType]").val(searchType);
 
+		$("#frmPaging").submit();
 
+	});
+	// 검색 옵션 선택
+	$(".searchType").click(function(e) {
+		e.preventDefault();
+		var searchType = $(this).attr("href");
+		$("#frmPaging > input[name=searchType]").val(searchType);
+		$("#btnSearchType").text($(this).text());
+	});
 	
+	// 검색
+	$("#btnSearch").click(function() {
+		var searchType = $("#frmPaging > input[name=searchType]").val();
+		if (searchType == "") {
+			alert("검색 옵션을 선택해 주세요.");
+			return;
+		}
+		
+		var keyword = $("#txtSearch").val().trim();
+		if ($("#txtSearch").val().trim() == "") {
+			alert("검색어를 입력해 주세요.");
+			return;
+		}
+		
+		$("#frmPaging > input[name=keyword]").val(keyword);
+		$("#frmPaging > input[name=page]").val("1");
+		$("#frmPaging > input[name=searchType]").val(searchType);
+		$("#frmPaging").submit();
+	});
 });
 </script>
 <form id="frmPaging" action="/event/managerMainEvent" method="get">
@@ -49,6 +75,8 @@ $(document).ready(function() {
 <input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
 <input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
 <input type="hidden" name="qCheck" value="${pagingDto.qCheck}"/>
+<input type="hidden" name="searchType" value="${pagingDto.searchType}"/>
+<input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
 </form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -59,32 +87,41 @@ $(document).ready(function() {
 		<div class="card-body">
 		
 			<!-- 검색 -->
-			<div class="input-group">
-				<div class="dropdown">
-
-					<select name="category"
-						class="btn btn-outline-light green_background dropdown-toggle"
-						data-bs-toggle="dropdown" aria-expanded="false">
-						<option class="dropdown-item" value="ca">검색 옵션</option>
-						<option class="dropdown-item" value="1">1</option>
-						<option class="dropdown-item" value="2">2</option>
-						<option class="dropdown-item" value="3">3</option>
-						<option class="dropdown-item" value="4">4</option>
-					</select>
-
-
+			<div class="form-row">
+		    <div class="col-lg-2 col-md-3 mb-3">	    		  
+				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
+						id="btnSearchType" data-toggle="dropdown">
+							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == ""}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == "t"}'>제목</c:if>
+							<c:if test='${pagingDto.searchType == "u"}'>작성자</c:if>
+							<c:if test='${pagingDto.searchType == "tu"}'>제목 + 작성자</c:if>
+						
+						</button> 				
+						
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item searchType" href="t">제목</a> 
+						<a class="dropdown-item searchType" href="u">작성자</a> 
+						<a class="dropdown-item searchType" href="tu">제목 + 작성자</a> 
+					</div>
+		      <div class="invalid-feedback">
+		      </div>
+		    </div>
+		    <div class="col-lg-10 col-md-9 mb-9">
+		      <div class="input-group">
+					<input type="text" class="form-control bg-light border-0"
+						placeholder="검색어를 입력하세요" aria-label="Search"
+						aria-describedby="basic-addon2" id="txtSearch" value="${pagingDto.keyword}">
+					<div class="input-group-append">
+						<button class="btn btn-success green_background white_color" type="button" id="btnSearch">
+							<i class="fas fa-search fa-sm"></i>
+						</button>
+					</div>
 				</div>
-
-				<input id="searchText" type="text" class="form-control"
-					aria-label="Text input with dropdown button" placeholder="이벤트 검색">
-
-				<button type="button" class="btn btn-outline-light green_background" id="button-addon2">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-					</svg>
-					<span class="visually-hidden">검색</span>
-				</button>
-			</div>
+			      <div class="invalid-feedback">
+			      </div>
+			    </div>
+			  </div>
 			<!-- 검색 끝 -->
 			
 		</div>
@@ -94,15 +131,7 @@ $(document).ready(function() {
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
 			<h6 class="m-0 font-weight-bold green_color" style="float:left;">이벤트 배너</h6>
-			<select name="category"
-				class="btn btn-outline-light green_background dropdown-toggle"
-				data-bs-toggle="dropdown" aria-expanded="false">
-				<option class="dropdown-item" value="ca">작성일 순</option>
-				<option class="dropdown-item" value="1">이벤트 시작일 순</option>
-				<option class="dropdown-item" value="2">이벤트 종료일 순</option>
-			</select>
-			
-					
+
 		</div>
 		
 		<div class="card-body">

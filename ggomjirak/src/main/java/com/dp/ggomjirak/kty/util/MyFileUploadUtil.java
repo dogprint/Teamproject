@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 
 import org.imgscalr.Scalr;
@@ -12,6 +13,10 @@ import org.springframework.util.FileCopyUtils;
 
 public class MyFileUploadUtil {
 
+//	@Resource
+//	public static String rootPath;
+//	public static String serverUploadPath_Profile = "profile";
+	
 	public static String serverFilePath = "//192.168.0.217/ggomjirak/";
 	public static String serverUploadPath_Profile = "profile";
 	
@@ -46,12 +51,14 @@ public class MyFileUploadUtil {
 
 		String dateString = year + "/" + month + "/" + date; // 2021/6/30
 		String datePath = uploadPath + "/" + dateString;
+		//String datePath = serverFilePath + uploadPath + "/" + dateString;
 		// -> D:/upload/2021/6/30
-		System.out.println("datePath:" + datePath);
+		System.out.println("3 datePath: " + datePath);
 
 		File f = new File(datePath);
 		if (!f.exists()) {
 			f.mkdirs();
+			System.out.println("f.mkdirs() 실행...");
 		}
 
 		return datePath;
@@ -123,22 +130,13 @@ public class MyFileUploadUtil {
 			}
 		}
 	}
-
+	
 	// 첨부파일 삭제
 	public static void deleteFile(String fileName) throws Exception {
 		System.out.println("첨부파일 삭제 들어옴... fileName: " + fileName);
 		//File f = new File(fileName);
 		File f = new File(serverFilePath + fileName);
 		deleteWhile(f);
-
-//		// 첨부파일이 이미지이면 썸네일 이미지도 만들었기 때문에 추가로 삭제하는 부분
-//		if (isImage(fileName)) {
-//			String[] names = fileName.split("sm_");
-//			String orgFile = names[0] + names[1];
-//			System.out.println("orgFile: " + orgFile);
-//			File f2 = new File(orgFile);
-//			deleteWhile(f2);
-//		}
 		
 		// 첨부파일이 이미지이면 썸네일 이미지도 만들었기 때문에 추가로 삭제하는 부분
 		if (isImage(serverFilePath + fileName)) {

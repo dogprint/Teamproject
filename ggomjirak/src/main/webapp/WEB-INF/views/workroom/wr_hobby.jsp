@@ -3,15 +3,58 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp" %>
-<!-- 간단 카드 보여주기 -->
+<script>
+$(document).ready(function() {
+	$(".pagination > a").click(function(e) {
+		e.preventDefault(); // 페이지 이동 막기
+		var page = $(this).attr("href");
+		var frmPaging = $("#frmPaging");
+		frmPaging.find("[name=page]").val(page);
+		frmPaging.submit();
+	});
+
+	$(".qCheck > li > a").click(function(e) {
+		e.preventDefault();
+		var searchType = $(this).text();
+		$("#btnOption").text(searchType);
+		console.log(searchType);
+		console.log(searchType);
+		var qCheck = $(this).attr("href");
+		
+		$("#frmPaging > input[name=qCheck]").val(qCheck);
+		$("#frmPaging > input[name=page]").val("1");
+		$("#frmPaging").submit();
+
+	});
+});
+</script>
+<form id="frmPaging" action="/workroom/hobby/${page_id}" method="get">
+<input type="hidden" name="page" value="${pagingDto.page}"/>
+<input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
+<input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
+<input type="hidden" name="qCheck" value="${pagingDto.qCheck}"/>
+</form>
 <div class="col-md-9">
 	<div class="checkout__order">
 		<div class="workroom_box row" style="height: 39px;">
-			<h4>꼼지락</h4>
-			<select>
-				<option>인기순</option>
-				<option>최신순</option>
-			</select>
+			<h4>취미</h4>
+			<ul class="nav nav-pills">
+					<li>
+					<div class="dropdown">
+					  <button id="btnOption" class="form-control btn btn-outline-light green_background dropdown-toggle" 
+					  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+					    <c:choose>
+					    <c:when test="${pagingDto.qCheck == 0}">인기 취미</c:when>
+					    <c:when test="${pagingDto.qCheck == 1}">최신 취미</c:when>
+					    </c:choose>
+					  </button>
+					  <ul class="qCheck dropdown-menu" aria-labelledby="dropdownMenuButton1">
+					    <li><a class="dropdown-item" href="0">인기 취미</a></li>
+					    <li><a class="dropdown-item" href="1">최신 취미</a></li>
+					  </ul>
+					</div>
+					</li>
+			</ul>
 		</div>
 		<hr>
 		<div class="row featured__filter">
@@ -19,7 +62,7 @@
 			<div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg"
-						data-setbg="/resources/img/test/sample06.jpg">
+						data-setbg="/displayImage?filePath=${hobbyVo.main_img}">
 						<ul class="featured__item__pic__hover">
 							<li><a href="#"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -28,7 +71,7 @@
 					</div>
 					<div class="featured__item__text">
 						<h6>
-							<a href="#">${hobbyVo.hobby_title}</a>
+							<a href="/hobby/content/${hobbyVo.hobby_no}">${hobbyVo.hobby_title}</a>
 						</h6>
 					</div>
 				</div>
@@ -36,11 +79,10 @@
 			</c:forEach>
 			
 		</div>
-		<div class="product__pagination justify-content-center"
-			style="display: flex;">
+		<div class="product__pagination justify-content-center pagination" style="display: flex;">
 			<!-- 이전페이지(<-) -->
 			<c:if test="${pagingDto.startPage != 1}">
-				<a href="/workroom/hobby/${page_id}?page=${pagingDto.startPage - 1}&perPage=${pagingDto.perPage}">
+				<a href="${pagingDto.startPage - 1}">
 					<i class="fa fa-long-arrow-left"></i>
 				</a>
 			</c:if>
@@ -54,11 +96,11 @@
 				 		class="page-item"
 					</c:otherwise>
 				</c:choose>
-			href="/workroom/hobby/${page_id}?page=${v}&perPage=${pagingDto.perPage}">${v}</a> 
+			href="${v}">${v}</a> 
 			</c:forEach> 
 			<!-- 다음페이지(->) -->
 			<c:if test="${pagingDto.endPage < pagingDto.totalPage}">
-			<a href="/workroom/hobby/${page_id}?page=${pagingDto.endPage + 1}&perPage=${pagingDto.perPage}">
+			<a href="${pagingDto.startPage + 1}">
 				<i class="fa fa-long-arrow-right"></i>
 			</a>
 			</c:if>
@@ -68,5 +110,6 @@
 <div class="col-md-2"></div>
 </div>
 </div>
-
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <%@ include file="../include/footer.jsp"%>

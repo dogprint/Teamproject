@@ -15,6 +15,7 @@ public class StoryCommentVo {
 	private String is_del;
 	
 	private String user_nick;
+	private String user_img;
 	
 	public StoryCommentVo() {
 		super();
@@ -22,7 +23,8 @@ public class StoryCommentVo {
 	}
 
 	public StoryCommentVo(int st_c_no, String user_id, int st_no, String st_c_content, int st_c_parent_no,
-			int st_c_depth, int st_c_order, Timestamp reg_date, Timestamp mod_date, String is_del, String user_nick) {
+			int st_c_depth, int st_c_order, Timestamp reg_date, Timestamp mod_date, String is_del, String user_nick,
+			String user_img) {
 		super();
 		this.st_c_no = st_c_no;
 		this.user_id = user_id;
@@ -35,6 +37,7 @@ public class StoryCommentVo {
 		this.mod_date = mod_date;
 		this.is_del = is_del;
 		this.user_nick = user_nick;
+		this.user_img = user_img;
 	}
 
 	public int getSt_c_no() {
@@ -125,12 +128,20 @@ public class StoryCommentVo {
 		this.user_nick = user_nick;
 	}
 
+	public String getUser_img() {
+		return user_img;
+	}
+
+	public void setUser_img(String user_img) {
+		this.user_img = user_img;
+	}
+
 	@Override
 	public String toString() {
 		return "StoryCommentVo [st_c_no=" + st_c_no + ", user_id=" + user_id + ", st_no=" + st_no + ", st_c_content="
 				+ st_c_content + ", st_c_parent_no=" + st_c_parent_no + ", st_c_depth=" + st_c_depth + ", st_c_order="
 				+ st_c_order + ", reg_date=" + reg_date + ", mod_date=" + mod_date + ", is_del=" + is_del
-				+ ", user_nick=" + user_nick + "]";
+				+ ", user_nick=" + user_nick + ", user_img=" + user_img + "]";
 	}
-	
+
 }

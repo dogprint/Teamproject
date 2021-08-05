@@ -10,7 +10,7 @@
 <!-- <title>회원 가입</title>
 </head>
 <body> -->
-${memberVo}
+<%-- ${memberVo} --%>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">

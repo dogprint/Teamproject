@@ -10,7 +10,15 @@
 		select * from(select rownum rnum, a.* from 
 		    (select * from tbl_hobby
 		    where user_id = #{user_id} 
-		    order by hobby_no desc)a)
+		    <choose>
+		    	<when test="qCheck == 0">
+		    		order by like_cnt desc, view_cnt desc
+		    	</when>
+		    	<when test="qCheck == 1">
+		    		order by hobby_no desc
+		    	</when>
+		    </choose>
+		    )a)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	
@@ -67,12 +75,19 @@
 	
 	<!-- 북마크 목록 -->
 	<select id="listBookmark" resultType="LikeBookmarkVo">
-		select hb.user_id, hb.hobby_title, hb.main_img, md.user_img, md.user_nick
-		from tbl_bookmark bm, tbl_hobby hb, tbl_memberdetail md
+		select bm.hobby_no, hb.user_id, hb.hobby_title, hb.main_img, md.user_img, md.user_nick
+			from tbl_bookmark bm, tbl_hobby hb, tbl_memberdetail md
 		where bm.hobby_no = hb.hobby_no 
 		and hb.user_id = md.user_id
 		and bm.user_id = #{user_id}
 	</select>
+	
+	<!-- 북마크 총 갯수 -->
+	<select id="bookmarkCount" resultType="int">
+		select count(*) from tbl_bookmark
+		where user_id = #{user_id}
+	</select>
+	
 		
 </mapper>
 

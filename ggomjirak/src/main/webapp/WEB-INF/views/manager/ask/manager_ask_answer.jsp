@@ -66,15 +66,15 @@ $(document).ready(function() {
 		</div>
 		<div class="card-body">
 			<form action="/ask/managerAskAnswerRun" method="post">
-			<input type="text" id="a_no" name="a_no" value="${qnaVo.qna_no}">
-			<input type="text" id="qna_sort_cd" name="qna_sort_cd" value="${qnaVo.qna_sort_cd}">
-			<input type="text" id="title" name="title" value="${qnaVo.title}">
-			<input type="text" id="user_id" name="user_id" value="dog">
+			<input type="hidden" id="a_no" name="a_no" value="${qnaVo.qna_no}">
+			<input type="hidden" id="qna_sort_cd" name="qna_sort_cd" value="${qnaVo.qna_sort_cd}">
+			<input type="hidden" id="title" name="title" value="${qnaVo.title}">
+			<input type="hidden" id="user_id" name="user_id" value="${lo_user_id}">
 				<table class="table">
 				  <tbody>
 				    <tr>
 				      <th scope="row">관리자</th>
-				      <td style="width: 90%">꼼지락</td>
+				      <td style="width: 90%">${lo_user_id}</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">내용</th>

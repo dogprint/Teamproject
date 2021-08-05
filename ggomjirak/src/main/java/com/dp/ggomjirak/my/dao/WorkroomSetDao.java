@@ -13,4 +13,6 @@ public interface WorkroomSetDao {
 	public void updateWrIntro(String user_id, String wr_intro);
 	// 팔로잉 목록
 	public List<FollowVo> followingList(String follower);
+	// 좋아요 목록
+	public List<LikeBookmarkDao> likeList(String user_id);
 }

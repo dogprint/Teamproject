@@ -40,6 +40,15 @@ public class MemberVo {
 	private String cate_name2;
 	private String cate_name3;
 	
+	// 취미 카테고리 대분류 컬럼 내용  받아오는 부분 
+	private int parent_cate_no1;
+	private int parent_cate_no2;
+	private int parent_cate_no3;
+	
+	private String parent_cate_name1;
+	private String parent_cate_name2;
+	private String parent_cate_name3;
+	
 	// 메시지 보내기 내용
 	private int notReadCount;
 
@@ -75,7 +84,8 @@ public class MemberVo {
 			Timestamp reg_date, String is_del, Timestamp del_date, String user_nick, int cate_no1, int cate_no2,
 			int cate_no3, String cate_etc, int follower_cnt, int following_cnt, String user_img, int user_grade, int cd,
 			String name, String onOff, Timestamp setup_save_time, String cate_name1, String cate_name2,
-			String cate_name3, int notReadCount, int rnum) {
+			String cate_name3, int parent_cate_no1, int parent_cate_no2, int parent_cate_no3, String parent_cate_name1,
+			String parent_cate_name2, String parent_cate_name3, int notReadCount, int rnum, String[] files) {
 		super();
 		this.user_id = user_id;
 		this.user_pw = user_pw;
@@ -101,8 +111,15 @@ public class MemberVo {
 		this.cate_name1 = cate_name1;
 		this.cate_name2 = cate_name2;
 		this.cate_name3 = cate_name3;
+		this.parent_cate_no1 = parent_cate_no1;
+		this.parent_cate_no2 = parent_cate_no2;
+		this.parent_cate_no3 = parent_cate_no3;
+		this.parent_cate_name1 = parent_cate_name1;
+		this.parent_cate_name2 = parent_cate_name2;
+		this.parent_cate_name3 = parent_cate_name3;
 		this.notReadCount = notReadCount;
 		this.rnum = rnum;
+		this.files = files;
 	}
 
 	public String getUser_id() {
@@ -297,6 +314,54 @@ public class MemberVo {
 		this.cate_name3 = cate_name3;
 	}
 
+	public int getParent_cate_no1() {
+		return parent_cate_no1;
+	}
+
+	public void setParent_cate_no1(int parent_cate_no1) {
+		this.parent_cate_no1 = parent_cate_no1;
+	}
+
+	public int getParent_cate_no2() {
+		return parent_cate_no2;
+	}
+
+	public void setParent_cate_no2(int parent_cate_no2) {
+		this.parent_cate_no2 = parent_cate_no2;
+	}
+
+	public int getParent_cate_no3() {
+		return parent_cate_no3;
+	}
+
+	public void setParent_cate_no3(int parent_cate_no3) {
+		this.parent_cate_no3 = parent_cate_no3;
+	}
+
+	public String getParent_cate_name1() {
+		return parent_cate_name1;
+	}
+
+	public void setParent_cate_name1(String parent_cate_name1) {
+		this.parent_cate_name1 = parent_cate_name1;
+	}
+
+	public String getParent_cate_name2() {
+		return parent_cate_name2;
+	}
+
+	public void setParent_cate_name2(String parent_cate_name2) {
+		this.parent_cate_name2 = parent_cate_name2;
+	}
+
+	public String getParent_cate_name3() {
+		return parent_cate_name3;
+	}
+
+	public void setParent_cate_name3(String parent_cate_name3) {
+		this.parent_cate_name3 = parent_cate_name3;
+	}
+
 	public int getRnum() {
 		return rnum;
 	}
@@ -313,11 +378,11 @@ public class MemberVo {
 				+ cate_no2 + ", cate_no3=" + cate_no3 + ", cate_etc=" + cate_etc + ", follower_cnt=" + follower_cnt
 				+ ", following_cnt=" + following_cnt + ", user_img=" + user_img + ", user_grade=" + user_grade + ", cd="
 				+ cd + ", name=" + name + ", onOff=" + onOff + ", setup_save_time=" + setup_save_time + ", cate_name1="
-				+ cate_name1 + ", cate_name2=" + cate_name2 + ", cate_name3=" + cate_name3 + ", notReadCount="
-				+ notReadCount + ", files=" + Arrays.toString(files) + "]";
-
+				+ cate_name1 + ", cate_name2=" + cate_name2 + ", cate_name3=" + cate_name3 + ", parent_cate_no1="
+				+ parent_cate_no1 + ", parent_cate_no2=" + parent_cate_no2 + ", parent_cate_no3=" + parent_cate_no3
+				+ ", parent_cate_name1=" + parent_cate_name1 + ", parent_cate_name2=" + parent_cate_name2
+				+ ", parent_cate_name3=" + parent_cate_name3 + ", notReadCount=" + notReadCount + ", rnum=" + rnum
+				+ ", files=" + Arrays.toString(files) + "]";
 	}
 
-
-	
 }

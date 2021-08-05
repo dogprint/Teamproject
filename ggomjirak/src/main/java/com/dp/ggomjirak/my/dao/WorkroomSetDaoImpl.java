@@ -49,4 +49,10 @@ public class WorkroomSetDaoImpl implements WorkroomSetDao {
 		return list;
 	}
 
+	@Override
+	public List<LikeBookmarkDao> likeList(String user_id) {
+		List<LikeBookmarkDao> list = sqlSession.selectList(NAMESPACE + "likeList", user_id);
+		return list;
+	}
+
 }

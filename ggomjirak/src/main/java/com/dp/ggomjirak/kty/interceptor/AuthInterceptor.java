@@ -21,6 +21,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		String uri = request.getRequestURI();
 		String queryString = request.getQueryString();
 		String requestPath = null;
+
+		if (uri == "/manager/**/*") {
+			uri = "/main/mainHome";
+		}
 		if(queryString == null) {
 			requestPath = uri;
 		} else {
@@ -30,11 +34,14 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		session.setAttribute("requestPath", requestPath);
 		
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+				
 		// 로그인 되어 있지 않다면
 		if (memberVo == null) {
+			//response.sendRedirect("/loginForm");
 			response.sendRedirect("/mypage/login");
 			return false; // 요청 처리를 중단
 		}
+		
 		return true; // 요청 처리를 계속함
 	}	
 }

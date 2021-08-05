@@ -74,7 +74,7 @@ $(document).ready(function() {
 						</div>
 						<div class="col-md-3" style="height:167px;">
 							<c:if test="${storyVo.st_img != null}">
-								<img src="/story_img/displayImage?filePath=${storyVo.st_img}"
+								<img src="/img/displayImage?filePath=${storyVo.st_img}"
 								style="width: 100%; height: 100%; object-fit:cover;">
 							</c:if>
 						</div>

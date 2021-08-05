@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dp.ggomjirak.jh.dao.EventDao;
 import com.dp.ggomjirak.vo.EventVo;
@@ -93,6 +94,7 @@ public class EventServiceImpl implements EventService {
 		
 	}
 
+	@Transactional
 	@Override
 	public void deleteEvent(int e_no) {
 		eventDao.deleteEvent(e_no);

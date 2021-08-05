@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dp.ggomjirak.kty.dao.CsCenterDao;
 import com.dp.ggomjirak.vo.QnAVo;
@@ -14,7 +15,6 @@ public class CsCenterServiceImpl implements CsCenterService {
 
 	@Inject
 	private CsCenterDao csCenterDao;
-	
 
 	@Override
 	public List<QnAVo> listAll(String userID) {
@@ -22,14 +22,14 @@ public class CsCenterServiceImpl implements CsCenterService {
 		return list;
 	}
 
+	@Transactional
 	@Override
 	public void wirteRun(QnAVo qnAVo) {
 		int nextval = csCenterDao.getNextVal();
-		System.out.println("csCenterDao.getNextVal():" + nextval);
+		//System.out.println("csCenterDao.getNextVal():" + nextval);
 		qnAVo.setQna_no(nextval);
-		System.out.println("qnAVo:" + qnAVo);
+		//System.out.println("qnAVo:" + qnAVo);
 		csCenterDao.insertArticle(qnAVo);
-		//csCenterDao.insertAttach(qnAVo);
 	}
 	
 	@Override
@@ -38,14 +38,17 @@ public class CsCenterServiceImpl implements CsCenterService {
 		return qnAVo;
 	}
 
+	@Transactional
 	@Override
 	public void updateRun(QnAVo qnAVo) {
 		csCenterDao.updateArticle(qnAVo);
 	}
 
+	@Transactional
 	@Override
 	public void deleteRun(int qna_no) {
 		csCenterDao.deleteArticle(qna_no);
 	}
+
 
 }

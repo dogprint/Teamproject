@@ -24,7 +24,7 @@
 	<!-- 이벤트 글 목록 (전체) -->
 	<select id="showEventListAll" resultType="EventVo">
 		select * from
-		    (select rownum rnum, a.*, b.user_id, c.e_no "BANNER" from
+		    (select rownum rnum, a.*, c.e_no "BANNER" from
 		        (select * from tbl_event
 		        <choose>
 				<when test="qCheck == 1">
@@ -40,7 +40,6 @@
 				</when>
 			</choose>
 		        ) a
-		        left join tbl_manager_member b on a.m_no = b.m_no
 		        left join tbl_main_event c on a.e_no = c.e_no
 		        order by a.e_no desc)
 		where rnum between #{startRow} and #{endRow}
@@ -123,21 +122,21 @@
 	<!-- 이벤트글 작성 -->
 	<insert id="insertEvent">
 		insert into tbl_event
-		values(seq_e_no.nextval, #{m_no, jdbcType=NUMERIC}, #{e_title}, #{e_content, jdbcType=VARCHAR}, 
+		values(seq_e_no.nextval, #{e_title}, #{e_content, jdbcType=VARCHAR}, 
 			#{e_img, jdbcType=VARCHAR}, sysdate, #{mod_date, jdbcType=TIMESTAMP}, 'N', 
-			#{start_date, jdbcType=DATE}, #{end_date, jdbcType=DATE}, #{del_date, jdbcType=TIMESTAMP})
+			#{start_date, jdbcType=DATE}, #{end_date, jdbcType=DATE}, #{del_date, jdbcType=TIMESTAMP}, #{user_id})
 	</insert>
 	
 	<!-- 이벤트 글 수정 -->
 	<update id="updateEvent">
 		update tbl_event set
-			m_no = #{m_no, jdbcType=NUMERIC},
 			e_title = #{e_title},
 			e_content = #{e_content, jdbcType=VARCHAR},
 			e_img = #{e_img, jdbcType=VARCHAR},
 			mod_date = sysdate,
 			start_date = #{start_date, jdbcType=DATE},
-			end_date = #{end_date, jdbcType=DATE}
+			end_date = #{end_date, jdbcType=DATE},
+			user_id = #{user_id}
 		where e_no = #{e_no}	
 	</update>
 	
@@ -162,7 +161,7 @@
 	<!-- 메인 이벤트 목록 -->
 	<select id="mainEventBannerList" resultType="EventVo">
 		select * from
-		    (select rownum rnum, a.*, b.user_id from
+		    (select rownum rnum, a.* from
 		        (select * from tbl_event where e_no in (select * from tbl_main_event)
 		        and is_del = 'N'
 		        <choose>
@@ -174,7 +173,6 @@
 				</when>
 			</choose>
              	) a
-		        left join tbl_manager_member b on a.m_no = b.m_no
                 order by e_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>

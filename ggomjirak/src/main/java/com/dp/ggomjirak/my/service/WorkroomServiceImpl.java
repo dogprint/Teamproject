@@ -27,8 +27,8 @@ public class WorkroomServiceImpl implements WorkroomService {
 	}
 
 	@Override
-	public int hobbyCount(String hobby_writer) {
-		int count = workroomDao.hobbyCount(hobby_writer);
+	public int hobbyCount(String user_id) {
+		int count = workroomDao.hobbyCount(user_id);
 		return count;
 	}
 	
@@ -67,6 +67,12 @@ public class WorkroomServiceImpl implements WorkroomService {
 	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto) {
 		List<LikeBookmarkVo> list = workroomDao.listBookmark(pagingDto);
 		return list;
+	}
+
+	@Override
+	public int bookmarkCount(String user_id) {
+		int count = workroomDao.bookmarkCount(user_id);
+		return count;
 	}
 
 

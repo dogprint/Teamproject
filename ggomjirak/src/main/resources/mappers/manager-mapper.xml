@@ -14,8 +14,7 @@
 		    and user_id not in(select user_id from tbl_manager_member)
 		    order by reg_date desc) a
 		    left join tbl_memberdetail b on a.user_id = b.user_id
-            <include refid="search"></include>
-            )
+            <include refid="search"></include>)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 회원 수(활동중) -->
@@ -30,30 +29,7 @@
 		    <include refid="search"></include>)
 	</select>
 	
-	<sql id="search">
-		<if test="searchType != null">
-			<choose>
-				<when test='searchType == "i"'>
-					where a.user_id like '%' || #{keyword} || '%'
-				</when>
-				<when test='searchType == "n"'>
-					where b.user_nick like '%' || #{keyword} || '%'
-				</when>
-				<when test='searchType == "m"'>
-					where a.user_name like '%' || #{keyword} || '%'
-				</when>
-				<when test='searchType == "in"'>
-					where a.user_id like '%' || #{keyword} || '%'
-					or b.user_nick like '%' || #{keyword} || '%'
-				</when>
-				<when test='searchType == "inm"'>
-					where a.user_id like '%' || #{keyword} || '%'
-					or b.user_nick like '%' || #{keyword} || '%'
-					or a.user_name like '%' || #{keyword} || '%'
-				</when>
-			</choose>
-		</if>
-	</sql>
+	
 	
 	<!-- 회원 정보 목록 (탈퇴) -->
 	<select id="showMemberListLeave" resultType="MemberVo">
@@ -63,15 +39,20 @@
 		    where is_del = 'Y'
 		    and user_id not in(select user_id from tbl_manager_member)
 		    order by reg_date desc) a
-		    left join tbl_memberdetail b on a.user_id = b.user_id)
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+		    <include refid="search"></include>)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 회원 수(탈퇴) -->
 	<select id="getCountMemberListLeave" resultType="int">
-		select count(*)
-		from tbl_memberinfo
-		where is_del = 'Y'
-		and user_id not in(select user_id from tbl_manager_member)
+		select count(*) from
+		(select a.*, b.user_nick from
+		    (select * from tbl_memberinfo
+		    where is_del = 'Y'
+		    and user_id not in(select user_id from tbl_manager_member)
+		    order by reg_date desc) a
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+		<include refid="search"></include>)
 	</select>
 	
 	<!-- 회원 정보 조회 -->
@@ -158,13 +139,15 @@
 	<select id="showManagerList" resultType="ManagerVo">
 		select * from
 		(select rownum rnum, a.* from tbl_manager_member a
+		<include refid="searchManager"></include>
 		order by m_no desc)
-		where rnum between 1 and 10
+		where rnum between #{startRow} and #{endRow}
 	</select>
 	
 	<!-- 관리자 회원 수 -->
 	<select id="getCountManager" resultType="int">
-		select count (*) from tbl_manager_member
+		select count (*) from tbl_manager_member a
+		<include refid="searchManager"></include>
 	</select>
 	
 	<!-- 관리자 회원 등록 -->
@@ -183,9 +166,9 @@
 	<!-- 이벤트 글 목록 (전체) -->
 	<select id="showEventListAll" resultType="EventVo">
 		select * from
-		    (select rownum rnum, a.*, b.user_id from
+		    (select rownum rnum, a.* from
 		        (select * from tbl_event
-		        <choose>
+		      <choose>
 				<when test="qCheck == 1">
 				where is_del = 'N'
 				and end_date > sysdate
@@ -199,12 +182,13 @@
 				</when>
 			</choose>
 		        order by e_no desc) a
-		        left join tbl_manager_member b on a.m_no = b.m_no)
+		        <include refid="searchEvent"></include>)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 글갯수 -->
 	<select id="getCountEventAll" resultType="int">
-		select count (*) from tbl_event
+		select count (*) from
+		        (select * from tbl_event
 		 <choose>
 				<when test="qCheck == 1">
 				where is_del = 'N'
@@ -218,6 +202,7 @@
 				where is_del = 'Y'
 				</when>
 			</choose>
+			<include refid="searchEvent"></include>
 	</select>
 
 	<!-- 이벤트 글 목록 (진행중) -->
@@ -315,7 +300,7 @@
 	<!-- 메인 이벤트 목록 -->
 	<select id="mainEventBannerList" resultType="EventVo">
 		select * from
-		    (select rownum rnum, a.*, b.user_id from
+		    (select rownum rnum, a.* from
 		        (select * from tbl_event where e_no in (select * from tbl_main_event)
 		        and is_del = 'N'
 		        <choose>
@@ -327,7 +312,7 @@
 				</when>
 			</choose>
              	) a
-		        left join tbl_manager_member b on a.m_no = b.m_no
+             	<include refid="searchEvent"></include>
                 order by e_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>
@@ -343,18 +328,20 @@
 				<when test="qCheck == 2">
 				and sysdate > end_date
 				</when>
-			</choose>)
+			</choose>
+			<include refid="searchEvent"></include>)
 	</select>
 	
 	<!-- 메인 -->
 	<!-- 인기 작가 리스트 -->
 	<select id="selectPopularMemberList" resultType="MemberVo">
 		select * from
-		(select a.*, c.name, rownum rnum from
+		(select rownum rnum, b.* from
+				(select a.*, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N')
                 and user_id not in(select user_id from tbl_manager_member)) a 
                 left join tbl_membergrade c on a.user_grade = c.cd
-                order by a.follower_cnt desc, a.user_grade desc)
+                order by a.follower_cnt desc, a.user_grade desc)b)
 		where rnum between 1 and 10
 	</select>
 	<!-- 가입 회원 수 -->
@@ -375,6 +362,64 @@
 		select count(*) as from tbl_memberdetail
 		where user_grade = 1)
 	</select>
-
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "i"'>
+					where a.user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "n"'>
+					where b.user_nick like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "m"'>
+					where a.user_name like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "in"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or b.user_nick like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "inm"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or b.user_nick like '%' || #{keyword} || '%'
+					or a.user_name like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
+	
+	<sql id="searchManager">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "i"'>
+					where a.user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "m"'>
+					where a.user_name like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "im"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or a.user_name like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
+	
+	<sql id="searchEvent">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "t"'>
+					where a.e_title like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "u"'>
+					where a.user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "tu"'>
+					where a.e_title like '%' || #{keyword} || '%'
+					or a.user_id like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
 
 </mapper>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dp.ggomjirak.my.dao.LikeBookmarkDao;
 import com.dp.ggomjirak.my.service.WorkroomSetService;
 import com.dp.ggomjirak.vo.FollowVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -34,10 +35,11 @@ public class WorkroomSetController {
 		String user_id = memberVo.getUser_id();
 		WorkroomVo workroomVo = workroomSetService.getWrSet(user_id);
 		List<FollowVo> followingList = workroomSetService.followingList(user_id);
-		
+		List<LikeBookmarkDao> likeList = workroomSetService.likeList(user_id);
 		wrController.category(model);
 		model.addAttribute("page_id", user_id);
 		model.addAttribute("followingList", followingList);
+		model.addAttribute("likeList", likeList);
 		model.addAttribute("workroomVo", workroomVo);
 		return "workroom/wr_setting";
 	}

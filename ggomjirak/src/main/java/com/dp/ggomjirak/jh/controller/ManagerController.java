@@ -3,6 +3,7 @@ package com.dp.ggomjirak.jh.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,7 @@ public class ManagerController {
 	
 	// 홈
 	@RequestMapping(value="/managerHome", method=RequestMethod.GET)
-	public String managerHome(Model model, PagingDto pagingDto) throws Exception {
+	public String managerHome(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		List<MemberVo> popularMemberList = managerService.selectPopularMemberList();
 		int memberCount = managerService.getMemberCount();
 		int askCount = askService.getCountQnAMain();
@@ -50,12 +51,17 @@ public class ManagerController {
 		model.addAttribute("askCount", askCount);
 		model.addAttribute("eventCount", eventCount);
 		model.addAttribute("gradeList", JSONArray.fromObject(gradeList));
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/manager_home";
 	}
 	
 	// 회원 리스트
 	@RequestMapping(value="/managerMemberList", method=RequestMethod.GET)
-	public String managerMemberList(Model model, PagingDto pagingDto) throws Exception {
+	public String managerMemberList(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		int count = managerService.getCountMemberList(pagingDto);
 		pagingDto.setEndRow(10);
 		pagingDto.setPerPage(10);
@@ -64,13 +70,19 @@ public class ManagerController {
 		System.out.println("count: " + count);
 		System.out.println("pagingDto: " + pagingDto);
 		List<MemberVo> memberList = managerService.showMemberList(pagingDto);
+		
 		model.addAttribute("memberList", memberList);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/member/manager_member_list";
 	}
 
 	// 탈퇴 회원 리스트
 	@RequestMapping(value="/managerMemberListLeave", method=RequestMethod.GET)
-	public String managerMemberLeaveInfo(Model model, PagingDto pagingDto) throws Exception {
+	public String managerMemberLeaveInfo(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		int count = managerService.getCountMemberListLeave(pagingDto);
 		pagingDto.setEndRow(10);
 		pagingDto.setPerPage(10);
@@ -80,11 +92,16 @@ public class ManagerController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<MemberVo> memberLeaveList = managerService.showMemberListLeave(pagingDto);
 		model.addAttribute("leaveList", memberLeaveList);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/member/manager_member_list_leave";
 	}
 	// 회원 상세페이지
 	@RequestMapping(value="/managerMemberContent", method=RequestMethod.GET)
-	public String managerMemberContent(String user_id, Model model, PagingDto pagingDto) throws Exception {
+	public String managerMemberContent(String user_id, Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		MemberVo memberVo = managerService.selectMemberById(user_id);
 		CateStrVo cateVo = managerService.selectCateStr(user_id);
 		String grade = managerService.selectGradeById(user_id);
@@ -96,11 +113,16 @@ public class ManagerController {
 		model.addAttribute("activVo", activVo);
 		model.addAttribute("intro", intro);
 		model.addAttribute("pagingDto", pagingDto);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/member/manager_member_content";
 	}
 	// 회원 상세 정보 수정
 	@RequestMapping(value="/managerMemberContentModify", method=RequestMethod.GET)
-	public String managerMemberContentModify(String user_id, Model model) throws Exception {
+	public String managerMemberContentModify(String user_id, Model model, HttpSession session) throws Exception {
 		MemberVo memberVo = managerService.selectMemberById(user_id);
 		CateStrVo cateVo = managerService.selectCateStr(user_id);
 		String grade = managerService.selectGradeById(user_id);
@@ -111,6 +133,11 @@ public class ManagerController {
 		model.addAttribute("grade", grade);
 		model.addAttribute("activVo", activVo);
 		model.addAttribute("intro", intro);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("user_id", lo_user_id);
+		}
 		return "manager/member/manager_member_content_modify";
 	}
 	// 회원 상세 정보 수정 실행
@@ -139,7 +166,7 @@ public class ManagerController {
 	
 	// 관리자 리스트
 	@RequestMapping(value="/managerManagerList", method=RequestMethod.GET)
-	public String managerManagerList(Model model, PagingDto pagingDto) throws Exception {
+	public String managerManagerList(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		int count = managerService.getCountManager(pagingDto);
 		pagingDto.setEndRow(10);
 		pagingDto.setPerPage(10);
@@ -149,11 +176,16 @@ public class ManagerController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<ManagerVo> managerList = managerService.showManagerList(pagingDto);
 		model.addAttribute("managerList", managerList);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/manager/manager_manager_list";
 	}
 	// 관리자 등록 가능 회원 리스트
 	@RequestMapping(value="/managerManagerPermission", method=RequestMethod.GET)
-	public String managerManagerPermission(Model model, PagingDto pagingDto) throws Exception {
+	public String managerManagerPermission(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		int count = managerService.getCountMemberList(pagingDto);
 		pagingDto.setEndRow(10);
 		pagingDto.setPerPage(10);
@@ -163,6 +195,11 @@ public class ManagerController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<MemberVo> memberList = managerService.showMemberList(pagingDto);
 		model.addAttribute("memberList", memberList);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
+			String lo_user_id = lo_memberVo.getUser_id();
+			model.addAttribute("lo_user_id", lo_user_id);
+		}
 		return "manager/manager/manager_manager_permission";
 	}
 	// 관리자 등록

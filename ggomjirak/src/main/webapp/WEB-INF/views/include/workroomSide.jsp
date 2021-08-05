@@ -13,7 +13,10 @@ $(document).ready(function() {
 	});
 	
 	if ("${checkFollow}" == 1) {
-		$("#follow").attr("class", "btn btn-outline-primary");
+		$("#follow").attr({
+			"class" : "btn btn-outline-warning",
+			style : "color:#F39C12"
+		});
 		$("#follow").text("언팔로우");
 	}
 	
@@ -23,10 +26,16 @@ $(document).ready(function() {
 			console.log(rData);
 			// 팔로우
 			if (rData.follow) {
-				$("#follow").attr("class", "btn btn-outline-primary");
+				$("#follow").attr({
+					"class" : "btn btn-outline-warning",
+					style : "color:#F39C12"
+				});
 				$("#follow").text("언팔로우");
 			} else if (rData.unFollow) {
-				$("#follow").attr("class", "btn green_background white_color");
+				$("#follow").attr({
+					"class" : "btn green_background white_color",
+					style : "color:white"
+				});
 				$("#follow").text("팔로우");
 			}
 			$("#follower_cnt").text(rData.countFollow);
@@ -45,7 +54,7 @@ $(document).ready(function() {
 					<div class="checkout__order">
 						<!-- 유저 카드 프로필 -->
 						<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/main/${page_id}"><img class="profile" src="/resources/img/test/littleduck.png"
+							<a href="/workroom/main/${page_id}"><img class="profile" src="/displayImage?filePath=${memberInfo.user_img}"
 								alt="profile image" style="width: 100%; text-align: center"></a>
 						</div>
 						<div class="card-body">
@@ -89,10 +98,10 @@ $(document).ready(function() {
 							<c:choose>
 								<c:when test="${user_id == page_id}">
 									<a href="/workroomset/main" class="site-btn">작업실 설정</a>
-								</c:when> 							
+								</c:when>
 								<c:when test="${user_id != null}">
 									<button type="button" id="follow" class="btn green_background white_color">팔로우</button>
-									<a href="#" class="btn green_background white_color">쪽지</a>
+									<a href="/message/sendMessage" class="btn green_background white_color">쪽지</a>
 								</c:when>
 							</c:choose> 
 							</div>
@@ -107,7 +116,7 @@ $(document).ready(function() {
 								<li><a href="#hobby">꼼지락</a></li>
 								<li><a href="#story">Story</a></li>
 								<li><a href="#mbm">MadeByMe</a></li>
-								<li><a href="#feed">피드</a></li>
+								<li><a href="#bookmark">북마크</a></li>
 							</ul>
 						</div>
 					</div>

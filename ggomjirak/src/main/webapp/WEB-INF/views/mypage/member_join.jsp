@@ -127,10 +127,10 @@ $(document).ready(function(){
 		$.get(url, sendData, function(rData) {
 			console.log(rData);
 			if(rData == "true"){
-				$("#checkDupIdResult").text("사용 중인 아이디").css("color", "red");
+				$("#checkDupIdResult").text("이미 사용중이거나 탈퇴한 아이디입니다.").css("color", "red");
 				isCheckDupId = false;
 			} else {
-				$("#checkDupIdResult").text("사용 가능한 아이디").css("color", "blue");
+				$("#checkDupIdResult").text("멋진 아이디네요!").css("color", "blue");
 				isCheckDupId = true;
 			}
 			checkedId = user_id;
@@ -141,7 +141,7 @@ $(document).ready(function(){
 	$("#btnCheckDupNick").click(function(){
 		
 		if($("#user_nick").val() == ""){
-			$("#checkDupNickResult").text("별명을  입력해주세요.").css("color", "red");
+			$("#checkDupNickResult").text("닉네임을  입력해주세요.").css("color", "red");
 			$("#user_nick").focus();
 			return false;
 		}
@@ -154,10 +154,10 @@ $(document).ready(function(){
 		$.get(url, sendData, function(rData) {
 			console.log(rData);
 			if(rData == "true"){
-				$("#checkDupNickResult").text("사용 중인 별명").css("color", "red");
+				$("#checkDupNickResult").text("이미 사용 중인 닉네임입니다.").css("color", "red");
 				isCheckDupNick = false;
 			} else {
-				$("#checkDupNickResult").text("사용 가능한 별명").css("color", "blue");
+				$("#checkDupNickResult").text("멋진 닉네임이에요!").css("color", "blue");
 				isCheckDupNick = true;
 			}
 			checkedNick = user_nick;
@@ -180,7 +180,7 @@ ${list}
 					<div class="row">
 					<div class="col-md-3">
 						<!-- 내부 패널 왼쪽 -->
-						<%@ include file="mypage_include/mypage_left.jsp"%>
+						<%-- <%@ include file="mypage_include/mypage_left.jsp"%> --%>
 					</div>
 					<div class="col-md-9">
 						<!-- 내부 패널 메인 -->
@@ -270,7 +270,7 @@ ${list}
 								<input type="text" class="form-control" id="user_name" name="user_name" />
 							</div>
 							<div class="form-group">
-								<label for="user_nick">닉네임</label>
+								<label for="user_nick">닉네임*</label>
 								<input type="text" class="form-control" id="user_nick" name="user_nick" />
 								<br>
 								<button type="button" class="btn btn-small btn-danger"

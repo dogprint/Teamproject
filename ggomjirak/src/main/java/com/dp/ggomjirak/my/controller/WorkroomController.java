@@ -98,12 +98,17 @@ public class WorkroomController {
 		
 		// 취미 목록
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
-		
 		// 북마크 목록
 		List<LikeBookmarkVo> bmList = workroomService.listBookmark(pagingDto);
+		
+		int bookmarkCount = workroomService.bookmarkCount(page_id);
+		int hobbyCount = workroomService.hobbyCount(page_id);
+		
 		// 카드 프로필 값 공통 메서드 보내줌
 		profileCommon(page_id, model, session);
 		category(model);			
+		model.addAttribute("bookmarkCount", bookmarkCount);
+		model.addAttribute("hobbyCount", hobbyCount);
 		model.addAttribute("storyList", storyList);
 		model.addAttribute("hobbyList", hobbyList);
 		model.addAttribute("bmList", bmList);

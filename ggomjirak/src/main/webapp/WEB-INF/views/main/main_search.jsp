@@ -22,7 +22,7 @@ $(document).ready(function() {
 <input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
 <input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
 </form>
-<div class="row">
+<div class="row m_top">
 	<div class="col-md-12">
 		<div class="row">
 			<div class="col-md-1 col-lg-2"></div>
@@ -36,9 +36,9 @@ $(document).ready(function() {
 							class="navbar navbar-light flex-column align-items-stretch p-3 orange_color">
 							<a class="navbar-brand border-bottom orange_color" href="#">검색</a>
 							<nav class="nav nav-pills flex-column">
-								<a class="nav-link text-gray" href="#item-1">취미</a>
-								<a class="nav-link text-gray" href="#item-2">작가</a>
-								<a class="nav-link text-gray" href="#item-3">Made by Me</a>
+								<a class="nav-link text-gray" href="#hobby">취미</a>
+								<a class="nav-link text-gray" href="#member">작가</a>
+								<a class="nav-link text-gray" href="#made">Made by Me</a>
 							</nav>
 						</nav>
 					</div>
@@ -52,22 +52,20 @@ $(document).ready(function() {
 
 						<div data-bs-spy="scroll" data-bs-target="#navbar-example3"
 							data-bs-offset="0" tabindex="0">
-							
+							<h5>검색결과</h5>
 							<table class="table">
-							<thead>
-								<tr><th scope="col">검색결과</th></tr>
-							</thead>
+							
 							
 							<tbody>
 								<tr>
 									<td>
 										<div style="overflow:hidden;">
-											<h4 id="item-1">취미</h4>
+											<h4 id="hobby" class="m_top m_bottom">취미</h4>
 											
 											<c:forEach var="hobby" items="${searchHobbyList}">
 												<div class="col-lg-3 col-md-4 col-sm-6" style="float:left;">
 													<div class="featured__item">
-														<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-1.jpg">
+														<div class="featured__item__pic set-bg" data-setbg="/displayImage?filePath=${hobby.main_img}">
 															<ul class="featured__item__pic__hover">
 																<li><a href="#"><i class="fa fa-heart"></i></a></li>
 																<li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -75,8 +73,8 @@ $(document).ready(function() {
 															</ul>
 														</div>
 														<div class="featured__item__text">
-															<h6><a href="#">${hobby.hobby_title}</a></h6>
-															<h5>${hobby.user_nick}</h5>
+															<h6><a class="short" href="/hobby/content/${hobby.hobby_no}">${hobby.hobby_title}</a></h6>
+															<h5><a class="short" href="/workroom/main/${hobby.user_id}">${hobby.user_nick}</a></h5>
 														</div>
 													</div>
 												</div>
@@ -89,7 +87,7 @@ $(document).ready(function() {
 								<tr>
 									<td>
 										<div style="overflow:hidden;">
-							<h4 id="item-2">작가</h4>
+							<h4 id="member" class="m_top m_bottom">작가</h4>
 
 							<c:forEach var="member" items="${searchMemberList}">
 							<div class="col-lg-2 col-md-4 col-sm-6" style="float:left;">
@@ -104,7 +102,7 @@ $(document).ready(function() {
 										</ul>
 									</div>
 									<div class="featured__item__text">
-										<h6><a href="#">${member.user_nick}</a></h6>
+										<h6><a class="short" href="/workroom/main/${member.user_id}">${member.user_nick}</a></h6>
 										<h5>${member.name}</h5>
 									</div>
 								</div>
@@ -118,7 +116,7 @@ $(document).ready(function() {
 								<tr>
 									<td>
 										<div style="overflow:hidden;">
-											<h4 id="item-3">Made by Me</h4>
+											<h4 id="made" class="m_top m_bottom">Made by Me</h4>
 												<div class="col-lg-3 col-md-4 col-sm-6" style="float:left;">
 													<div class="featured__item">
 														<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-1.jpg">

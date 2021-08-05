@@ -35,18 +35,18 @@
 }
 </style>
 <script>
-$(document).ready(function() {	
-	$("#frmStory").submit(function() {
-		var st_content = $("#st_content").val();
-		if (st_content.trim() == "" || st_content == null) {
-			console.log("내용입력");
-			$("#msg").text("스토리 내용을 입력해 주세요.");
-			$("#st_content").focus();
-			return false;
-		}
-		$(this).submit();
-	});
-});
+// $(document).ready(function() {	
+// 	$("#frmStory").submit(function() {
+// 		var st_content = $("#st_content").val();
+// 		if (st_content.trim() == "" || st_content == null) {
+// 			console.log("내용입력");
+// 			$("#msg").text("스토리 내용을 입력해 주세요.");
+// 			$("#st_content").focus();
+// 			return false;
+// 		}
+// 		$(this).submit();
+// 	});
+// });
 </script>
 <!-- 글작성 폼 -->
 <div class="col-md-9">
@@ -71,7 +71,7 @@ $(document).ready(function() {
 			<div class="col-lg-12 text-center">
 				<span id="msg"></span>
 				<textarea placeholder="스토리를 작성해 주세요." name="st_content" id="st_content"></textarea>
-				<button type="submit" class="site-btn">등록</button>
+				<button type="button" onclick="doSubmit();" class="site-btn">등록</button>
 				<a href="/story/list/${page_id}" class="btn-cancle">취소</a>
 			</div>
 		</form>
@@ -100,7 +100,7 @@ function previewStoryImg(targetObj) {
 	// sort의 storyImg(Controller의 case문)
 	formData.append("sort", "storyImg");
 	
-	var url = "/story_img/uploadImage";
+	var url = "/img/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -133,11 +133,12 @@ function previewStoryImg(targetObj) {
 	});
 }
 	
+// 이미지 삭제
 function delStoryImg() {
 	console.log("삭제")
 	var filePath = $("#st_img").val();
 	console.log(filePath);
-	var url = "/story_img/deleteFile?filePath=" + filePath;
+	var url = "/img/deleteFile?filePath=" + filePath;
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#st_img").val("");
@@ -145,6 +146,43 @@ function delStoryImg() {
 			$("#btnDelStoryImg").css("display", "none");
 		}
 	})
+}
+
+function validate() {
+	// 내용 입력 X
+	var st_content = $("#st_content").val();
+	if (typeof st_content == "undefined" || st_content.trim() == "" || st_content ==  null) {
+		$("#msg").text("스토리 내용을 입력해 주세요.");
+		$("#msg").attr("style", "color:#FF5454; font-weight: bold");
+		$("#st_content").focus();
+		return false;
+	}
+	return true;
+}
+// 제출(등록)
+function doSubmit() {
+	valResult = validate();
+    if (!valResult) {
+        return false;
+    } 
+    
+	Swal.fire({
+		text: '등록하시겠습니까?', 
+		allowOutsideClick: false,
+		iconColor: "#1f5e43",
+		icon: 'question', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+		cancelButtonText: "취소",
+		showCancelButton: true,
+	}).then(function(result) {
+		if(result.isConfirmed) {
+			 $("#frmStory").submit();
+		} else {
+			return false;
+		}
+	});
+    
 }
 
 </script>

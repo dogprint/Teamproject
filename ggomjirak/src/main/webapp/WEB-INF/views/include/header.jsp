@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,6 +46,18 @@
 }
 .orange_color {
 	color:  rgb(231, 112, 92);
+}
+.m_top {
+	margin-top: 25px;
+}
+.m_bottom {
+	margin-bottom: 25px;
+}
+.short {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
 }
 
 </style>
@@ -108,6 +121,25 @@ $(document).ready(function() {
 	});
 	$("#keyword").val("${pagingDto.keyword}");
 	
+	//* 카테고리 부분
+	var MjsonData = JSON.parse('${managerList}');
+	var mUserIdArr = new Array();
+	var mUserIdObj = new Object();
+	// 1차 분류 셀렉트 박스에 삽입할 데이터 준비
+	for(var i = 0; i < MjsonData.length; i++) {
+		 mUserIdObj = new Object();  //초기화
+		 mUserIdObj.user_id = MjsonData[i].user_id;
+		 mUserIdArr.push(mUserIdObj);
+	}
+	var mUserIdLi = $("li.managerP")
+	for(var i = 0; i < mUserIdArr.length; i++) {
+		if("${user_id}" == MjsonData[i].user_id) {
+			console.log(MjsonData[i].user_id);
+			mUserIdLi.append("<a class='nav-link flex-item' href='/manager/managerHome'>관리자</a>"); 
+		}
+		
+	}
+	
 	
 });
 </script>
@@ -142,64 +174,62 @@ $(document).ready(function() {
 								  		</ul>
 								    
 								    <ul class="nav navbar-nav navbar-right">
+										<li class="nav-item managerP"></li>
+								    	
+								    	<c:if test="${user_id != null}">
 										<li class="nav-item"><a class="nav-link flex-item" href="/workroom/main/${user_id}">내 작업실</a></li>
+										</c:if>
+										<c:if test="${user_id == null}">
 										<li class="nav-item"><a class="nav-link" href="/mypage/login">로그인</a></li>
-										<li class="nav-item"><a class="nav-link flex-item" href="/workroom/main">
+										</c:if>
+										<c:if test="${user_id != null}">
+										<li class="nav-item"><a class="nav-link flex-item" href="/hobby/insert">
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
 										  <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
 										</svg>
 										</a></li>
 										<li class="nav-item dropdown">
-									        <a class="btn nav-link" href="#" id="dropdownMenuButton1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-												<path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+										
+										<div class="dropdown">
+										<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+											  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
 											</svg>
-									        </a>
-									        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-									          <a class="dropdown-item" href="#">알림내용</a>
-									          <a class="dropdown-item" href="#">알림내용</a>
-									          <a class="dropdown-item" href="#">알림내용</a>
-									          <a class="dropdown-item" href="#">알림내용</a>
-									          <a class="dropdown-item" href="#">알림내용</a>
-									          <div class="dropdown-divider"></div>
-												<a class="dropdown-item" href="#">알림함</a>
-									        </div>
-<!-- 										<div class="dropdown"> -->
-<!-- 										  <a class="btn nav-link" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> -->
-<!-- 										   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16"> -->
-<!-- 											  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/> -->
-<!-- 											</svg> -->
-<!-- 										  </a> -->
-<!-- 										  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림내용</a></li> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림내용</a></li> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림내용</a></li> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림내용</a></li> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림내용</a></li> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림내용</a></li> -->
-<!-- 										    <li><hr class="dropdown-divider"></li> -->
-<!-- 										    <li><a class="dropdown-item" href="#">알림함</a></li> -->
-<!-- 										  </ul> -->
-<!-- 										</div> -->
+										</a>
+									    <div class="dropdown-menu">
+									      <a class="dropdown-item" href="/mypage/infoForm">마이페이지</a>
+										    <a class="dropdown-item" href="#">알림내용</a>
+										    <a class="dropdown-item" href="#">알림내용</a>
+										    <a class="dropdown-item" href="#">알림내용</a>
+										    <a class="dropdown-item" href="#">알림내용</a>
+										    <a class="dropdown-item" href="#">알림내용</a>
+										    <a class="dropdown-item" href="#">알림내용</a>
+										    <hr class="dropdown-divider">
+										    <a class="dropdown-item" href="#">알림함</a>
+									    </div>
+									    </div>
+										
 										</li>
 										
 										<li class="nav-item dropdown ml-md-auto">
+										
 										<div class="dropdown">
-										  <a class="btn nav-link" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-										   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+										<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
 													fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
 												<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
 											</svg>
-										  </a>
-										  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-										    <li><a class="dropdown-item" href="/mypage/infoForm">마이페이지</a></li>
-										    <li><a class="dropdown-item" href="#">쪽지함</a></li>
-										    <li><a class="dropdown-item" href="#">1:1문의</a></li>
-										    <li><hr class="dropdown-divider"></li>
-										    <li><a class="dropdown-item" href="#">로그아웃</a></li>
-										  </ul>
-										</div>
+										</a>
+									    <div class="dropdown-menu">
+									      <a class="dropdown-item" href="/mypage/infoForm">마이페이지</a>
+										    <a class="dropdown-item" href="/message/messageListReceive">쪽지함</a>
+										    <a class="dropdown-item" href="/cs_center/consultQs">1:1문의</a>
+										    <hr class="dropdown-divider">
+										    <a class="dropdown-item" href="/mypage/logout">로그아웃</a>
+									    </div>
+									    </div>
 										</li>
+										</c:if>
 									</ul>
 								  </div>
 								</nav>
@@ -231,28 +261,19 @@ $(document).ready(function() {
 							      </div>
 							    </div>
 							    <div class="col-lg-2 col-md-3 mb-3">
-<!-- 							      <label for="validationCustom04">중분류</label> -->
-										<div class="dropdown">
-										  <a class="btn btn-outline-light green_background shadow bg-body rounded dropdown-toggle" href="#" role="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										   	 카테고리
-										  </a>
-										
-										  <div class="cate4 dropdown-menu" aria-labelledby="dropdownMenuButton1">
-										    <a class="dropdown-item" href="#">중분류</a>
-										    
-										  </div>
-										</div>
-<!-- 							      <button class="form-control btn btn-outline-light green_background shadow bg-body rounded dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"> -->
-<!-- 									   카테고리 -->
-<!-- 									  </button> -->
-<!-- 									  <ul class="cate4 dropdown-menu" aria-labelledby="dropdownMenuButton1"> -->
-<!-- 									    <li><a class="dropdown-item" href="#">중분류</a></li> -->
-<!-- 									  </ul> -->
+									<div class="dropdown">
+									  <button class="form-control btn btn-outline-light green_background shadow bg-body rounded dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									    카테고리
+									  </button>
+									  <div class="cate4 dropdown-menu" aria-labelledby="dropdownMenuButton">
+									    <a class="dropdown-item" href="#">중분류</a>
+									    
+									  </div>
+									</div>
 							      <div class="invalid-feedback">
 							      </div>
 							    </div>
 							    <div class="col-lg-8 col-md-6 mb-3">
-<!-- 							      <label for="validationCustom05">검색</label> -->
 							      <div class="input-group mb-3">
 									  <input id="keyword" name="keyword" type="text" class="form-control shadow bg-body rounded" placeholder="나의 취미를 찾아보세요" aria-label="Recipient's username" aria-describedby="button-addon2">
 									  <div class="input-group-append">

@@ -26,7 +26,7 @@ $(document).ready(function(){
 					<div class="row">
 					<div class="col-md-3">
 						<!-- 내부 패널 왼쪽 -->
-						<%@ include file="mypage_include/mypage_left.jsp"%>
+						<%-- <%@ include file="mypage_include/mypage_left.jsp"%> --%>
 					</div>
 					<div class="col-md-9">
 						<!-- 내부 패널 메인 -->
@@ -35,7 +35,7 @@ $(document).ready(function(){
 								<label for="user_id"> 아이디 </label> 
 								<input type="text" class="form-control" 
 									id="user_id" name="user_id"
-									value="hamster" />
+									value="puppy" />
 							</div>
 							<div class="form-group">
 								<label for="user_pw"> 패스워드 </label> 

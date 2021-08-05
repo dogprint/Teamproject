@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dp.ggomjirak.jh.dao.AskDao;
 import com.dp.ggomjirak.vo.PagingDto;
@@ -41,6 +42,7 @@ public class AskServiceImpl implements AskService {
 		return qnaVo;
 	}
 
+	@Transactional
 	@Override
 	public void insertAnswer(QnAVo qnaVo) {
 		int nextval = askDao.getNextVal();

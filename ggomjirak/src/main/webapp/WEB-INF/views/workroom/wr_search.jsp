@@ -19,7 +19,7 @@ $(document).ready(function() {
 </script>
 <div class="col-md-9">
 <!-- 페이지용 form -->
-<form id="frmPaging" action="/workroom/search" method="get">
+<form id="frmPaging" action="/workroom/search/${pagingDto.user_id}" method="get">
 	<input type="hidden" name="page" value="${pagingDto.page}"/>
 	<input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
 	<input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
@@ -36,7 +36,7 @@ $(document).ready(function() {
 			<div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg"
-						data-setbg="/resources/img/test/sample06.jpg">
+						data-setbg="/displayImage?filePath=${hobbyVo.user_img}">
 						<ul class="featured__item__pic__hover">
 							<li><a href="#"><i class="fa fa-heart"></i></a></li>
 							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -70,7 +70,9 @@ $(document).ready(function() {
 						</p>
 					</div>
 					<div class="col-md-2" style="padding: 0px;">
-						<img src="/resources/img/test/duck.png" width="100px">
+						<c:if test="${storyVo.st_img != null}">
+							<img src="/displayImage?filePath=${storyVo.st_img}" width="100px">
+						</c:if>
 					</div>
 				</div>
 				<hr>

@@ -158,7 +158,7 @@ ol {
 	right: 0;
 	height: 4px;
 	width: 80px;
-	background: #7fad39;
+	background: #3A7C5F;
 	content: "";
 	margin: 0 auto;
 }
@@ -873,7 +873,7 @@ ol {
 	bottom: -2px;
 	width: 100%;
 	height: 2px;
-	background: #7fad39;
+	background: #3A7C5F;
 	content: "";
 	opacity: 0;
 }
@@ -1164,14 +1164,11 @@ ol {
 	height: 1px;
 	width: 5px;
 	background: #dd2222;
-	content: "";
 }
 
 .price-range-wrap .range-slider .price-input input {
 	font-size: 16px;
-	color: #dd2222;
 	font-weight: 700;
-	max-width: 20%;
 	border: none;
 	display: inline-block;
 }
@@ -1199,7 +1196,7 @@ ol {
 }
 
 .price-range-wrap .price-range .ui-slider-range {
-	background: #dd2222;
+	background: #1f5e43;
 	border-radius: 0;
 }
 

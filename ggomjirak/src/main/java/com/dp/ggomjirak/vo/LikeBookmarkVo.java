@@ -9,7 +9,7 @@ public class LikeBookmarkVo {
 	
 	private String hobby_title;
 	private String main_img;
-	private String image_file;
+	private String user_img;
 	private String user_nick;
 	
 	public LikeBookmarkVo() {
@@ -18,14 +18,14 @@ public class LikeBookmarkVo {
 	}
 
 	public LikeBookmarkVo(String user_id, int hobby_no, Timestamp bm_savetime, String hobby_title, String main_img,
-			String image_file, String user_nick) {
+			String user_img, String user_nick) {
 		super();
 		this.user_id = user_id;
 		this.hobby_no = hobby_no;
 		this.bm_savetime = bm_savetime;
 		this.hobby_title = hobby_title;
 		this.main_img = main_img;
-		this.image_file = image_file;
+		this.user_img = user_img;
 		this.user_nick = user_nick;
 	}
 
@@ -69,12 +69,12 @@ public class LikeBookmarkVo {
 		this.main_img = main_img;
 	}
 
-	public String getImage_file() {
-		return image_file;
+	public String getUser_img() {
+		return user_img;
 	}
 
-	public void setImage_file(String image_file) {
-		this.image_file = image_file;
+	public void setUser_img(String user_img) {
+		this.user_img = user_img;
 	}
 
 	public String getUser_nick() {
@@ -88,8 +88,8 @@ public class LikeBookmarkVo {
 	@Override
 	public String toString() {
 		return "LikeBookmarkVo [user_id=" + user_id + ", hobby_no=" + hobby_no + ", bm_savetime=" + bm_savetime
-				+ ", hobby_title=" + hobby_title + ", main_img=" + main_img + ", image_file=" + image_file
-				+ ", user_nick=" + user_nick + "]";
+				+ ", hobby_title=" + hobby_title + ", main_img=" + main_img + ", user_img=" + user_img + ", user_nick="
+				+ user_nick + "]";
 	}
 	
 }

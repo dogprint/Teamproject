@@ -159,40 +159,64 @@ $(document).ready(function() {
 					</div>
 				</div>
 			</div>
-			<div class="checkout__order">
-				<div class="workroom_box">
-					<h4>팔로잉 목록</h4>
-				</div>
-				<div class="workroom_box">
-					<hr>
-						<c:forEach var="followVo" items="${followingList}">
-					<div class="row" style="margin-top: 15px; margin-bottom:15px">
-						<div class="col-md-10">
-							<div class="blog__details__author">
-								<div class="blog__details__author__pic">
-									<a href="#"><img src="/resources/img/test/littleduck.png" alt=""></a>
-								</div>
-								<div class="blog__details__author__text">
-									<span data-id="${followVo.following}">${followVo.user_nick}</span>
-								</div>
-							</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="checkout__order">
+						<div class="workroom_box">
+							<h4>팔로잉 목록</h4>
 						</div>
-						<div class="col-md-2">
-							<div style="text-align: right" class="divUnfollow">
-								<button type="button" class="btn btn-outline-primary unfollow">언팔로우</button> 
-							</div>
+						<div class="workroom_box">
+							<hr>
+								<c:forEach var="followVo" items="${followingList}">
+								<div class="row" style="margin-top: 15px; margin-bottom:15px">
+									<div class="col-md-8">
+										<div class="blog__details__author">
+											<div class="blog__details__author__pic">
+												<a href="#"><img src="/displayImage?filePath=${followVo.user_img}" alt=""></a>
+											</div>
+											<div class="blog__details__author__text">
+												<span data-id="${followVo.following}">${followVo.user_nick}</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div style="text-align: right" class="divUnfollow">
+											<button type="button" class="btn btn-outline-primary unfollow">언팔로우</button> 
+										</div>
+									</div>
+								</div>
+							</c:forEach>
 						</div>
 					</div>
-					</c:forEach>
 				</div>
-			</div>
-			<div class="checkout__order">
-				<div class="workroom_box">
-					<h4>좋아요 목록</h4>
-				</div>
-				<div class="workroom_box">
-					<hr>
-					<p>공개</p>
+				<div class="col-md-6">
+					<div class="checkout__order">
+						<div class="workroom_box">
+							<h4>좋아요 목록</h4>
+						</div>
+						<div class="workroom_box">
+							<hr>
+							<c:forEach var="likeBmVo" items="${likeList}">
+								<div class="row" style="margin-top: 15px; margin-bottom:15px">
+									<div class="col-md-7">
+										<div>
+											<a href="/hobby/content/${likeBmVo.hobby_no}" style="font-weight: bold">[${likeBmVo.hobby_title}]</a> 
+										</div>
+									</div>
+									<div class="col-md-5">
+										<div class="blog__details__author">
+											<div class="blog__details__author__pic">
+												<a href="#"><img src="/displayImage?filePath=${likeBmVo.user_img}" alt=""></a>
+											</div>
+											<div class="blog__details__author__text">
+												<span>${likeBmVo.user_nick}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

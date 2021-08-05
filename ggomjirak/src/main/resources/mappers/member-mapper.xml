@@ -10,7 +10,7 @@
 		where user_id = #{user_id} and user_pw = #{user_pw} and is_del = 'N'
 	</select>
 	
-	<select id ="info" resultType="MemberVo">
+	<select id ="info-이전내용" resultType="MemberVo">
 		select a.user_id, a.user_pw, a.user_name, a.user_email, a.user_tel, a.reg_date, a.is_del, 
 			   b.user_nick, b.cate_no1, b.cate_no2, b.cate_no3, b.cate_etc, 
 			   b.follower_cnt, b.following_cnt, b.user_img, b.user_grade, 
@@ -26,6 +26,30 @@
 	    	left join tbl_hobby_cate g on b.cate_no3 = g.cate_no
 		where a.user_id = #{user_id}
 	</select>
+	
+	<select id ="info" resultType="MemberVo">
+		select a.user_id, a.user_pw, a.user_name, a.user_email, a.user_tel, a.reg_date, a.is_del, 
+	       b.user_nick, b.cate_no1, b.cate_no2, b.cate_no3, b.cate_etc, 
+	       b.follower_cnt, b.following_cnt, b.user_img, b.user_grade, 
+	       c.name, 
+	       d.onOff, d.setup_save_time,
+	       e.cate_name as "cate_name1", f.cate_name as "cate_name2", g.cate_name as "cate_name3",
+	       h.cate_no as "parent_cate_no1", h.cate_name as "parent_cate_name1",
+	       i.cate_no as "parent_cate_no2", i.cate_name as "parent_cate_name2",
+	       j.cate_no as "parent_cate_no3", j.cate_name as "parent_cate_name3"      
+		from tbl_memberInfo a
+		    left join tbl_memberDetail b on a.user_id = b.user_id
+		    left join tbl_memberGrade c on b.user_grade = c.cd 
+		    left join tbl_memberSetup d on a.user_id = d.user_id
+		    left join tbl_hobby_cate e on b.cate_no1 = e.cate_no
+		    left join tbl_hobby_cate f on b.cate_no2 = f.cate_no
+		    left join tbl_hobby_cate g on b.cate_no3 = g.cate_no
+		    left join tbl_hobby_cate h on e.parent_cate_no = h.cate_no
+		    left join tbl_hobby_cate i on f.parent_cate_no = i.cate_no
+		    left join tbl_hobby_cate j on g.parent_cate_no = j.cate_no
+		where a.user_id = #{user_id}
+	</select>
+	
 	
 	<update id="updateMemberInfo">
 		update tbl_memberInfo set
@@ -46,6 +70,8 @@
 		update tbl_memberDetail set
 			user_nick = #{user_nick},
 			cate_no1 = #{cate_no1},
+			cate_no2 = #{cate_no2},
+			cate_no3 = #{cate_no3},
 			cate_etc = #{cate_etc},
 			reg_date = reg_date
  		where user_id = #{user_id}

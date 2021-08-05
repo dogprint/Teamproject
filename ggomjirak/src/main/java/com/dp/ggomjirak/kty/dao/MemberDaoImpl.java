@@ -8,6 +8,7 @@ import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -26,6 +27,7 @@ public class MemberDaoImpl implements MemberDao {
 		map.put("user_id", user_id);
 		map.put("user_pw", user_pw);
 		MemberVo memberVo = sqlSession.selectOne(NAMESPACE + "login", map);
+		System.out.println("MemberDaoImpl login: " + memberVo);
 		return memberVo;
 	}
 
@@ -38,6 +40,16 @@ public class MemberDaoImpl implements MemberDao {
 		return false;
 	}
 
+	@Override
+	public boolean checkDupNick(String user_nick) {
+		int count = sqlSession.selectOne(NAMESPACE + "checkDupNick", user_nick);
+		if (count > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Transactional
 	@Override
 	public void insertMember(MemberVo memberVo) {
 		sqlSession.insert(NAMESPACE + "insertMember", memberVo);
@@ -55,71 +67,14 @@ public class MemberDaoImpl implements MemberDao {
 
 	@Override
 	public MemberVo info(String user_id) {
-		System.out.println("MemberDaoImpl info 들어옴 user_id: " + user_id);
 		MemberVo memberVo = sqlSession.selectOne(NAMESPACE + "info", user_id);
-		System.out.println("MemberDaoImpl selectOne info: " + memberVo);
 		return memberVo;
 	}
 
 	@Override
 	public void updateArticle(MemberVo memberVo) {
 		sqlSession.update(NAMESPACE + "updateMemberInfo", memberVo); 
-		//sqlSession.update(NAMESPACE + "updateMemberDetail", memberVo); 
-		
 	}
-
-	@Override
-	public boolean checkDupNick(String user_nick) {
-		int count = sqlSession.selectOne(NAMESPACE + "checkDupNick", user_nick);
-		if (count > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean checkDupNickProfile(String user_id, String user_nick) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("user_id", user_id);
-		map.put("user_nick", user_nick);
-		
-		int count = sqlSession.selectOne(NAMESPACE + "checkDupNickProfile", map);
-		if (count > 0) {
-			return true;
-		}
-		return false;
-	}
-	
-	
-	@Override
-	public void updateProfileArticle(MemberVo memberVo) {
-		sqlSession.update(NAMESPACE + "updateMemberProfile", memberVo); 
-		
-	}
-
-	@Override
-	public void updateSetupArticle(MemberVo memberVo) {
-		sqlSession.update(NAMESPACE + "updateMemberSetup", memberVo); 
-	}
-	
-	/*@Override
-	public List<CateVo> selectCate() {
-		List<CateVo> list = sqlSession.selectList(NAMESPACE + "selectCate");
-		return list;
-	}*/
-
-	@Override
-	public List<CateVo> cateBigSort() {
-		List<CateVo> list = sqlSession.selectList(NAMESPACE + "cateBigSort");
-		return list;
-	}
-
-	@Override
-	public List<CateVo> cateSmallSort() {
-		List<CateVo> list = sqlSession.selectList(NAMESPACE + "cateSmallSort");
-		return list;
-	}
-	
 	
 	@Override
 	public void updateAttach(MemberVo memberVo) {
@@ -136,12 +91,46 @@ public class MemberDaoImpl implements MemberDao {
 				sqlSession.insert(NAMESPACE + "updateAttach", map);
 			}
 		}
+	}
+
+	@Override
+	public boolean checkDupNickProfile(String user_id, String user_nick) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("user_id", user_id);
+		map.put("user_nick", user_nick);
 		
+		int count = sqlSession.selectOne(NAMESPACE + "checkDupNickProfile", map);
+		if (count > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public void updateProfileArticle(MemberVo memberVo) {
+		sqlSession.update(NAMESPACE + "updateMemberProfile", memberVo); 
+	}
+
+	@Override
+	public void updateSetupArticle(MemberVo memberVo) {
+		sqlSession.update(NAMESPACE + "updateMemberSetup", memberVo); 
 	}
 
 	@Override
 	public List<CateVo> selectCate() {
 		List<CateVo> list = sqlSession.selectList(NAMESPACE + "selectCate");
+		return list;
+	}
+	
+	@Override
+	public List<CateVo> cateBigSort() {
+		List<CateVo> list = sqlSession.selectList(NAMESPACE + "cateBigSort");
+		return list;
+	}
+
+	@Override
+	public List<CateVo> cateSmallSort() {
+		List<CateVo> list = sqlSession.selectList(NAMESPACE + "cateSmallSort");
 		return list;
 	}
 	

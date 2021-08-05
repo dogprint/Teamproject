@@ -49,9 +49,12 @@ public class CsCenterController {
 		//System.out.println("pagingDto:" + pagingDto);
 		
 		// List<QnAVo> list = CsCenterService.listAll(HomeController.userID);
-		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-		List<QnAVo> list = CsCenterService.listAll(memberVo.getUser_id());
-		model.addAttribute("list", list);
+		// 인터셉터 추가로 수정 2021-08-04
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo) session.getAttribute("loginVo");
+			List<QnAVo> list = CsCenterService.listAll(memberVo.getUser_id());
+			model.addAttribute("list", list);
+		}
 		//model.addAttribute("pagingDto", pagingDto);
 		//model.addAttribute("pagingDto");
 		return "/cs_center/consult_list";
@@ -134,7 +137,7 @@ public class CsCenterController {
 	@RequestMapping(value = "/consultQnADelete", method = RequestMethod.GET)
 	public String consultQnADelete(int qna_no, RedirectAttributes rttr)  throws Exception {
 		System.out.println("1:1 문의 글 내용 삭제");
-		System.out.println("qna_no:" + qna_no);
+		System.out.println("qna_no: " + qna_no);
 		
 		CsCenterService.deleteRun(qna_no);
 		
@@ -144,21 +147,22 @@ public class CsCenterController {
 	
 	// 마이 페이지 - 문의하기 글 내용 확인
 	@RequestMapping(value = "/consultQnA", method = RequestMethod.GET)
-	public String consultQnA(int qna_no, Model model) throws Exception {
+	public String consultQnA(int qna_no, Model model, HttpSession session) throws Exception {
 		System.out.println("1:1 문의 글 내용 확인 들어왔음");
-		System.out.println("qna_no:" + qna_no);
+		System.out.println("qna_no: " + qna_no);
 		
 		// 세션에 있는 로그인 아이디랑
 		// 해당 글 번호의 아이디 값이랑 비교해서 같을 때만 보여줄 수 있도록 추가 작업해야 됨 
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo) session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			System.out.println("session user_id: " + user_id);
+		}
 		
 		// 아아디값 같이 받아오는 것도 괜찮은거 같다고...?
 		QnAVo qnAVo = CsCenterService.content(qna_no);
 		System.out.println(qnAVo);
-		
-		
 		model.addAttribute("qnAVo", qnAVo);
-		
-		
 	 	return "cs_center/consult_qna";
 	}
 	

@@ -25,26 +25,28 @@
 					and is_del = 'Y'
 				</when>
 			</choose>
+			<include refid="searchAsk"></include>
 		order by qna_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 문의글 수 -->
 	<select id="getCountQnA" resultType="int">
-		select count (*) from tbl_QnA 
+		select count (*) from tbl_QnA a
 		where qna_type = 'Q'
 			<choose>
 				<when test="qCheck == 1">
 				and is_del = 'N'
-					and a_no = 0
+				and a_no = 0
 				</when>
 				<when test="qCheck == 2">
 				and is_del = 'N'
-					and a_no != 0
+				and a_no != 0
 				</when>
 				<when test="qCheck == 3">
 				and is_del = 'Y'
 				</when>
 			</choose>
+			<include refid="searchAsk"></include>
 	</select>
 	
 	<!-- 답변 필요 문의글 수 -->
@@ -75,5 +77,30 @@
 			a_no = #{a_no, jdbcType=NUMERIC}
 		where qna_no = #{qna_no}
 	</update>
+	
+	<sql id="searchAsk">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "i"'>
+					and a.user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "m"'>
+					and a.input_name like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "t"'>
+					and a.title like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "im"'>
+					and a.user_id like '%' || #{keyword} || '%'
+					or a.input_name like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "imt"'>
+					and a.user_id like '%' || #{keyword} || '%'
+					or a.input_name like '%' || #{keyword} || '%'
+					or a.title like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
 
 </mapper>

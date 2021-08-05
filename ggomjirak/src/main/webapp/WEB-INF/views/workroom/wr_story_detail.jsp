@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp"%>
-<script src="/resources/js/my-script.js"></script>
 <!-- 스토리 상세 폼 -->
 <script>
 $(document).ready(function() {
@@ -43,7 +42,7 @@ $(document).ready(function() {
 							commentHtml += "	<div class='col-md-10'>";
 							commentHtml += "		<div class='blog__details__author'>";
 							commentHtml += "			<div class='blog__details__author__pic'>";
-							commentHtml += "				<a href='/workroom/main/" + this.user_id + "'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
+							commentHtml += "				<a href='/workroom/main/" + this.user_id + "'><img src='/displayImage?filePath=" + this.user_img + "' alt=''></a></div>"
 							commentHtml += "					<div class='blog__details__author__text'>";
 							commentHtml += "						<h6>" + this.user_nick + " " + changeDateString(this.reg_date) + "</h6>";
 							commentHtml += "							<span class='st_c_content'>" + this.st_c_content + "</span></div></div></div>";
@@ -161,10 +160,13 @@ $(document).ready(function() {
 		<hr>
 		<div style="text-align: right">
 			<p>${storyVo.reg_date}</p>
+			<c:if test="${storyVo.mod_date != null}">
+				<p style="font-size:13px;">${storyVo.mod_date}(수정 됨)</p>
+			</c:if>
 		</div>
 		<div>
 			<c:if test="${storyVo.st_img != null}">
-				<img src="/story_img/displayImage?filePath=${storyVo.st_img}" width="300px" 
+				<img src="/img/displayImage?filePath=${storyVo.st_img}" width="300px" 
 				style="display: block; margin: 0px auto; margin-top: 50px">
 			</c:if>
 		</div>
@@ -208,14 +210,11 @@ $(document).ready(function() {
 						<div class="col-md-10">
 							<div class="blog__details__author">
 								<div class="blog__details__author__pic">
-									<a href="/workroom/main/${commentVo.user_id}"><img src="/resources/img/test/littleduck.png" alt=""></a>
+									<a href="/workroom/main/${commentVo.user_id}"><img src="/displayImage?filePath=${commentVo.user_img}" alt=""></a>
 								</div>
 								<div class="blog__details__author__text">
 									<h6>${commentVo.user_nick} ${commentVo.reg_date}</h6>
 									<span class="st_c_content">${commentVo.st_c_content}</span>
-	<!-- 								<a href="#" style="font-size:13px" id="commentReply">답글</a> -->
-	<!-- 								<br> -->
-	<!-- 								<span id="span"></span> -->
 								</div>
 							</div>
 						</div>
@@ -251,6 +250,24 @@ $(document).ready(function() {
 <%@ include file="../include/footer.jsp"%>
 
 <script>
+// 날짜형식 변경(ajax용)
+function make2digits(num) {
+	if (num < 10) {
+		num = "0" + num;
+	}
+	return num;
+}
+
+function changeDateString(timeStamp) {
+	var d = new Date(timeStamp);
+	var year = d.getFullYear();
+	var month = make2digits(d.getMonth() + 1);
+	var date = make2digits(d.getDate());
+	var hour = make2digits(d.getHours());
+	var minute = make2digits(d.getMinutes());
+	return year + "-" + month + "-" + date + "  " + hour + ":" + minute;
+}
+
 function doDelete() {
 	Swal.fire({
 		text: '삭제하시겠습니까?', 

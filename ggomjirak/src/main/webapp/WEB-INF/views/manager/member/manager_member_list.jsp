@@ -77,10 +77,7 @@ $(document).ready(function() {
 			<div class="form-row">
 		    
 		    
-		    <div class="col-lg-2 col-md-3 mb-3">
-<!-- 							      <label for="validationCustom04">중분류</label> -->
-		    
-				  
+		    <div class="col-lg-2 col-md-3 mb-3">	    		  
 				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
 						id="btnSearchType" data-toggle="dropdown">
 							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
@@ -90,15 +87,7 @@ $(document).ready(function() {
 							<c:if test='${pagingDto.searchType == "in"}'>아이디 + 닉네임</c:if>
 							<c:if test='${pagingDto.searchType == "inm"}'>아이디 + 닉네임 + 이름</c:if>
 						
-						</button> 
-<%-- 						<c:choose> --%>
-<%-- 							<c:when test="${pagingDto.searchType == 'i'}">아이디</c:when> --%>
-<%-- 							<c:when test="${pagingDto.searchType == 'n'}">닉네임</c:when> --%>
-<%-- 							<c:when test="${pagingDto.searchType == 'm'}">이름</c:when> --%>
-<%-- 							<c:when test="${pagingDto.searchType == 'in'}">아이디 + 닉네임</c:when> --%>
-<%-- 							<c:when test="${pagingDto.searchType == 'inm'}">아이디 + 닉네임 + 이름</c:when> --%>
-<%-- 						</c:choose> --%>
-						
+						</button> 				
 						
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 						<a class="dropdown-item searchType" href="i">아이디</a> 
@@ -111,7 +100,6 @@ $(document).ready(function() {
 		      </div>
 		    </div>
 		    <div class="col-lg-10 col-md-9 mb-9">
-<!-- 							      <label for="validationCustom05">검색</label> -->
 		      <div class="input-group">
 					<input type="text" class="form-control bg-light border-0"
 						placeholder="검색어를 입력하세요" aria-label="Search"
@@ -141,24 +129,6 @@ $(document).ready(function() {
 	<div class="card-header py-3" style="overflow: hidden">
 			<h6 class="m-0 font-weight-bold green_color" style="float: left;">회원 리스트</h6>
 			
-			<div class="dropdown">
-				<select name="category"
-					class="btn btn-outline-light green_background dropdown-toggle"
-					data-bs-toggle="dropdown" aria-expanded="false">
-					<option class="dropdown-item" value="ca">최신 순</option>
-					<option class="dropdown-item" value="1">등급 순</option>
-					<option class="dropdown-item" value="3">인기 순</option>
-					<option class="dropdown-item" value="4">2</option>
-				</select>
-				<select name="category" class="btn btn-outline-light green_background dropdown-toggle"
-					data-bs-toggle="dropdown" aria-expanded="false">
-					<option class="dropdown-item" value="ca">검색 필터</option>
-					<option class="dropdown-item" value="1">1</option>
-					<option class="dropdown-item" value="2">2</option>
-					<option class="dropdown-item" value="3">3</option>
-					<option class="dropdown-item" value="4">4</option>
-				</select>
-			</div>
 			
 		</div>
 	
